@@ -1,0 +1,13 @@
+D:\Visual Studio\works\_VBAs\_VBAs\bin\Debug\_VBAs.exe.config
+D:\Visual Studio\works\_VBAs\_VBAs\bin\Debug\_VBAs.exe
+D:\Visual Studio\works\_VBAs\_VBAs\bin\Debug\_VBAs.pdb
+D:\Visual Studio\works\_VBAs\_VBAs\bin\Debug\_VBAs.xml
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.Form1.resources
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.Resources.resources
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.PaintCanvas.resources
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.vbproj.GenerateResource.Cache
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.exe
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.xml
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.pdb
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.OptionForm.resources
+D:\Visual Studio\works\_VBAs\_VBAs\obj\Debug\_VBAs.vbprojResolveAssemblyReference.cache

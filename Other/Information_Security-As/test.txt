@@ -1,0 +1,64 @@
+	syms x y
+	eq1 = y^2 + x*y - x^3 - 4.5 * x^2 + 4;
+	eq2 = y - x - 2;
+	s = solve(eq1, eq2, x, y)
+	ezplot(eq1, [-7, 7])
+	hold on
+	ezplot(eq2, [-7, 7])
+	X = double(s.x)
+	Y = double(s.y)
+	for i = 1:(size(X))
+		text(X(i), Y(i), ['(', num2str(X(i),'%.3f'), ', ', num2str(Y(i),'%.3f'), ')'], 'FontSize', 9)
+	end
+	axis([-8 8 -8 8])
+
+	/////////////
+
+	str = {'A', ' B', ' C'};
+    syms x y
+	eq1 = y^2 - x^3 - 4.5 * x^2 + 4;
+	eq2 = y - x - 2;
+    hold on	
+	e1 = ezplot(eq1, [-8, 8]);
+	e2 = ezplot(eq2, [-8, 8]);
+    set(e2, 'Color','b');
+    s = solve(eq1, eq2, x, y);
+	X1 = double(s.x);
+	Y1 = double(s.y);
+	for i = 1:(size(X1))
+		text(X1(i), Y1(i), str(i), 'FontSize', 9);
+    end
+    plot([X1(3), X1(3)], [-Y1(3), Y1(3)], 'r');
+    text(X1(3), -Y1(3), ' D = A + B', 'Fontsize', 9);
+    plot([0, 0], [-8, 8], 'k');
+    plot([-8, 8], [0, 0], 'k');
+    eq3 = y + Y1(3) + 0.435 * (x - X1(3));
+    e3 = ezplot(eq3, [-8, 8]);
+    set(e3, 'Color','b');
+    s = solve(eq1, eq3, x, y);
+    X2 = double(s.x);
+	Y2 = double(s.y);
+    text(X2(1), Y2(1), ' E', 'FontSize', 9);
+    text(X2(3), Y2(3), ' F', 'FontSize', 9);
+    plot(X2(1), -Y2(1), '.');
+    text(X2(1) - 2.45, -Y2(1), '(B+A)+F = B+(A+F)', 'FontSize', 9);
+    plot(X2(3), Y2(3), '.');
+    eq4 = y - Y1(1) - (x - X1(1)) * (Y1(1) - Y2(3))/(X1(1) - X2(3));
+    e4 = ezplot(eq4, [-8, 8]);
+    set(e4, 'Color','m');
+    s = solve(eq1, eq4, x, y);
+    X3 = double(s.x);
+	Y3 = double(s.y);
+    text(X3(2), Y3(2), 'G', 'FontSize', 9);
+    text(X3(2), -Y3(2), 'H = A + F', 'FontSize', 9);
+    plot([X3(2), X3(2)], [-Y3(2), Y3(2)], 'r');
+    eq5 = y - Y1(2) - (x - X1(2)) * (Y1(2) + Y3(2))/(X1(2) - X3(2));
+    e5 = ezplot(eq5, [-8, 8]);
+    set(e5, 'Color', 'm');
+    s = solve(eq1, eq5, x, y);
+    X4 = double(s.x);
+	Y4 = double(s.y);
+    
+    plot([X4(2), X4(2)], [-Y4(2), Y4(2)], 'r');
+    
+	axis([-10 10 -10 10]);

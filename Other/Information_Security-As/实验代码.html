@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>实验代码</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>实验代码：</h1>
+<p><strong>实验代码[1] “Matlab”</strong></p>
+<pre><code>    str = {'A', ' B', ' C'};
+    syms x y
+    eq1 = y^2 - x^3 - 4.5 * x^2 + 4;
+    eq2 = y - x - 2;
+    hold on 
+    e1 = ezplot(eq1, [-8, 8]);
+    e2 = ezplot(eq2, [-8, 8]);
+    set(e2, 'Color','b');
+    s = solve(eq1, eq2, x, y);
+    X1 = double(s.x);
+    Y1 = double(s.y);
+    for i = 1:(size(X1))
+        text(X1(i), Y1(i), str(i), 'FontSize', 9);
+    end
+    plot([X1(3), X1(3)], [-Y1(3), Y1(3)], 'r');
+    text(X1(3), -Y1(3), ' D = A + B', 'Fontsize', 9);
+    plot([0, 0], [-8, 8], 'k');
+    plot([-8, 8], [0, 0], 'k');
+    eq3 = y + Y1(3) + 0.435 * (x - X1(3));
+    e3 = ezplot(eq3, [-8, 8]);
+    set(e3, 'Color','b');
+    s = solve(eq1, eq3, x, y);
+    X2 = double(s.x);
+    Y2 = double(s.y);
+    text(X2(1), Y2(1), ' E', 'FontSize', 9);
+    text(X2(3), Y2(3), ' F', 'FontSize', 9);
+    plot(X2(1), -Y2(1), '.');
+    text(X2(1) - 2.45, -Y2(1), '(B+A)+F = B+(A+F)', 'FontSize', 9);
+    plot(X2(3), Y2(3), '.');
+    eq4 = y - Y1(1) - (x - X1(1)) * (Y1(1) - Y2(3))/(X1(1) - X2(3));
+    e4 = ezplot(eq4, [-8, 8]);
+    set(e4, 'Color','m');
+    s = solve(eq1, eq4, x, y);
+    X3 = double(s.x);
+    Y3 = double(s.y);
+    text(X3(2), Y3(2), 'G', 'FontSize', 9);
+    text(X3(2), -Y3(2), 'H = A + F', 'FontSize', 9);
+    plot([X3(2), X3(2)], [-Y3(2), Y3(2)], 'r');
+    eq5 = y - Y1(2) - (x - X1(2)) * (Y1(2) + Y3(2))/(X1(2) - X3(2));
+    e5 = ezplot(eq5, [-8, 8]);
+    set(e5, 'Color', 'm');
+    s = solve(eq1, eq5, x, y);
+    X4 = double(s.x);
+    Y4 = double(s.y);
+    plot([X4(2), X4(2)], [-Y4(2), Y4(2)], 'r');
+    axis([-10 10 -10 10]);
+</code></pre>
+
+<p>&nbsp;<br />
+&nbsp; <br />
+&nbsp; <br />
+<strong>实验代码2：C++ 模拟 ECC 加密解密通信过程</strong></p>
+<p><strong>main.cpp</strong></p>
+<p>mian() 函数主要流程：<br />
+1.  生成公钥和密钥。<br />
+2.  注册两个进程：Alice 和 Bob。<br />
+3.  Alice 告知 Bob 自己的公钥。<br />
+4.  Bob 向 Alice 发送消息，使用 Alice 的公钥进行加密，并将密文序列化之后传输。<br />
+5.  Alice 接受密文并解密。  </p>
+<p>在控制台的output：</p>
+<blockquote>
+<p>environment has been set appropriately.<br />
+Alice has been registered.<br />
+Bob has been registered.<br />
+Alice has read the original message from the Server &quot;Bob&quot; is hello.  
+</p>
+</blockquote>
+<pre><code>#include &quot;Elliptical_Curve.h&quot;
+using namespace std;
+namespace Elliptic_Curve
+{
+    int tmain();
+}
+
+
+int main()
+{
+    //Elliptic_Curve::tmain();
+    using namespace Elliptic_Curve;
+
+    ///*
+    //Process::
+    E e1{ 1,1,37 };
+    int priv1 = 25;
+    E e2{ 1,1,97 };
+    int priv2 = 7;
+    initial_environment();
+    auto res1 = generate(e1, priv1);
+    auto res2 = generate(e2, priv2);
+
+    auto Alice = Process::Factory(string(&quot;Alice&quot;), e1, res1.first, res1.second, priv1);
+    auto Bob = Process::Factory(string(&quot;Bob&quot;), e2, res2.first, res2.second, priv2);
+    Alice-&gt;sendPK(Bob, public_key(e1, res1.first, res1.second));
+    Bob-&gt;sendMessage(Alice, &quot;hello&quot;);
+    Alice-&gt;readAllMessage();
+    /**/
+
+    system(&quot;pause&quot;);
+    return 0;
+}
+</code></pre>
+
+<p>&nbsp;<br />
+&nbsp;<br />
+<strong>Elliptical_Curve.h</strong></p>
+<pre><code>#pragma once
+#ifndef _ELLIPTICAL_CURVE_H
+#define _ELLIPTICAL_CURVE_H
+#include &quot;engine.h&quot;
+#pragma comment(lib,&quot;libeng.lib&quot;)
+#pragma comment(lib,&quot;libmx.lib&quot;)
+#pragma comment(lib,&quot;libmat.lib&quot;)
+#include &lt;ctime&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;queue&gt;
+#include &lt;utility&gt;
+#include &lt;unordered_map&gt;
+#include &lt;functional&gt;
+#include &lt;memory&gt;
+
+namespace Elliptic_Curve
+{
+    class Process;
+    static int global_id = 0;
+    static std::unordered_map&lt;int, const Process*&gt; table;
+
+    void process_register(const Process* p);
+
+    typedef struct elliptical_curve
+    {
+        int prime;
+        int a, b;
+        elliptical_curve() = default;
+        elliptical_curve(int _a, int _b, int p)
+            :prime(p), a(_a), b(_b) {}
+    };
+
+    using E = elliptical_curve;
+    using Coordinate = std::pair&lt;double, double&gt;;
+
+    typedef struct public_key
+    {
+        E curve;
+        Coordinate K;
+        Coordinate G;
+        public_key() = default;
+        public_key(const E&amp; e, Coordinate k, Coordinate g)
+            :curve(e), K(k), G(g) {}
+    };
+
+    /*
+     * translate string into int array
+    **/
+    std::vector&lt;int&gt; translate(const std::string&amp; msg);
+
+
+    mxArray *convertVectorToMxArray(double** mat,
+        const int nb_rows, const int nb_cols);
+
+    void initial_environment();
+
+    /*
+     * generate K = kG
+     * return [K, G]
+    **/
+    std::pair&lt;Coordinate, Coordinate&gt; generate(const E&amp; e, const int priv);
+
+
+    class Process
+    {
+
+        using P_ptr = std::shared_ptr&lt;Process&gt;;
+
+    private:
+
+        Process(const std::string&amp; name, const E&amp; E, Coordinate K, Coordinate G, int priv)
+            :id(global_id++), _name(name), _message_list(), _pk(), public_k(E, K, G), private_k(priv) {}
+    public:
+
+        static P_ptr Factory(const std::string&amp; name, const E&amp; E, Coordinate K, Coordinate G, int priv)
+        {
+            P_ptr p{ new Process(name, E, K, G, priv) };
+            process_register(p.get());
+            return p;
+        }
+
+        int getID() const noexcept
+        {
+            return id;
+        }
+
+        std::string getName() const
+        {
+            return _name;
+        }
+
+        void sendPK(P_ptr to, const public_key&amp; pk) const
+        {
+            to-&gt;getPK(this, pk);
+        }
+
+        void getPK(const Process* from, const public_key&amp; pk)
+        {
+            _pk[from-&gt;id] = pk;
+        }
+
+        void sendMessage(P_ptr to, const std::string&amp; msg) const
+        {
+            auto result = encode(to.get(), msg);
+            std::vector&lt;double&gt; message;
+            for (auto it : result)
+            {
+                message.push_back(it.first.first);
+                message.push_back(it.first.second);
+                message.push_back(it.second.first);
+                message.push_back(it.second.second);
+            }
+            to-&gt;getMessage(this, message);
+        }
+
+        void getMessage(const Process* from, const std::vector&lt;double&gt;&amp; msg)
+        {
+            _message_list.push(std::make_pair(from-&gt;id, msg));
+        }
+
+        void readAllMessage()
+        {
+            while (!_message_list.empty())
+            {
+                auto item = _message_list.front(); _message_list.pop();
+                const int size = item.second.size();
+                auto const&amp; Vec = item.second;
+                std::vector&lt;std::pair&lt;Coordinate, Coordinate&gt;&gt; message;
+                double x1, y1, x2, y2;
+                for (int i = 0; i &lt; size;)
+                {
+                    x1 = Vec[i++];
+                    y1 = Vec[i++];
+                    x2 = Vec[i++];
+                    y2 = Vec[i++];
+                    message.push_back(std::make_pair(std::make_pair(x1, y1), std::make_pair(x2, y2)));
+                }
+
+                decode(table[item.first], message);
+
+            }
+        }
+
+    private:
+
+        const int id;
+        const std::string _name;
+        std::queue&lt;std::pair&lt;int, std::vector&lt;double&gt;&gt;&gt; _message_list;
+        std::unordered_map&lt;int, public_key&gt; _pk;
+        const public_key public_k;
+        const int private_k;
+
+        /*
+         * Encode
+        **/
+        std::vector&lt;std::pair&lt;Coordinate, Coordinate&gt;&gt; encode(const Process* to, const std::string&amp; msg) const
+        {
+
+            public_key pk;
+            try {
+                pk = _pk.at(to-&gt;id);
+            }
+            catch (std::out_of_range&amp;)
+            {
+                std::cout &lt;&lt; &quot;No public key of the Server: &quot; &lt;&lt; to-&gt;_name &lt;&lt; std::endl;
+                return std::vector&lt;std::pair&lt;Coordinate, Coordinate&gt;&gt;{};
+            }
+
+            const int a = pk.curve.a;
+            const int b = pk.curve.b;
+            const int p = pk.curve.prime;
+            const Coordinate K = pk.K;
+            const Coordinate G = pk.G;
+
+            Engine *engine_ptr;
+            // open engine  
+            if (!(engine_ptr = engOpen(&quot;\0&quot;)))
+                fprintf(stderr, &quot;\nCan't start MATLAB engine\n&quot;);
+
+            auto getDouble = [engine_ptr](const char* c)-&gt;decltype(auto)
+            {
+                //std::shared_ptr&lt;mxArray&gt; ret(engGetVariable(engine_ptr, c), mxDestroyArray);
+                //return std::shared_ptr&lt;double&gt;(static_cast&lt;double*&gt;(mxGetData(ret.get())));
+
+                auto ret = engGetVariable(engine_ptr, c);
+                double tmp = *(static_cast&lt;double*&gt;(mxGetData(ret)));
+                mxDestroyArray(ret);
+                return tmp;
+            };
+            auto getCoordinate = [engine_ptr](const char* c)-&gt;decltype(auto)
+            {
+                auto ret = engGetVariable(engine_ptr, c);
+                double *d = static_cast&lt;double*&gt;(mxGetData(ret));
+                auto tmp = std::make_pair(*d, *(d + 1));
+                mxDestroyArray(ret);
+                return tmp;
+            };
+            auto putDouble = [engine_ptr](const char* c, const int x)-&gt;void
+            {
+                double **mat = new double*[1];
+                mat[0] = new double[1];
+                mat[0][0] = x;
+                auto data = convertVectorToMxArray(mat, 1, 1);
+                if (engPutVariable(engine_ptr, c, data) != 0)
+                    std::cout &lt;&lt; &quot;fail to put Double&quot; &lt;&lt; std::endl;
+                delete[] mat[0]; delete[] mat;
+            };
+            auto putCoordinate = [engine_ptr](const char* c, const Coordinate&amp; C)-&gt;void
+            {
+                double **mat = new double*[1];
+                mat[0] = new double[2];
+                mat[0][0] = C.first; mat[0][1] = C.second;
+                auto data = convertVectorToMxArray(mat, 1, 2);
+                if (engPutVariable(engine_ptr, c, data) != 0)
+                    std::cout &lt;&lt; &quot;fail to put Coordinate&quot; &lt;&lt; std::endl;
+                delete[] mat[0]; delete[] mat;
+            };
+
+            //execute matlab operations  
+            using Deleter = std::function&lt;void(Engine*)&gt;;
+            std::shared_ptr&lt;Engine&gt; ep{ engine_ptr, engClose };
+            auto evalString = std::bind(engEvalString, ep.get(), std::placeholders::_1);
+
+            std::vector&lt;std::string&gt; str =
+            {
+                &quot;a = 0&quot;,
+                &quot;b = 0&quot;,
+                &quot;p = 0&quot;,
+                &quot;K = [0,0]&quot;,
+                &quot;G = [0,0]&quot;
+            };
+            for (auto const&amp;s : str)
+                evalString(s.c_str());
+            putDouble(&quot;a&quot;, a);
+            putDouble(&quot;b&quot;, b);
+            putDouble(&quot;p&quot;, p);
+            putCoordinate(&quot;K&quot;, K);
+            putCoordinate(&quot;G&quot;, G);
+
+
+            std::vector&lt;int&gt; message = translate(msg);
+            std::vector&lt;std::pair&lt;Coordinate, Coordinate&gt;&gt; result;
+            srand(time(NULL));
+
+            for (auto x : message)
+            {
+
+                //generate the point M(x, y) on the Curve
+                evalString(&quot;x = 0&quot;);
+                putDouble(&quot;x&quot;, x);
+                evalString(&quot;y = ECCCal(a, b, p, x)&quot;);
+                double y = getDouble(&quot;y&quot;);
+                evalString(&quot;M = [0,0]&quot;);
+                putCoordinate(&quot;M&quot;, std::make_pair(x, y));
+
+                //compute C1 and C2
+                int r = rand() % 30 + 1;   //a random number used to encode the message
+                evalString(&quot;r = 0&quot;);
+                putDouble(&quot;r&quot;, r);
+                evalString(&quot;temp = NP(a, b, p, r, K(1), K(2));&quot;);
+                evalString(&quot;[x1, y1] = Add(a, b, p, M(1), M(2), temp(1), temp(2));&quot;);
+                evalString(&quot;[x2, y2] = NP(a, b, p, r, G(1), G(2));&quot;);
+                evalString(&quot;C1 = [x1, y1];&quot;);
+                evalString(&quot;C2 = [x2, y2];&quot;);
+                auto C1 = getCoordinate(&quot;C1&quot;);
+                auto C2 = getCoordinate(&quot;C2&quot;);
+                result.push_back(std::make_pair(C1, C2));
+
+            }
+
+            return result;
+
+        }
+
+        /*
+         * Decode
+        **/
+        void decode(const Process* from, const std::vector&lt;std::pair&lt;Coordinate, Coordinate&gt;&gt;&amp; message) const
+        {
+
+            /*
+             * Decode the message through pk with Matlab
+            **/
+            Engine *engine_ptr;
+            // open engine  
+            if (!(engine_ptr = engOpen(&quot;\0&quot;)))
+                fprintf(stderr, &quot;\nCan't start MATLAB engine\n&quot;);
+
+            auto getDouble = [engine_ptr](const char* c)-&gt;decltype(auto)
+            {
+                //std::shared_ptr&lt;mxArray&gt; ret(engGetVariable(engine_ptr, c), mxDestroyArray);
+                //return std::shared_ptr&lt;double&gt;(static_cast&lt;double*&gt;(mxGetData(ret.get())));
+
+                auto ret = engGetVariable(engine_ptr, c);
+                double tmp = *(static_cast&lt;double*&gt;(mxGetData(ret)));
+                mxDestroyArray(ret);
+                return tmp;
+            };
+            auto getCoordinate = [engine_ptr](const char* c)-&gt;decltype(auto)
+            {
+                auto ret = engGetVariable(engine_ptr, c);
+                double *d = static_cast&lt;double*&gt;(mxGetData(ret));
+                auto tmp = std::make_pair(*d, *(d + 1));
+                mxDestroyArray(ret);
+                return tmp;
+            };
+            auto putDouble = [engine_ptr](const char* c, const int x)-&gt;void
+            {
+                double **mat = new double*[1];
+                mat[0] = new double[1];
+                mat[0][0] = x;
+                auto data = convertVectorToMxArray(mat, 1, 1);
+                if (engPutVariable(engine_ptr, c, data) != 0)
+                    std::cout &lt;&lt; &quot;fail to put Double&quot; &lt;&lt; std::endl;
+                delete[] mat[0]; delete[] mat;
+            };
+            auto putCoordinate = [engine_ptr](const char* c, const Coordinate&amp; C)-&gt;void
+            {
+                double **mat = new double*[1];
+                mat[0] = new double[2];
+                mat[0][0] = C.first; mat[0][1] = C.second;
+                auto data = convertVectorToMxArray(mat, 1, 2);
+                if (engPutVariable(engine_ptr, c, data) != 0)
+                    std::cout &lt;&lt; &quot;fail to put Coordinate&quot; &lt;&lt; std::endl;
+                delete[] mat[0]; delete[] mat;
+            };
+
+            //execute matlab operations  
+            using Deleter = std::function&lt;void(Engine*)&gt;;
+            std::shared_ptr&lt;Engine&gt; ep{ engine_ptr, engClose };
+            auto evalString = std::bind(engEvalString, ep.get(), std::placeholders::_1);
+
+            const int a = public_k.curve.a;
+            const int b = public_k.curve.b;
+            const int p = public_k.curve.prime;
+            const int k = private_k;
+            const Coordinate K = public_k.K;
+            const Coordinate G = public_k.G;
+
+            std::vector&lt;std::string&gt; str =
+            {
+                &quot;a = 0&quot;,
+                &quot;b = 0&quot;,
+                &quot;p = 0&quot;,
+                &quot;k = 0&quot;,
+                &quot;K = [0,0]&quot;,
+                &quot;G = [0,0]&quot;
+            };
+            for (auto const&amp;s : str)
+                evalString(s.c_str());
+            putDouble(&quot;a&quot;, a);
+            putDouble(&quot;b&quot;, b);
+            putDouble(&quot;p&quot;, p);
+            putDouble(&quot;k&quot;, private_k);
+            putCoordinate(&quot;K&quot;, K);
+            putCoordinate(&quot;G&quot;, G);
+
+            std::string msg;
+            for (auto&amp; it : message)
+            {
+                auto C1 = it.first;
+                auto C2 = it.second;
+                evalString(&quot;C1 = [0,0]&quot;);
+                evalString(&quot;C2 = [0,0]&quot;);
+                putCoordinate(&quot;C1&quot;, C1);
+                putCoordinate(&quot;C2&quot;, C2);
+                evalString(&quot;[x, y] = NP(a, b, p, k, C2(1), C2(2))&quot;);
+                evalString(&quot;[x1, y1] = Add(a, b, p, C1(1), C1(2), x, -y)&quot;);
+                evalString(&quot;M = [x1, y1]&quot;);
+                auto M = getCoordinate(&quot;M&quot;);
+                msg.push_back(static_cast&lt;char&gt;(M.first));
+            }
+
+            std::string name = (from == nullptr) ? &quot;Anonymous&quot; : from-&gt;_name;
+            std::cout &lt;&lt; this-&gt;_name &lt;&lt; &quot; has read the original Message from the Server \&quot;&quot;
+                &lt;&lt; name &lt;&lt; &quot;\&quot;&quot; &lt;&lt; &quot; is: &quot; &lt;&lt; msg &lt;&lt; std::endl;
+            std::cout &lt;&lt; std::endl;
+        }
+
+    };
+
+
+    inline void process_register(const Process* p)
+    {
+        table[p-&gt;getID()] = p;
+        std::cout &lt;&lt; p-&gt;getName() &lt;&lt; &quot; has been registered.&quot; &lt;&lt; std::endl;
+    }
+
+}//end namespace Elliptic_Curve
+
+#endif // !_ELLIPTICAL_CURVE_H
+</code></pre>
+
+<p>&nbsp;<br />
+&nbsp;<br />
+<strong>Elliptical_Curve.cpp</strong></p>
+<pre><code>#include &quot;Elliptical_Curve.h&quot;
+
+namespace Elliptic_Curve
+{
+
+
+    std::vector&lt;int&gt; translate(const std::string&amp; msg)
+    {
+        std::vector&lt;int&gt; result;
+        for (auto c : msg)
+            result.push_back(static_cast&lt;int&gt;(c));
+        return result;
+    }
+
+    mxArray *convertVectorToMxArray(double** mat,
+        const int nb_rows, const int nb_cols)
+    {
+        mxArray *outputMxArray = mxCreateDoubleMatrix(
+            (int)nb_rows,
+            (int)nb_cols,
+            mxREAL);
+
+        double *data = (double*)mxGetData(outputMxArray);
+        for (int r = 0; r &lt; nb_rows; r++)
+            for (int c = 0; c &lt; nb_cols; c++)
+                data[r + c*nb_rows] = (double)mat[r][c];
+
+        return outputMxArray;
+    };
+
+    void initial_environment()
+    {
+        Engine *engine_ptr;
+        // open engine  
+        if (!(engine_ptr = engOpen(&quot;\0&quot;)))
+            fprintf(stderr, &quot;\nCan't start MATLAB engine\n&quot;);
+        using Deleter = std::function&lt;void(Engine*)&gt;;
+        std::shared_ptr&lt;Engine&gt; ep{ engine_ptr, engClose };
+        auto evalString = std::bind(engEvalString, ep.get(), std::placeholders::_1);
+        evalString(&quot;cd bin&quot;);
+        std::cout &lt;&lt; &quot;environment has been set appropriately.&quot; &lt;&lt; std::endl;
+    }
+
+    std::pair&lt;Coordinate, Coordinate&gt; generate(const E&amp; e, const int priv)
+    {
+
+        Engine *engine_ptr;
+        // open engine  
+        if (!(engine_ptr = engOpen(&quot;\0&quot;)))
+            fprintf(stderr, &quot;\nCan't start MATLAB engine\n&quot;);
+
+        auto getDouble = [engine_ptr](const char* c)-&gt;decltype(auto)
+        {
+            //std::shared_ptr&lt;mxArray&gt; ret(engGetVariable(engine_ptr, c), mxDestroyArray);
+            //return std::shared_ptr&lt;double&gt;(static_cast&lt;double*&gt;(mxGetData(ret.get())));
+
+            auto ret = engGetVariable(engine_ptr, c);
+            double *d = static_cast&lt;double*&gt;(mxGetData(ret));
+            auto tmp = d[0];
+            mxDestroyArray(ret);
+            return tmp;
+        };
+        auto getCoordinate = [engine_ptr](const char* c)-&gt;decltype(auto)
+        {
+            auto ret = engGetVariable(engine_ptr, c);
+            double *d = static_cast&lt;double*&gt;(mxGetData(ret));
+            auto tmp = std::make_pair(d[0], d[1]);
+            mxDestroyArray(ret);
+            return tmp;
+        };
+        auto putDouble = [engine_ptr](const char* c, const int x)-&gt;void
+        {
+            double **mat = new double*[1];
+            mat[0] = new double[1];
+            mat[0][0] = x;
+            auto data = convertVectorToMxArray(mat, 1, 1);
+            if (engPutVariable(engine_ptr, c, data) != 0)
+                std::cout &lt;&lt; &quot;fail to put Double&quot; &lt;&lt; std::endl;
+            delete[] mat[0]; delete[] mat;
+        };
+        auto putCoordinate = [engine_ptr](const char* c, const Coordinate&amp; C)-&gt;void
+        {
+            double **mat = new double*[1];
+            mat[0] = new double[2];
+            mat[0][0] = C.first; mat[0][1] = C.second;
+            auto data = convertVectorToMxArray(mat, 1, 2);
+            if (engPutVariable(engine_ptr, c, data) != 0)
+                std::cout &lt;&lt; &quot;fail to put Coordinate&quot; &lt;&lt; std::endl;
+            delete[] mat[0]; delete[] mat;
+        };
+
+        //execute matlab operations  
+        using Deleter = std::function&lt;void(Engine*)&gt;;
+        std::shared_ptr&lt;Engine&gt; ep{ engine_ptr, engClose };
+        auto evalString = std::bind(engEvalString, ep.get(), std::placeholders::_1);
+
+        const int a = e.a;
+        const int b = e.b;
+        const int p = e.prime;
+
+        std::vector&lt;std::string&gt; str =
+        {
+            &quot;a = 0&quot;,
+            &quot;b = 0&quot;,
+            &quot;p = 0&quot;,
+            &quot;priv = 0&quot;
+        };
+        for (auto const&amp;s : str)
+            evalString(s.c_str());
+        putDouble(&quot;a&quot;, a);
+        putDouble(&quot;b&quot;, b);
+        putDouble(&quot;p&quot;, p);
+        putDouble(&quot;priv&quot;, priv);
+
+        evalString(&quot;[x, y] = ECCgenerate(a, b, p)&quot;);
+        std::cout &lt;&lt; getDouble(&quot;x&quot;) &lt;&lt; &quot; &quot; &lt;&lt; getDouble(&quot;y&quot;) &lt;&lt; &quot; &quot;;
+        evalString(&quot;G = [x, y]&quot;);
+        auto G = getCoordinate(&quot;G&quot;);
+
+        evalString(&quot;[x, y] = NP(a, b, p, priv, G(1), G(2))&quot;);
+        std::cout &lt;&lt; getDouble(&quot;x&quot;) &lt;&lt; &quot; &quot; &lt;&lt; getDouble(&quot;y&quot;) &lt;&lt; std::endl;
+        evalString(&quot;K = [x, y]&quot;);
+        auto K = getCoordinate(&quot;K&quot;);
+
+        return std::make_pair(K, G);
+    }
+
+}
+</code></pre>
+
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

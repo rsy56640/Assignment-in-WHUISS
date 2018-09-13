@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Final_essay_任思远_2016302580320</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h1>GRASP is composed of 9 patterns:</h1>
+<p>1) <a href="#1">Creator</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2) <a href="#2">Information Expert</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3) <a href="#3">Low Coupling</a><br />
+4) <a href="#4">Controller</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;5) <a href="#5">High Cohesion</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6) <a href="#6">Indirection</a><br />
+7) <a href="#7">Polymorphism</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;8) <a href="#8">Protected Variations</a>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 9) <a href="#9">Pure Fabrication</a><br />
+Below I wil analyze these 9 patterns respectively, and I will use C++ code to explain some specific examples.<br />
+&emsp;</p>
+<h2 id="1">1.  Creator</h2>  
+<p>&emsp;Creator pattern concentrates on the responsibility of creating instances of a class, and creating objects is one of the most common activities in the object-oriented system.<br />
+&emsp;Below is excerpted from <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Creator">GRASP - Creator (wikipedia)</a>    </p>
+<blockquote>
+<p>&emsp;In general, a class B should be responsible for creating instances of class A if one, or preferably more, of the following apply:  
+</p>
+<p>&emsp;&emsp;1. Instances of B contain or compositely aggregate instances of A<br />
+&emsp;&emsp;2. Instances of B record instances of A <br />
+&emsp;&emsp;3. Instances of B closely use instances of A <br />
+&emsp;&emsp;4. Instances of B have the initializing information for instances of A and pass it on creation.   
+</p>
+</blockquote>
+<p>&emsp;So, here are 2 problems to be resolved properly.   </p>
+<pre><code>1. Where should the object be created? on stack or heap?  
+2. Who should take the responsibility to retrieve the resource?  
+</code></pre>
+
+<p>&emsp;Consider such a situation:  Class B is somehow dependt on A.  </p>
+<pre><code>namespace CREATOR
+{
+    class A {
+    public:
+        A(int) {}
+        int foo(int) { return 7; }
+    };
+}
+</code></pre>
+
+<p>&emsp;In my own view, we can easily split this situation into 2 cases:  </p>
+<blockquote>
+<ol>
+<li>B is (a kind of) A - <a href="https://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov substitution principle</a>   
+</li>
+<li>B is implemented in terms of A  
+</li>
+</ol>
+</blockquote>
+<p>&emsp;In the 1st case, class B is supposed to inherit publically class A.
+So, the argument needed to construct A object is passed to B object, besides, the destruction of A object is automatically accomplished by the compilers.(which matches the 4th apply in the previous wiki reference)  </p>
+<pre><code>namespace CREATOR
+{
+    class B :public A {
+    public:
+        B(int i) :A(i) {}  //B have the initializing information for instances of A and pass it on creation.
+    };
+}
+</code></pre>
+
+<p>&emsp;In the 2nd case, A is an auxiliary tool for the implementation of class B. I simply split it into 3 smaller cases:</p>
+<blockquote>
+<p>2.1 B owns A(or a pointer to A) as a data field.  <br />
+(owning an object is usually called 'Contain', while owing an pointer to an object is called 'Aggregate', they are both called 'Composition')<br />
+2.2 B ustilizes A. <br />
+2.3 A is returned from B.   
+</p>
+</blockquote>
+<p>&emsp;For the case 2.1, if the size of A is not too big, B can contain an A obj in its data field.   </p>
+<pre><code>namespace CREATOR
+{
+    class B {
+    public:
+        B(int i) :a(i) {}
+    private:
+        A a;
+    };
+}
+</code></pre>
+
+<p>&emsp;It's very recommended to contain a pointer pointing to A if the size of A is too big, then here comes the question: who is supposed to create A's obj (here 'create' means allocating memory for the object)? We obtain the benefit from owning a pointer to A(reduce the size of B), so right now, we have to clinch the deal, and here's a trade-off. B is possible to take the responsibility to create an object of A if A's constructor is trivial and permissable to be publicized. Efficient though it looks like, it might suffer a lot if A's constructor changes frequently. It's a good idea to assign creating responsibility to class A itself, which is widely used in OOD called <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">Factory method pattern</a>.</p>
+<pre><code>//in class A
+//...
+    static A* AFactory(/* parameter list to judge which kind of A to return */)
+    {
+        //if...
+        return new A{ 1 };
+        //if...
+        return new A{ 233 };
+    }
+//...
+</code></pre>
+
+<p>&emsp;The code above has one severe problem of memory leaking because the invoker might forget to free the memory, and maybe sometimes too hard to free(often it's hard to know where the function will exit). The essence of the problem is that the stack-based object will be freed by the compiler automatically, and the heap-based object is supposed to be free by programmer(Oh, trade-off!). You cannot count on your customer(other programmer) always observe the principles you've recorded in the document. <br />
+&emsp;It's time to introduce the smartpointer, an object which stores the resource in itself and take the advantage of compiler invoking destructor automatically to free the resource. The technique is called <a href="https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization">RAII</a> (Resource acquisition is initialization). The detailed information of the smartpointer is publicized in <a href="https://en.wikipedia.org/wiki/C%2B%2B_Technical_Report_1">TR1</a> (Technical Report 1), and the implementation originates from <a href="https://www.boost.org/doc/libs/1_58_0/libs/smart_ptr/smart_ptr.htm">Boost Library</a> (a world-wide famous C++ library). With this technique, you can use resource without taking trouble to figure out release of the resource.  </p>
+<pre><code>//in class A
+//...
+static auto AFactory(/* parameters */)-&gt;decltype(auto)
+{
+    //if...
+    return std::tr1::shared_ptr&lt;A&gt;{new A{ 1 }};
+    //if...
+    return std::make_shared&lt;A&gt;(233);
+}
+//...
+</code></pre>
+
+<p>&emsp;Right now, let's summary the solution to the case of 'Composition':<br />
+&emsp;B contains an object of class A, and initialize it in its constructor with necessary information if A is trivial and not likely to change. Otherwise it's better to put a pointer pointing to A in B. Factory function will take the responsibility to generate A object but it's no need for customers to release the resource. Professional customers maybe use smartpointer themselves(not through AFunctory).   </p>
+<pre><code>namespace CREATOR
+{
+    class B {
+    public:
+        B() :_pa(std::make_shared&lt;A&gt;(1)) {}
+    private:
+        std::tr1::shared_ptr&lt;A&gt; _pa;
+    };
+}
+</code></pre>
+
+<p>&emsp;Besides, A can put the constructor and new operator in the private area if A don't want customers to create its object and avoid users to casue any memory leak.   </p>
+<pre><code>namespace CREATOR
+{
+    class A {
+
+        //friend
+            //class std::_Ref_count_obj&lt;A&gt;;
+
+    private:
+        A(int) {}
+        A(const A&amp;) = delete;
+        A&amp; operator=(const A&amp;) = delete;
+        A(A&amp;&amp;) = delete;
+        A&amp; operator=(A&amp;&amp;) = delete;
+        static void* operator new(std::size_t size) throw (std::bad_alloc)
+        {
+            //exception handling
+            return ::operator new(size);
+        }
+
+    public:
+        int foo(int) { return 7; }
+        static auto AFactory(/* parameter list to judge which kind of A to return */)-&gt;decltype(auto)
+        {
+            //if...
+            return std::tr1::shared_ptr&lt;A&gt;{new A{ 1 }};
+            //if...
+            return std::tr1::shared_ptr&lt;A&gt;{new A{ 233 }};
+        }
+    };
+
+}
+
+namespace CREATOR
+{
+    class B {
+        using A_ptr = std::tr1::shared_ptr&lt;A&gt;;
+    public:
+        //B() :_pa(std::make_shared&lt;A&gt;(1)) {}    //now this cannot compile
+        B() :_pa(A::AFactory()) {}               //OK
+        B(A_ptr pa) :_pa(pa) {}                  //OK
+    private:
+        A_ptr _pa;
+    };
+}
+</code></pre>
+
+<p>&emsp;Thus B can only use AFactory function to get A obj for use, and there is no need to worry about resource leak. (NB: but a little loss of efficiency, std::make_shared<class_name>(...) is more efficient then std::shared_ptr<class_name>{...}. std::make_shared&lt;...&gt;(...) needs new operator, but it is visible to every one. A trade-off again! Of course std::make_shared can be publicized unless you donot have to log or record every object of A, it exactly reduces your control ability of A object someway. Cancel the comments at top of the code segment if you donot mind recording partial log and be happy with std::make_shared.)   </p>
+<p>&emsp;Now we are to talk about the case that B uses A. It has 3 respects to consider:<br />
+&emsp;First, A is used in B's function, the sole difference among A obj is the initial parameters, which are definitely passed by invoker. In such case, we can abstarct a forward function to do some preparation work, receive parameters and then invoke A::AFactory and pass it to this function. In a word, in can be regarded as parameter.<br />
+&emsp;Second, A is a parameter of B's function, it's nothing to optimize in the logic level, but we can use <a href="http://www.informit.com/articles/article.aspx?p=26039">Separate Compilation</a> to save a lot of effort and suffer less from the change of the code(only using forward declaration). <br />
+&emsp;Thirdly, you only want to use the A's function without the whole A's object.  </p>
+<pre><code>//in class B
+//...       
+void test()
+{
+    using F = std::function&lt;void(int)&gt;;
+    F B_foo = static_cast&lt;F&gt;(std::bind(&amp;A::foo, A::AFactory().get(), std::placeholders::_1));
+    B_foo(3);
+}
+//...
+</code></pre>
+
+<p>&emsp;The last thing to talk about is that A serves as a return value.<br />
+&emsp;You have to know the definition of A if return value is an object rather than a pointer, and you'd better know about <a href="https://en.wikipedia.org/wiki/Copy_elision#Return_value_optimization">(N)RVO - (Named) Return Value Optimization</a>, which will enhance the efficiency significantly. If return value is a pointer, you'd better use smartpointer, or you will encounter the problem of releasing resource.<br />
+&emsp;</p>
+<h2 id = "2">2. Information Expert</h2>  
+<p>&emsp;See in <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Information_expert">GRASP - Information Expert</a>    </p>
+<blockquote>
+<p>&emsp;Information expert (also expert or the expert principle) is a principle used to determine where to delegate responsibilities. These responsibilities include methods, computed fields, and so on.  
+</p>
+</blockquote>
+<p>&emsp;For instance, I've written a lib of RBTree (<a href="https://github.com/rsy56640/rsy_little_lib/blob/master/library_for_algorithm/RB_Tree/map/RB_Tree_Iterator.h">https://github.com/rsy56640/rsy_little_lib/blob/master/library_for_algorithm/RB_Tree/map/RB_Tree_Iterator.h</a>). For its iterator design, the iterator class has the information of the node, instead of the whole RBTree. According to the Information Expert pattern, iterator will take the responsibilty to implement methods increment() and decrement(). So the TreeImplementation doesnot need to be aware of the iterator movement, instead only provides node_ptr for iterator wrapper, which contributes to encapsulation and low coupling in the tree.h.<br />
+&emsp;</p>
+<h2 id = "3">3. Low Coupling</h2>  
+<p>&emsp;See in <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Low_coupling">GRASP - Low Coupling</a>  </p>
+<blockquote>
+<p>&emsp;Coupling is a measure of how strongly one element is connected to, has knowledge of, or relies on other elements. Low coupling is an evaluative pattern that dictates how to assign responsibilities to support<br />
+&emsp;&emsp;1. lower dependency between the classes<br />
+&emsp;&emsp;2. change in one class having lower impact on other classes<br />
+&emsp;&emsp;3. higher reuse potential.</p>
+</blockquote>
+<p>&emsp;When it comes to low coupling, the C++ Standard Template Library has to be mentioned, which is in my view a masterpiece on the part of low coupling. I quote a statement from <a href="https://stackoverflow.com/questions/1039853/why-is-the-c-stl-is-so-heavily-based-on-templates-and-not-on-interfaces/1039904">Why is the C++ STL is so heavily based on templates?(and not on <em>interfaces</em>) - Stack Overflow</a>   </p>
+<blockquote>
+<p>&emsp;Try drawing a dependency graph of a hypothetical &quot;OOP-ified&quot; STL. How many classes would have to know about each others? There would be a lot of dependencies. Would you be able to include just the vector header, without also getting iterator or even iostream pulled in? The STL makes this easy. A vector knows about the iterator type it defines, and that's all. The STL algorithms know nothing. They don't even need to include an iterator header, even though they all accept iterators as parameters. Which is more modular then?  
+</p>
+</blockquote>
+<p>&emsp;I illustrate low coupling with iterator_traits as an example, which is referenced from <a href="https://wizardforcel.gitbooks.io/effective-cpp/content/49.html">Effective C++ Item 47</a>.  </p>
+<pre><code>namespace Low_Coupling
+{
+
+    /*
+     * This implementation is utilized by random access iterator
+    **/
+    template&lt;typename IterT, typename DistT&gt;
+    void doAdvance(IterT&amp; iter, DistT d, std::random_access_iterator_tag)
+    {
+        iter += d;
+    }
+
+    /*
+     * This implementation is utilized by bidirectional iterator
+    **/
+    template&lt;typename IterT, typename DistT&gt;
+    void doAdvance(IterT&amp; iter, DistT d, std::bidirectional_iterator_tag)
+    {
+        if (d &gt;= 0) { while (d--)++iter; }
+        else { while (d++)--iter; }
+    }
+
+    /*
+     * This implementation is utilized by input iterator
+    **/
+    template&lt;typename IterT, typename DistT&gt;
+    void doAdvance(IterT&amp; iter, DistT d, std::input_iterator_tag)
+    {
+        if (d &lt; 0)
+        {
+            throw std::out_of_range(&quot;Negative distance&quot;)
+        }
+        while (d--)++iter;
+    }
+
+    /*
+     * advance() invoke different overloading functions
+     * and provide with an extra iterator_category.
+    **/
+    template&lt;typename IterT, typename DistT&gt;
+    void advance(IterT&amp; iter, DistT d)
+    {
+        doAdvance(
+            iter, d,
+            typename std::iterator_traits&lt;IterT&gt;::iterator_category()
+        )
+    }
+
+}
+</code></pre>
+
+<p>&emsp;You can realize the power of the above code. The overloading functions depends on nothing but iterator traits standards. What an amazing low coupling practice! It benefits from STL iterator standards, which requires programmers who want to add their own utilities into Standard Library or make their utilities cope with STL properly. Besides, <strong>generic programming</strong> allows us to write stuff like &quot;containers of a type T&quot; without throwing away type safety. Of course, the implementation they settled on was quite a lot more complex and powerful. And correctness is ensured duing compile time.  </p>
+<p>&emsp;And right now, I'm to talk about the relation between low coupling and <a href="https://en.wikipedia.org/wiki/Dependency_inversion_principle">dependency inversion</a> from my own experience.   </p>
+<blockquote>
+<p>&emsp;High-level modules should not depend on low-level modules. Both should depend on abstractions.<br />
+Abstractions should not depend on details. Details should depend on abstractions.  
+</p>
+</blockquote>
+<p>&emsp;Consider the following situation:  </p>
+<blockquote>
+<p><em>class B contains an object of class A.</em>  
+</p>
+</blockquote>
+<p>&emsp;We can simply include an object of A inside B object.  </p>
+<pre><code>namespace Low_Coupling
+{
+    class A {
+    public:
+        A(double) {}
+    };
+
+    class B {
+    public:
+        B(double d) :a(d) {}
+    private:
+        A a;
+    };
+}
+</code></pre>
+
+<p>&emsp;But you could suffer if A changes a little.  </p>
+<pre><code>class A {
+public:
+    A(std::function&lt;std::tr1::unordered_map&lt;std::string, std::vector&lt;int&gt;&gt;::iterator(const type_info&amp;)&gt;, std::pair&lt;const std::size_t, std::ostream_iterator&lt;int&gt;&gt;) {}
+};
+</code></pre>
+
+<p>&emsp;The disadvantage emerges completely at this time because B is too closely dependent on A. So we make up with an idea that B can contain a pointer to A, and we can obtain the A object from outside, just like we have done in the 1st section <em>Creator</em>. </p>
+<pre><code>class B {
+    using A_ptr = std::shared_ptr&lt;A&gt;;
+public:
+    B(A_ptr pa) :_pa(pa) {}
+private:
+    A_ptr _pa;
+};
+</code></pre>
+
+<p>&emsp;So we use this solution to solve the problem that there is always chance of dependent item to change, which natuarlly leads to DI and <a href="https://en.wikipedia.org/wiki/Inversion_of_control">IoC</a>.<br />
+Dependency Injection is more like a wrapper of the items that you need. You only have to modify the code of wrapper classes if the dependency has changed instead of modifying your logic code with enormous effort. As for IoC, the responsibility is assigned to the IoC container, thus loosing the coupling amoung different classes.  <br />
+&emsp;In a word, I take it for granted, the essence of all of these (including Low Coupling, Dependecy Injection, Inversion of Control) is <strong>'reuse'</strong> (of the code). <br />
+&nbsp; <br />
+Some references:<br />
+<a href="https://stackoverflow.com/questions/4541952/how-exactly-does-dependency-injection-reduce-coupling">How exactly does dependency injection reduce coupling? - Stack Overflow</a><br />
+<a href="http://blog.ploeh.dk/2010/04/07/DependencyInjectionisLooseCoupling/">Dependency Injection is Loose Coupling</a><br />
+<a href="https://stackoverflow.com/questions/3058/what-is-inversion-of-control">What is Inversion of Control? - Stack Overflow</a> <br />
+&emsp;</p>
+<h2 id = "4">4. Controller</h2>  
+<p>&emsp;See in <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Controller">GRASP - Controller</a>   </p>
+<blockquote>
+<p>&emsp;The controller pattern assigns the responsibility of dealing with system events to a non-UI class that represents the overall system or a use case scenario. A controller object is a non-user interface object responsible for receiving or handling a system event.<br />
+&emsp;A use case controller should be used to deal with all system events of a use case, and may be used for more than one use case (for instance, for use cases Create User and Delete User, one can have a single UserController, instead of two separate use case controllers).<br />
+&emsp;It is defined as the first object beyond the UI layer that receives and coordinates (&quot;controls&quot;) a system operation. The controller should delegate the work that needs to be done to other objects; it coordinates or controls the activity. It should not do much work itself. The GRASP Controller can be thought of as being a part of the application/service layer (assuming that the application has made an explicit distinction between the application/service layer and the domain layer) in an object-oriented system with common layers in an information system logical architecture.  
+</p>
+</blockquote>
+<p>&emsp;There are two purposes of Controller. The first purpose of Controller is to encapsulate a system operation. A system operation is something that your user want to achieve e.g buying a product or entering an item into the cart. This system operation is then accomplished by calling one or more method calls between the software objects.The second purpose of Controller is to provide a layer between UI and Domain Model.<br />
+&emsp;A UI enables users to perform system operations. A controller is the first object after the UI layer that handles the system operations request and then delegates the responsibility to the underlying domain objects. <br />
+&emsp;The flaw of Controller is to assign overmuch responsibilities to it, leading to low cohesion and complex dependency. The solution, I guess, is to just forward requests and assign tasks directly to the models.<br />
+&emsp;</p>
+<h2 id = "5">5. High Cohesion</h2>   
+<p>&emsp;See in <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#High_cohesion">GRASP - High Cohesion</a>  </p>
+<blockquote>
+<p>&emsp;High cohesion is an evaluative pattern that attempts to keep objects appropriately focused, manageable and understandable. High cohesion is generally used in support of low coupling. High cohesion means that the responsibilities of a given element are strongly related and highly focused. </p>
+</blockquote>
+<p>&emsp;High Cohesion aims to assign to classes specific and highly-relevant responsibilities in order to strive for high cohesion. For instance, a usually invoked method can be abstrated within the class as an encapsulated method. And this principle could be implemented with proxy pattern. Use a porxy class and put real implementation in it, and publicize the interface via another display class, which enhance cohesion and loose coupling.</p>
+<pre><code>namespace High_Cohesion
+{
+    class AProxy {
+    public:
+        void foo() {}
+        void goo() {}
+    };
+
+    class A {
+        using A_ptr = std::shared_ptr&lt;AProxy&gt;;
+    public:
+        A(A_ptr pa) :_pa(pa) {}
+        void foo()
+        {
+            _pa-&gt;foo();
+        }
+        void goo()
+        {
+            _pa-&gt;goo();
+        }
+    private:
+        A_ptr _pa;
+    };
+}
+</code></pre>
+
+<p>&emsp;</p>
+<h2 id = "6">6. Indirection</h2>   
+<p>&emsp;See in <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Indirection">GRASP - Indirection</a>  </p>
+<blockquote>
+<p>&emsp;The indirection pattern supports low coupling (and reuse potential) between two elements by assigning the responsibility of mediation between them to an intermediate object.  
+</p>
+</blockquote>
+<p>&emsp;The essence of this patternis still <strong>'reuse' (of the code)</strong>, and the measure is to add one or more <strong>abstract layers</strong>.<br />
+&emsp;</p>
+<h2 id = "7">7. Polymorphism</h2>   
+<p>&emsp;See in <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Polymorphism">GRASP - Polymorphism</a>  </p>
+<blockquote>
+<p>&emsp;According to polymorphism principle, responsibility of defining the variation of behaviors based on type is assigned to the type for which this variation happens.   
+</p>
+</blockquote>
+<pre><code>namespace Polymorphism
+{
+    class Strategy {
+    public:
+        virtual void foo() = 0;
+    };
+
+    typedef class :public Strategy { public: void foo() {} } StrategyA;
+    typedef class :public Strategy { public: void foo() {} } StrategyB;
+    typedef class :public Strategy { public: void foo() {} } StrategyC;
+
+    class Traditional_Strategy_A : StrategyA
+    {
+    public:
+        void doSomething() {
+            foo();             //polymorphism
+        }
+    };
+
+    class Traditional_Strategy_B : StrategyB
+    {
+    public:
+        void doSomething() {
+            foo();             //polymorphism
+        }
+    };
+
+}
+</code></pre>
+
+<p>&emsp;In fact, from my own experience, this method is obsolete. Here's the reason:<br />
+&emsp;Polymorphism pattern corresponds with <a href="https://en.wikipedia.org/wiki/Strategy_pattern">Strategy Pattern</a>, which is applied on pure OO language system. But in today's programming paradigms, we have a lot of replacement for this. Check it out for the statement: the strategy pattern aims to behaviour differently with different input, and via virtual function and polymorphism mechanism, you can take advantage of that mechanism to invoke different functions on different dynamic type. However, the efficiency suffers from <a href="https://en.wikipedia.org/wiki/Run-time_type_information">RTTI - Run Time Type Identification</a>, and leads to extra indirect invocations. This is because you just want to have different behaviors during runtime, but you resort to different types which leads to the cost of RTTI. But from muti-paradigm programming principles, we can achieve just by some modern language traits. It's easy to figure out the following code if you've ever learned about functional programming.  </p>
+<pre><code>namespace Polymorphism
+{
+
+    using strategy_func = std::function&lt;int(int)&gt;;
+
+    static std::map&lt;std::string, strategy_func&gt; _Func_Container;
+
+    strategy_func strategy_generator(const std::string&amp; str)
+    {
+        auto result = _Func_Container.find(str);
+        if (result != _Func_Container.end())
+            return result-&gt;second;
+        else throw std::out_of_range(&quot;No such function.&quot;);
+    }
+
+    void inject(std::pair&lt;std::string, strategy_func&gt;&amp;&amp; new_func)
+    {
+        _Func_Container.insert(_STD forward&lt;decltype(new_func)&gt;(new_func));
+    }
+
+    class Modern_Strategy
+    {
+        using strategy_func = std::function&lt;int(int)&gt;;
+
+    public:
+        Modern_Strategy(const strategy_func&amp; Func)
+            :_Func(Func) {}
+
+        Modern_Strategy(const std::string&amp; function_name)
+        {
+            try {
+                _Func = strategy_generator(function_name);
+            }
+            catch (std::out_of_range&amp; e)
+            {
+                std::cout &lt;&lt; e.what() &lt;&lt; std::endl;
+            }
+        }
+
+        void setStrategy(strategy_func&amp;&amp; Func)
+        {
+            _Func = _STD forward&lt;decltype(Func)&gt;(Func);
+        }
+
+        int doSomething(int i) {
+            return _Func(i);
+        }
+
+    private:
+        strategy_func _Func;
+    };
+
+}
+</code></pre>
+
+<p>&emsp;It's obvious that you can <strong>avoid RTTI</strong> if your programming language allows you to <strong>regard functions as variables</strong> so that you can inject into the object the function you need when object is created. In fact, <em>JDK8</em> introduces <strong><em>lambda expression</em></strong>, and <em>C++11</em> as well.   </p>
+<p>&emsp;With functional programming and generic programming, we can implement strategy pattern concisely, flexible (<strong><em>we can change the strategy during runtime!!</em></strong>) and avoid RTTI, thus spare one level of indirect invocation. <br />
+&emsp;</p>
+<h2 id = "8">8. Protected Variations</h2>   
+<p>&emsp;See in <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Protected_variations">GRASP - Protected Variations</a>  </p>
+<blockquote>
+<p>&emsp;The protected variations pattern protects elements from the variations on other elements (objects, systems, subsystems) by wrapping the focus of instability with an interface and using polymorphism to create various implementations of this interface.</p>
+</blockquote>
+<p>&emsp;Protected Variations can be regraded as the fundenmental principle of the software design to some extent. And Protected Variations is another terminology of <strong>'reuse'</strong>. As for today's programming languages, many of them is compries of multi-paradigm, like C++, which is made up of OOP, FP, PP, Generic Programming and Meta Programming.  And different languages have different implementation measure, like Java, whose generics is incapable compared with Cpp because of erasion of generic types during compilation time. So the design depends on not only the relation among the classes but also the language traits. In fact, there are more <strong>trade-offs</strong>, like efficiency and extensibility and satisfactory interfaces for proper usage. All of these should be taken into account, thus leading to a extremely complex and perplexed design. For example, When to choose public inheritance? (consider rectangle and square problem) Why do we think composition is more useful and safe than private inheritance? When to choose functional programming and what level of encapsulation do we need or should data be open to manipulate? How to deal with multi-inheritance? When to choose generics other than OO? How to distinguish read and write if we want to use COW but need to figure out what time is right to copy? How to achieve that only through your own function interface can customers create objects? <br />
+&emsp;</p>
+<h2 id = "9">9. Pure Fabrication</h2>   
+<p>&emsp;See in <a href="https://en.wikipedia.org/wiki/GRASP_(object-oriented_design)#Pure_fabrication">GRASP - Pure Fabrication</a>   </p>
+<blockquote>
+<p>&emsp;A pure fabrication is a class that does not represent a concept in the problem domain, specially made up to achieve low coupling, high cohesion, and the reuse potential thereof derived (when a solution presented by the information expert pattern does not). This kind of class is called a &quot;service&quot; in <a href="https://en.wikipedia.org/wiki/Domain-driven_design">domain-driven design</a>.  
+</p>
+</blockquote>
+<p>&emsp;Sometimes, we have troubles assigning responsibilities to a specific class since this violates principles of low coupling and high cohesion. The solution is to introduce with helper classes (which is usually called 'fabrication class') to serve as an intermediate object. <br />
+reference: <a href="https://stackoverflow.com/questions/14352106/difference-between-pure-fabrication-and-indirection">Difference between Pure fabrication and Indirection - Stack Overflow</a><br />
+&emsp;</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

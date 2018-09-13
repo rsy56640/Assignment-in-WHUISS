@@ -1,0 +1,8 @@
+D:\Visual Studio\works\CS_calculator\CS_calculator\bin\Debug\CS_calculator.exe.config
+D:\Visual Studio\works\CS_calculator\CS_calculator\bin\Debug\CS_calculator.exe
+D:\Visual Studio\works\CS_calculator\CS_calculator\bin\Debug\CS_calculator.pdb
+D:\Visual Studio\works\CS_calculator\CS_calculator\obj\Debug\CS_calculator.Form1.resources
+D:\Visual Studio\works\CS_calculator\CS_calculator\obj\Debug\CS_calculator.Properties.Resources.resources
+D:\Visual Studio\works\CS_calculator\CS_calculator\obj\Debug\CS_calculator.csproj.GenerateResource.Cache
+D:\Visual Studio\works\CS_calculator\CS_calculator\obj\Debug\CS_calculator.exe
+D:\Visual Studio\works\CS_calculator\CS_calculator\obj\Debug\CS_calculator.pdb

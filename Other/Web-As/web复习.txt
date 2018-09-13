@@ -1,0 +1,64 @@
+不同: inline/embedded/linked
+	style会覆盖
+
+
+相同
+id > class 表示 id style，
+如果一样，表示前面出现的style
+
+
+js:
+  每个function有 arguments，可以取参数的长度 .length;
+  typeof x 得到x类型的字符串 "number"/"string";
+  parseInt(), parseFloat();
+  onClick(), onSubmit()="return validate()"
+    //if onSubmit return false, no submission, 用于提交之前验证;
+  new Array(n);
+  function ctor(A){this.a=A}; var a=new ctor(A);
+
+  Finding HTML Elements
+      document.getElementById();
+      document.getElementsByTagName();
+      document.getElementsByClassName();
+      document.forms[];
+  Changing HTML Elements
+      document.write(text);
+      document.getElementById(id).innerHTML;
+      document.getElementById(id).attribute = ...;
+      document.getElementById(id).style.attribute = ...;
+  Adding and Deleting Elements
+      document.createElement();
+      document.removeChild();
+      document.appendChild();
+      document.replaceChild();
+  Adding Events Handlers
+      document.getElementById(id).onclick = function(){foo()};
+
+
+
+jsp:
+
+      jsp跳转，点击跳转
+      <form action = "xxx,jsp" method = "post" name = form>
+          <input>
+          <input type = "submit" value = "submit">
+      </form>
+
+      直接跳转，传参数
+      可以放在jsp if判断后面
+      <jsp:forward page = "xxx.jsp">
+         <jsp:param name = "name" value = "<%=value%>"/>
+      </jsp:forward>
+      //接受用 request.getParameters("name");
+
+  object: 
+      request:
+            .getParameters("name");      //return value
+            .getParameterNames();        //return Enumeration(iteratable)
+      response:
+            .sendRedirect("xxx.jsp");    //跳转到另外的jsp页面
+      session:
+            .setAttribute(name, value);  //用于传参(同一session中)
+            .getAttribute(name);         //return value
+
+  
