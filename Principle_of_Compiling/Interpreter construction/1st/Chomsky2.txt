@@ -1,0 +1,7 @@
+G[S]
+S N M
+S::=aN|xS
+S::=bM
+N::=aM
+N::=y
+M::=bM|y

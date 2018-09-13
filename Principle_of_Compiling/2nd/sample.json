@@ -1,0 +1,21 @@
+{
+  "an_identifier_1": "value",
+  "string": "value",
+  "int": 2333,
+  "float": 2333.33,
+  "scientific_notation": 1.234E-10,
+  "bool": true,
+  "array": [
+    1,
+    2,
+    3,
+    [
+      1,
+      2,
+      3
+    ],
+    {
+      "key": "value"
+    }
+  ]
+}

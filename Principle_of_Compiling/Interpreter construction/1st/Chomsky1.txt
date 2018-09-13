@@ -1,0 +1,5 @@
+G[N]
+N A
+N::=Aaab
+AN::=AN
+Ab::=cc

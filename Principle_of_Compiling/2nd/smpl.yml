@@ -1,0 +1,43 @@
+#1#$!
+   # ads
+an_identifier_1: "value"       #12 x
+#a sd 
+        
+string: "valuasde"
+  ###
+float: 2333.33  ##@
+scientific_notation: 1.234e-10
+
+bool: true #132 asd#
+array:
+  - 1
+  - 2
+  - 3
+  -
+    - 
+      - 411
+      - 
+        - "xxx"
+        - 
+          kr3t5:
+            - 12
+            - "asds"
+    - 42
+    - 43
+  -
+    key: 
+      - "value"
+      - 
+        key1:
+          - "Hello"
+          - 1.123E-8
+      #
+  - 
+    qwe: "qwe123"
+int: 
+  - 123
+  - 
+    - 21
+    - 22
+  - 
+    lll: "kkk"

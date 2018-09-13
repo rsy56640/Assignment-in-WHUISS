@@ -1,0 +1,5 @@
+G[N]
+N D
+N::=xD|y
+D::=z|xNy
+D::=e
