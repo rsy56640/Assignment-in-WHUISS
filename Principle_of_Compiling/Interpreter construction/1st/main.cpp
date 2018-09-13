@@ -158,8 +158,10 @@ std::variant<std::string, grammer_t> judge(const std::string& filename)
 		{
 			if (g_t == grammer_t::I)g_t = grammer_t::U;
 		};
+
+		VT.erase('e');
 		if (!has_e) erase_Ex(g_t);
-		if (has_e)down_cast(g_t);
+		if (has_e) down_cast(g_t);
 
 		// check VN symbols do not occur
 		std::vector<char> VN_not_occur;
