@@ -5,9 +5,14 @@
   - [社会主要矛盾的变化](#shehuizhuyaomaodundebianhua)
   - [新时代的内涵和意义](#xinshidaideneihanheyiyi)
 - [第二节 习近平新时代中国特色社会主义思想的核心要义和丰富内涵](#xijinpingxinshidaizhongguoteseshehuizhuyisixiangdehexinyaoyihefengfuneihan)
+  - [思想内涵](#2sixiangneihan)
+  - [坚持和发展中国特色社会主义的基本方略](#2jianchihefazhanzhongguoteseshehuizhuyidejibenfanglve)
+- [第三节 习近平新时代中国特色社会主义思想的历史地位](#xinjinpingxinshidaizhongguoteseshehuizhuyisixiangdelishidiwei)
 
 
 
+
+&nbsp;   
 五位一体 四个全面
 
 
@@ -88,8 +93,7 @@
 
 
 - [思想内涵](#2sixiangneihan)
-- []()
-- []()
+- [坚持和发展中国特色社会主义的基本方略](#2jianchihefazhanzhongguoteseshehuizhuyidejibenfanglve)
 
 
 &nbsp;   
@@ -117,8 +121,13 @@
 
 
 &nbsp;   
-<a id=""></a>
-#### 
+<a id="2jianchihefazhanzhongguoteseshehuizhuyidejibenfanglve"></a>
+#### 坚持和发展中国特色社会主义的基本方略
+
+十四个坚持
+
+“**八个明确**”和“**十四个坚持**”体现了习近平新时代中国特色社会主义思想理论与实践的统一。
+
 
 
 
@@ -128,5 +137,6 @@
 
 
 
-
-
+&nbsp;   
+<a id="xinjinpingxinshidaizhongguoteseshehuizhuyisixiangdelishidiwei"></a>
+## 第三节 习近平新时代中国特色社会主义思想的历史地位
