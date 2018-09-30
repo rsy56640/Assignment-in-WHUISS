@@ -32,3 +32,17 @@ Business Intelligence:
 - Knowledge presentation
 
 
+## 2018-09-29 深度学习基础 深度学习概论与 PaddlePaddle 入门
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -140,3 +140,9 @@
 &nbsp;   
 <a id="xinjinpingxinshidaizhongguoteseshehuizhuyisixiangdelishidiwei"></a>
 ## 第三节 习近平新时代中国特色社会主义思想的历史地位
+
+
+
+
+# 第九章 中国梦 习近平的三句话
+重点：中国梦 两个阶段
