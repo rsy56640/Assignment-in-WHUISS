@@ -294,25 +294,48 @@ def k_means(cluster_num: int, dist, *data_set):
 
 # 第三-四讲 判别函数分类法
 
+几何分类法：使用代数方程进行分类。
+
 ## 3.1 判别函数
 
-
+用来对模式进行分类的决策函数。
+$$
+d(\pmb X)=0
+$$
 
 ## 3.2 线性判别函数
 
+$$
+\begin{aligned}
+d(\pmb X)
+& = w_0 + \sum_{i=1}^n w_ix_i \\
+& = \pmb W^T\pmb X
+\end{aligned}
+$$
 
-
-
+其中 $\pmb W,\pmb X \in R^{n+1},\ \pmb W = (w_0,w_1,...,w_n)^T,\ \pmb X = (1,x_1,...,x_n)^T$
 
 ## 3.3 广义线性判别函数
 
-
+$$
+d(\pmb X) = w_0 + \sum_{i=1}^n w_if(\pmb X)
+$$
 
 ## 3.4 线性判别函数的几何性质
 
+$$
+\begin{aligned}
+d(\pmb X)
+& = \pmb W^T\pmb X \\
+& = \pmb W^T(\pmb X-\pmb X_p) \\
+& = \pmb W^T \cdot r \frac{\pmb W^T}{||\pmb W^T||} \\
+& = r ||\pmb W^T||
+\end{aligned}
+$$
 
+其中 $\pmb X_p$ 是 $\pmb X$ 到 $d(\pmb X)=0$ 上的投影点，$r$ 为距离。
 
-
+$\pmb X$ 到平面 $d(\pmb X)=0$ 的代数距离为：$r=\frac{d(\pmb X)}{||\pmb W^T||}$
 
 ## 3.5 Fisher线性判别
 

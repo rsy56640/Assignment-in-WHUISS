@@ -36,8 +36,20 @@ Business Intelligence:
 
 
 
+## 市场情况分析
 
+### 关联规则
 
+A => B [s, c]
+
+- s = P(AB)
+- c = P(B|A) = P(AB) / P(A)
+ 
+Apriori 算法
+
+- [Apriori algorithm](https://en.wikipedia.org/wiki/Apriori_algorithm)
+- [Apriori算法原理总结](https://www.cnblogs.com/pinard/p/6293298.html)
+- [Apriori with FREQUENT PATTERN TREE](https://arxiv.org/ftp/arxiv/papers/1411/1411.6224.pdf)
 
 
 
