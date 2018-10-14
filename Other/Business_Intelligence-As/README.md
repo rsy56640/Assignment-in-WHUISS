@@ -47,9 +47,12 @@ A => B [s, c]
  
 Apriori 算法
 
+- [数据挖掘十大算法--Apriori算法](https://wizardforcel.gitbooks.io/dm-algo-top10/content/apriori.html)
 - [Apriori algorithm](https://en.wikipedia.org/wiki/Apriori_algorithm)
 - [Apriori算法原理总结](https://www.cnblogs.com/pinard/p/6293298.html)
 - [Apriori with FREQUENT PATTERN TREE](https://arxiv.org/ftp/arxiv/papers/1411/1411.6224.pdf)
+- [第12章 使用FP-growth算法来高效发现频繁项集](http://ml.apachecn.org/mlia/fp-growth/)
+- [频繁项集挖掘之apriori和fp-growth](https://blog.csdn.net/lgnlgn/article/details/7614892)
 
 
 
