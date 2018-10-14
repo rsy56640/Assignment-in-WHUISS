@@ -5,6 +5,10 @@
 #include <numeric>
 #include <vector>
 #include "Apriori.h"
+#ifdef GET_TIME_ON_WINDOWS
+#include <Windows.h>
+#endif // GET_TIME_ON_WINDOWS
+
 
 #include <map>
 #include <unordered_map>
@@ -40,13 +44,13 @@ void test()
 
 void test_Apriori()
 {
-	constexpr std::size_t item_amount = 100;
-	constexpr std::size_t transaction = 10000;
-	constexpr std::size_t item_each_transaction = 36;
-	constexpr double magic_coefficient = 0.90;
+	constexpr std::size_t item_amount = 50;
+	constexpr std::size_t transaction = 1500;
+	constexpr std::size_t item_each_transaction = 25;
+	constexpr double magic_coefficient = 0.2;
 	constexpr std::size_t min_support = static_cast<std::size_t>(transaction / item_amount * item_each_transaction * magic_coefficient);
 
-	std::vector<std::set<std::size_t>> s;
+	std::vector<std::set<std::size_t>> s; s.reserve(transaction);
 	std::set<std::size_t> set;
 	srand(time(NULL));
 	std::random_device rd{};
@@ -56,17 +60,31 @@ void test_Apriori()
 
 	for (std::size_t i = 0; i < transaction; i++)
 	{
-		const std::size_t transaction_item = ((std::rand() % item_each_transaction) << 1) + 1;
+		const std::size_t transaction_item = (std::rand() % item_each_transaction) + 1;
 		while (set.size() < transaction_item)
 			//set.insert(std::rand() % item_amount + 1);
-			set.insert(1 + (static_cast<std::size_t>(d(gen)) + item_amount) % item_amount);
+			set.insert(1 + (static_cast<std::size_t>(d(gen))) % item_amount);
 		s.push_back(set);
 		set.clear();
 	}
 
 	std::cout << "data generated" << std::endl << std::endl;
 
+#ifdef GET_TIME_ON_WINDOWS
+	DWORD  start = GetTickCount();
+#endif // GET_TIME_ON_WINDOWS
+
 	auto result = BI_Apriori::Apriori<std::set<std::size_t>>(s, min_support);
+
+#ifdef GET_TIME_ON_WINDOWS
+	DWORD  end = GetTickCount();
+	std::size_t total_s = (end - start) / 1000;
+	std::size_t minutes, seconds;
+	minutes = total_s / 60;
+	seconds = total_s - minutes * 60;
+	std::cout << "Apriori time used: " << minutes << "min " << seconds << "s" << std::endl << std::endl;
+#endif // GET_TIME_ON_WINDOWS
+
 	std::cout << std::endl << "result size:" << result.size() << std::endl;
 	for (auto const& set : result)
 	{

@@ -3,9 +3,15 @@
 #define _APRIORI_H
 #include <type_traits>
 #include <iterator>
+#ifdef DEBUG
+#include <iostream>
+#endif // DEBUG
 #include <vector>
-#include <unordered_map>
+#ifdef SET_IS_COMPARABLE
 #include <map>
+#else   
+#include <unordered_map>
+#endif // SET_IS_COMPARABLE
 #include <algorithm>
 #include "FPT.hpp"
 
@@ -17,22 +23,43 @@ namespace BI_Apriori
 	 * Apriori Algorithm
 	 *
 	 * Requirements:
-	 *     Set: `count()`, `insert()`, `erase`, `==`, `<`   // comparable or hashable ??? only choose one
+	 *     Set:
+	 *          - `count()`
+	 *          - `insert()`
+	 *          - `erase()`
+	 *          - Set::value_type `==`
+	 *          - `<`    // comparable or hashable  ???  only choose one
+	 *          - Set::value_type is comparable or hashable.
+	 *
+	 * Macro to be defined:
+	 *     ALL_SETS_GREATER_THAN_SUPPORT
+	 *     SET_IS_COMPARABLE
+	 *     DEBUG
 	 */
 	template<
 		typename Set,
 		std::void_t<typename Set::value_type>* = nullptr,
 		std::enable_if_t<
 		std::is_same_v<std::size_t, decltype(std::declval<Set>().count(std::declval<typename Set::value_type>()))>
-		&& std::is_same_v<bool, decltype(std::declval<typename Set::value_type>() == std::declval<typename Set::value_type>())>
-		&& std::is_same_v<bool, decltype(std::declval<Set>() < std::declval<Set>())>
 		&& std::is_same_v<std::pair<typename Set::iterator, bool>, decltype(std::declval<Set>().insert(std::declval<typename Set::value_type>()))>
 		&& std::is_same_v<typename Set::iterator, decltype(std::declval<Set>().erase(std::declval<typename Set::iterator>()))>
+		&& std::is_same_v<bool, decltype(std::declval<typename Set::value_type>() == std::declval<typename Set::value_type>())>
+#ifdef SET_IS_COMPARABLE
+		&& std::is_same_v<bool, decltype(std::declval<Set>() < std::declval<Set>())>
+		&& std::is_same_v<bool, decltype(std::declval<typename Set::value_type>() < std::declval<typename Set::value_type>())>
+#else   
+		&& std::is_same_v<std::size_t, decltype(std::declval<std::hash<Set>::operator()>())>
+		&& std::is_same_v<std::size_t, decltype(std::declval<std::hash<typename Set::value_type>::operator()>())>
+#endif // SET_IS_COMPARABLE
 		>* = nullptr
-		> std::vector<Set> Apriori(const std::vector<Set>& sets, const std::size_t min_support)
+	> std::vector<Set> Apriori(const std::vector<Set>& sets, const std::size_t min_support)
 	{
 		using Item = typename Set::value_type;
+#ifdef SET_IS_COMPARABLE
+		std::map<Item, std::size_t> total;
+#else   
 		std::unordered_map<Item, std::size_t> total;
+#endif // SET_IS_COMPARABLE
 		for (auto const& set : sets)
 			for (const Item& item : set)
 				total[item]++;
@@ -44,8 +71,14 @@ namespace BI_Apriori
 		}
 
 		std::vector<Set> return_sets;
+#ifdef SET_IS_COMPARABLE
 		std::map<Set, std::size_t> prev_sets;
 		std::map<Set, std::size_t> cur_sets;
+#else   
+		std::unordered_map<Set, std::size_t> prev_sets;
+		std::unordered_map<Set, std::size_t> cur_sets;
+#endif // SET_IS_COMPARABLE
+
 		for (auto const&[item, count] : total)
 		{
 			Set s{}; s.insert(item);
@@ -73,6 +106,7 @@ namespace BI_Apriori
 			if (small == s) return true;
 			else return false;
 			*/
+#ifdef SET_IS_COMPARABLE
 			auto first1 = small.begin();
 			auto first2 = big.begin();
 			auto last1 = small.end();
@@ -88,6 +122,12 @@ namespace BI_Apriori
 			}
 			if (first2 == last2 && first1 != last1) return false;
 			return true;
+#else   
+			// static_assert(false, "TODO: WTF, how to check one hash contains another hash???");
+			for (auto const& item : small)
+				if (big.count(item) == 0) return false;
+			return true;
+#endif // SET_IS_COMPARABLE
 		};
 
 		while (true)
@@ -223,7 +263,6 @@ namespace BI_Apriori
 		>* = nullptr
 		> std::vector<Set> Apriori_FP(std::vector<Set>& sets, const std::size_t min_support)
 	{
-
 
 
 		return std::vector<Set>{};
