@@ -96,7 +96,7 @@ namespace BI_Apriori
 #ifdef SET_IS_COMPARABLE
 		std::map<Set, std::size_t> prev_sets;
 		std::map<Set, std::size_t> cur_sets;
-		std::set<Set> extensible_prune;
+		std::set<Set> extensible_prune; // optimization for ALL_SETS_GREATER_THAN_SUPPORT
 #else   
 		std::unordered_map<Set, std::size_t> prev_sets;
 		std::unordered_map<Set, std::size_t> cur_sets;
@@ -159,7 +159,7 @@ namespace BI_Apriori
 #ifdef OUTPUT_FILE
 		const char* search_path = "./AP.txt";
 		std::ofstream AP_output;
-		AP_output.open(search_path, std::ios::out | std::ios::trunc);
+		AP_output.open(search_path, std::ios::out | std::ios::app);
 		if (!AP_output.is_open())
 		{
 			std::cout << "failed to open AP.txt" << std::endl;

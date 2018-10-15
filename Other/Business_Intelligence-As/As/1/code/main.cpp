@@ -47,14 +47,14 @@ void test()
 
 void test_Apriori()
 {
-	constexpr std::size_t item_amount = 60;
-	constexpr std::size_t transaction = 2500;
-	constexpr std::size_t item_each_transaction = 22;
+	constexpr std::size_t item_amount = 50;
+	constexpr std::size_t transaction = 5000;
+	constexpr std::size_t item_each_transaction = 20;
 	constexpr double magic_coefficient = 0.20;
 	constexpr double min_support_ratio = 0.20;
 	constexpr std::size_t min_support =
-		false
-		? static_cast<std::size_t>(transaction / item_amount * item_each_transaction * magic_coefficient)
+		true
+		? static_cast<std::size_t>(transaction * item_each_transaction * magic_coefficient / item_amount)
 		: static_cast<std::size_t>(min_support_ratio * transaction);
 
 	constexpr double normal_mean = item_amount / 2.0;
@@ -95,10 +95,12 @@ void test_Apriori()
 		exit(0);
 	}
 	std::size_t data_line = 0;
+	AP_data_output << "line\tsize\t\ttransaction item" << std::endl;
+	std::ostream_iterator<std::size_t> _data_out_it(AP_data_output, " ");
 	for (auto const& data : s)
 	{
-		AP_data_output << ++data_line << "  (" << data.size() << ")\t:\t";
-		std::copy(data.begin(), data.end(), std::ostream_iterator<std::size_t>(AP_data_output, " "));
+		AP_data_output << ++data_line << "\t" << data.size() << "\t:\t";
+		std::copy(data.begin(), data.end(), _data_out_it);
 		AP_data_output << std::endl;
 	}
 	AP_data_output.close();
@@ -108,7 +110,7 @@ void test_Apriori()
 #ifdef OUTPUT_FILE
 	const char* output_path = "./AP.txt";
 	std::ofstream AP_output;
-	AP_output.open(output_path, std::ios::out | std::ios::app);
+	AP_output.open(output_path, std::ios::out | std::ios::trunc);
 	if (!AP_output.is_open())
 	{
 		std::cout << "failed to open AP.txt" << std::endl;
@@ -119,7 +121,17 @@ void test_Apriori()
 #endif // OUTPUT_FILE
 #endif // DEBUG
 
+	AP_output << "item_amount: " << item_amount << std::endl;
+	AP_output << "transaction: " << transaction << std::endl;
+	AP_output << "item_each_transaction: " << item_each_transaction << std::endl;
+	AP_output << "min_support_ratio: " << min_support_ratio << std::endl;
+	AP_output << "min_support: " << min_support << std::endl;
 	AP_output << "data generated" << std::endl << std::endl;
+	AP_output << std::endl;
+
+#ifdef OUTPUT_FILE
+	AP_output.close();
+#endif // OUTPUT_FILE
 
 #ifdef DEBUG
 #ifdef GET_TIME_ON_WINDOWS
@@ -130,6 +142,16 @@ void test_Apriori()
 	auto result = BI_Apriori::Apriori<std::set<std::size_t>>(s, min_support);
 
 #ifdef DEBUG
+#ifdef OUTPUT_FILE
+	AP_output.open(output_path, std::ios::out | std::ios::app);
+	if (!AP_output.is_open())
+	{
+		std::cout << "failed to open AP.txt" << std::endl;
+		exit(0);
+	}
+#else
+	auto& AP_output = std::cout;
+#endif // OUTPUT_FILE
 #ifdef GET_TIME_ON_WINDOWS
 	DWORD  end = GetTickCount();
 	BI_Apriori::print_time(start, end, AP_output, "Apriori time used: ");
@@ -139,11 +161,11 @@ void test_Apriori()
 	AP_output << std::endl << "result size:" << result.size() << std::endl;
 	std::size_t result_line = 0;
 	AP_output << "count\tsupport\t\titem set" << std::endl;
+	std::ostream_iterator<std::size_t> _result_out_it(AP_data_output, " ");
 	for (auto const&[set, count] : result)
 	{
 		AP_output << ++result_line << "\t" << count << "\t:\t";
-		for (auto const& item : set)
-			AP_output << item << " ";
+		std::copy(set.begin(), set.end(), _result_out_it);
 		AP_output << std::endl;
 	}
 	AP_output << "Apriori Completed" << std::endl;
