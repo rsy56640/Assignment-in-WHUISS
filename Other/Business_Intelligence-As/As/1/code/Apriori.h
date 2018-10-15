@@ -3,8 +3,15 @@
 #define _APRIORI_H
 #include <type_traits>
 #include <iterator>
+#include <tuple>
 #ifdef DEBUG
 #include <iostream>
+#ifdef OUTPUT_FILE
+#include <fstream>
+#endif // OUTPUT_FILE
+#ifdef GET_TIME_ON_WINDOWS
+#include <Windows.h>
+#endif // GET_TIME_ON_WINDOWS
 #endif // DEBUG
 #include <vector>
 #ifdef SET_IS_COMPARABLE
@@ -18,6 +25,19 @@
 
 namespace BI_Apriori
 {
+
+#ifdef GET_TIME_ON_WINDOWS
+	void print_time(DWORD  start, DWORD end, std::ostream& out, const char* msg)
+	{
+		std::size_t total_s = (end - start) / 1000;
+		std::size_t hours, minutes, seconds;
+		minutes = total_s / 60;
+		seconds = total_s - minutes * 60;
+		hours = minutes / 60;
+		minutes = minutes - hours * 60;
+		out << msg << hours << "h " << minutes << "min " << seconds << "s" << std::endl << std::endl;
+	}
+#endif // GET_TIME_ON_WINDOWS
 
 	/*
 	 * Apriori Algorithm
@@ -52,7 +72,7 @@ namespace BI_Apriori
 		&& std::is_same_v<std::size_t, decltype(std::declval<std::hash<typename Set::value_type>::operator()>())>
 #endif // SET_IS_COMPARABLE
 		>* = nullptr
-	> std::vector<Set> Apriori(const std::vector<Set>& sets, const std::size_t min_support)
+	> std::vector<std::tuple<Set, std::size_t>> Apriori(const std::vector<Set>& sets, const std::size_t min_support)
 	{
 		using Item = typename Set::value_type;
 #ifdef SET_IS_COMPARABLE
@@ -70,7 +90,7 @@ namespace BI_Apriori
 			else ++it;
 		}
 
-		std::vector<Set> return_sets;
+		std::vector<std::tuple<Set, std::size_t>> return_sets;
 #ifdef SET_IS_COMPARABLE
 		std::map<Set, std::size_t> prev_sets;
 		std::map<Set, std::size_t> cur_sets;
@@ -96,7 +116,7 @@ namespace BI_Apriori
 		 */
 
 		 // help to judge whether big contains small
-		auto const set_contain = [](const Set& small, const Set& big)->bool
+		auto const set_contain = [](const Set& small_set, const Set& big_set)->bool
 		{
 			/*             [[Deprecated]]
 			Set s{};
@@ -107,10 +127,10 @@ namespace BI_Apriori
 			else return false;
 			*/
 #ifdef SET_IS_COMPARABLE
-			auto first1 = small.begin();
-			auto first2 = big.begin();
-			auto last1 = small.end();
-			auto last2 = big.end();
+			auto first1 = small_set.begin();
+			auto first2 = big_set.begin();
+			auto last1 = small_set.end();
+			auto last2 = big_set.end();
 			while (first1 != last1 && first2 != last2)
 			{
 				if (*first2 != *first1)
@@ -130,13 +150,36 @@ namespace BI_Apriori
 #endif // SET_IS_COMPARABLE
 		};
 
+#ifdef DEBUG
+		std::size_t round = 0;
+#ifdef OUTPUT_FILE
+		const char* search_path = "./AP.txt";
+		std::ofstream AP_output;
+		AP_output.open(search_path, std::ios::out | std::ios::trunc);
+		if (!AP_output.is_open())
+		{
+			std::cout << "failed to open AP.txt" << std::endl;
+			exit(0);
+		}
+#else
+		auto& AP_output = std::cout;
+#endif // OUTPUT_FILE
+#ifdef GET_TIME_ON_WINDOWS
+		DWORD  start, end;
+#endif // GET_TIME_ON_WINDOWS
+#endif // DEBUG
+
 		while (true)
 		{
 #ifdef DEBUG
-			std::cout << "return_sets:" << return_sets.size() << std::endl;
-			std::cout << "prev_sets:" << prev_sets.size() << std::endl;
-			std::cout << "cur_sets:" << cur_sets.size() << std::endl;
-			std::cout << std::endl;
+			round++;
+			AP_output << "round: " << round << "\treturn_sets:" << return_sets.size() << std::endl;
+			AP_output << "round: " << round << "\tprev_sets:" << prev_sets.size() << std::endl;
+			AP_output << "round: " << round << "\tcur_sets:" << cur_sets.size() << std::endl;
+			AP_output << std::endl;
+#ifdef GET_TIME_ON_WINDOWS
+			start = GetTickCount();
+#endif // GET_TIME_ON_WINDOWS
 #endif // DEBUG
 
 			// 1. scan support
@@ -144,12 +187,31 @@ namespace BI_Apriori
 				for (auto const& item_set : sets)
 					if (set_contain(set, item_set)) count++;
 
+#ifdef DEBUG
+			AP_output << "round: " << round << "\tscan support" << std::endl;
+#ifdef GET_TIME_ON_WINDOWS
+			end = GetTickCount();
+			print_time(start, end, AP_output, "");
+			start = GetTickCount();
+#endif // GET_TIME_ON_WINDOWS
+#endif // DEBUG
+
 			// 2. erase item set if support < min_support.
 			for (auto it = cur_sets.begin(); it != cur_sets.end(); )
 			{
 				if (it->second < min_support) it = cur_sets.erase(it);
 				else ++it;
 			}
+
+#ifdef DEBUG
+			AP_output << "round: " << round << "\terase item set if support < min_support" << std::endl;
+			AP_output << "round: " << round << "\tcur_sets:" << cur_sets.size() << std::endl;
+#ifdef GET_TIME_ON_WINDOWS
+			end = GetTickCount();
+			print_time(start, end, AP_output, "");
+			start = GetTickCount();
+#endif // GET_TIME_ON_WINDOWS
+#endif // DEBUG
 
 #ifdef ALL_SETS_GREATER_THAN_SUPPORT
 			// add prev_sets to return_sets
@@ -164,10 +226,19 @@ namespace BI_Apriori
 						break;
 					}
 				}
-				if (!is_contain) return_sets.push_back(prev_set);
+				if (!is_contain) return_sets.push_back(std::make_tuple(prev_set, prev_set_count));
 			}
 #endif // ALL_SETS_GREATER_THAN_SUPPORT
 
+#ifdef DEBUG
+			AP_output << "round: " << round << "\tadd prev_sets to return_sets" << std::endl;
+			AP_output << "round: " << round << "\treturn_sets:" << return_sets.size() << std::endl;
+#ifdef GET_TIME_ON_WINDOWS
+			end = GetTickCount();
+			print_time(start, end, AP_output, "");
+			start = GetTickCount();
+#endif // GET_TIME_ON_WINDOWS
+#endif // DEBUG
 
 			// if cur_sets is empty
 			if (cur_sets.empty())
@@ -177,7 +248,7 @@ namespace BI_Apriori
 				for (auto const&[set, count] : prev_sets) return_sets.push_back(set);
 #endif // !ALL_SETS_GREATER_THAN_SUPPORT
 #ifdef DEBUG
-				std::cout << "cur_sets is empty." << std::endl << std::endl;
+				AP_output << "round: " << round << "\tcur_sets is empty." << std::endl << std::endl;
 #endif // DEBUG
 				return return_sets;
 			}
@@ -186,9 +257,10 @@ namespace BI_Apriori
 			if (cur_sets.size() == 1)
 			{
 #ifdef DEBUG
-				std::cout << "cur_sets has only 1 item set." << std::endl << std::endl;
+				AP_output << "round: " << round << "\tcur_sets has only 1 item set." << std::endl << std::endl;
 #endif // DEBUG
-				return_sets.push_back(cur_sets.begin()->first);
+				auto const& it = cur_sets.begin();
+				return_sets.push_back(std::make_tuple(it->first, it->second));
 				return return_sets;
 			}
 
@@ -205,6 +277,12 @@ namespace BI_Apriori
 				{
 					if (s.count(item) != 0) continue;
 					s.insert(item);
+					if (cur_sets.find(s) != cur_sets.end())
+					{
+						s.erase(item);
+						continue;
+					}
+
 					bool subset_ok = true;
 
 					// prune: one's sub item set must be if one's.
@@ -240,6 +318,20 @@ namespace BI_Apriori
 				}
 
 			}
+
+#ifdef DEBUG
+			AP_output << "round: " << round << "\tjoin finished" << std::endl;
+#ifdef GET_TIME_ON_WINDOWS
+			end = GetTickCount();
+			print_time(start, end, AP_output, "");
+#endif // GET_TIME_ON_WINDOWS
+			AP_output << "round: " << round << "\tfinished" << std::endl;
+			AP_output << std::endl << "---------------------------------------------------------------------"
+				<< std::endl << std::endl;
+#ifdef OUTPUT_FILE
+			AP_output.close();
+#endif // OUTPUT_FILE
+#endif // DEBUG
 
 		} // end while
 

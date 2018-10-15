@@ -1,13 +1,16 @@
 #include <iostream>
+#include <fstream>
 #include <random>
 #include <cmath>
 #include <ctime>
 #include <numeric>
 #include <vector>
 #include "Apriori.h"
+#ifdef DEBUG
 #ifdef GET_TIME_ON_WINDOWS
 #include <Windows.h>
 #endif // GET_TIME_ON_WINDOWS
+#endif // DEBUG
 
 
 #include <map>
@@ -44,55 +47,108 @@ void test()
 
 void test_Apriori()
 {
-	constexpr std::size_t item_amount = 50;
-	constexpr std::size_t transaction = 1500;
-	constexpr std::size_t item_each_transaction = 25;
-	constexpr double magic_coefficient = 0.2;
-	constexpr std::size_t min_support = static_cast<std::size_t>(transaction / item_amount * item_each_transaction * magic_coefficient);
+	constexpr std::size_t item_amount = 100;
+	constexpr std::size_t transaction = 5000;
+	constexpr std::size_t item_each_transaction = 45;
+	constexpr double magic_coefficient = 0.20;
+	constexpr double min_support_ratio = 0.3;
+	constexpr std::size_t min_support =
+		false
+		? static_cast<std::size_t>(transaction / item_amount * item_each_transaction * magic_coefficient)
+		: static_cast<std::size_t>(min_support_ratio * transaction);
+
+	constexpr double normal_mean = item_amount / 2.0;
+	constexpr double normal_deviation = item_amount / 4.0;
+
+	srand(static_cast<std::size_t>(time(nullptr)));
+	std::random_device rd1{};
+	std::mt19937 gen{ rd1() };
+
+	std::normal_distribution<> d{ normal_mean, normal_deviation };
+
+	// shuffle the order ID, looks more natural
+	std::size_t shuffle_map[item_amount];
+	for (std::size_t i = 0; i < item_amount; i++) shuffle_map[i] = i + 1;
+	std::random_device rd2;
+	std::mt19937 g(rd2());
+	std::shuffle(std::begin(shuffle_map), std::end(shuffle_map), g);
 
 	std::vector<std::set<std::size_t>> s; s.reserve(transaction);
 	std::set<std::size_t> set;
-	srand(time(NULL));
-	std::random_device rd{};
-	std::mt19937 gen{ rd() };
-
-	std::normal_distribution<> d{ item_amount / 2.0, item_amount / 4.0 };
-
 	for (std::size_t i = 0; i < transaction; i++)
 	{
-		const std::size_t transaction_item = (std::rand() % item_each_transaction) + 1;
+		const std::size_t transaction_item = ((std::rand() % item_each_transaction) << 1) + 1;
 		while (set.size() < transaction_item)
-			//set.insert(std::rand() % item_amount + 1);
-			set.insert(1 + (static_cast<std::size_t>(d(gen))) % item_amount);
+			//set.insert(shuffle_map[std::rand() % item_amount]);
+			set.insert(shuffle_map[(static_cast<std::size_t>(d(gen))) % item_amount]);
 		s.push_back(set);
 		set.clear();
 	}
 
-	std::cout << "data generated" << std::endl << std::endl;
+	// output data
+	const char* data_path = "./AP_data.txt";
+	std::ofstream AP_data_output;
+	AP_data_output.open(data_path, std::ios::out | std::ios::trunc);
+	if (!AP_data_output.is_open())
+	{
+		std::cout << "failed to open AP_data.txt" << std::endl;
+		exit(0);
+	}
+	std::size_t data_line = 0;
+	for (auto const& data : s)
+	{
+		AP_data_output << ++data_line << "  (" << data.size() << ")\t:\t";
+		std::copy(data.begin(), data.end(), std::ostream_iterator<std::size_t>(AP_data_output, " "));
+		AP_data_output << std::endl;
+	}
+	AP_data_output.close();
 
+
+#ifdef DEBUG
+#ifdef OUTPUT_FILE
+	const char* output_path = "./AP.txt";
+	std::ofstream AP_output;
+	AP_output.open(output_path, std::ios::out | std::ios::app);
+	if (!AP_output.is_open())
+	{
+		std::cout << "failed to open AP.txt" << std::endl;
+		exit(0);
+	}
+#else
+	auto& AP_output = std::cout;
+#endif // OUTPUT_FILE
+#endif // DEBUG
+
+	AP_output << "data generated" << std::endl << std::endl;
+
+#ifdef DEBUG
 #ifdef GET_TIME_ON_WINDOWS
 	DWORD  start = GetTickCount();
 #endif // GET_TIME_ON_WINDOWS
+#endif // DEBUG
 
 	auto result = BI_Apriori::Apriori<std::set<std::size_t>>(s, min_support);
 
+#ifdef DEBUG
 #ifdef GET_TIME_ON_WINDOWS
 	DWORD  end = GetTickCount();
-	std::size_t total_s = (end - start) / 1000;
-	std::size_t minutes, seconds;
-	minutes = total_s / 60;
-	seconds = total_s - minutes * 60;
-	std::cout << "Apriori time used: " << minutes << "min " << seconds << "s" << std::endl << std::endl;
+	BI_Apriori::print_time(start, end, AP_output, "Apriori time used: ");
 #endif // GET_TIME_ON_WINDOWS
+#endif // DEBUG
 
-	std::cout << std::endl << "result size:" << result.size() << std::endl;
-	for (auto const& set : result)
+	AP_output << std::endl << "result size:" << result.size() << std::endl;
+	std::size_t result_line = 0;
+	for (auto const&[set, count] : result)
 	{
+		AP_output << ++result_line << "\t" << count << "\t:";
 		for (auto const& item : set)
-			std::cout << item << " ";
-		std::cout << std::endl;
+			AP_output << item << " ";
+		AP_output << std::endl;
 	}
-	std::cout << "Apriori Completed" << std::endl;
+	AP_output << "Apriori Completed" << std::endl;
+#ifdef OUTPUT_FILE
+	AP_output.close();
+#endif // OUTPUT_FILE
 }
 
 void test_Apriori_FPT()
@@ -153,6 +209,7 @@ int main(void)
 {
 	test_Apriori();
 	//test_Apriori_FPT();
+	printf("%s\n", "done");
 	getchar();
 	return 0;
 }

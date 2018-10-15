@@ -9,20 +9,21 @@ namespace RSY_TOOL::FPT
 
 	template<typename Key> struct FPTNode
 	{
-		using node_ptr = typename FPTNode<Key>*;
+		using node_ptr = FPTNode<Key>*;
 		using key_type = std::optional<const Key>;
 		key_type _key;
-		std::size_t support;
+		std::size_t _support = 0;
+		node_ptr _parent = nullptr;
 		std::map<Key, node_ptr> next;
 		template<
 			typename Key_t,
 			std::enable_if_t<std::is_convertible_v<std::decay_t<Key_t>, Key>>* = nullptr
-		> explicit FPTNode(Key_t&& key) : _key(std::forward<Key_t>(key)), support(0) {}
-		explicit FPTNode() :_key(std::nullopt), support(0) {}
+		> explicit FPTNode(Key_t&& key) : _key(std::forward<Key_t>(key)) {}
+		explicit FPTNode() :_key(std::nullopt) {}
 		FPTNode(const FPTNode&) = delete;
 		FPTNode& operator=(const FPTNode&) = delete;
 
-		void addReference() { this->support++; }
+		void addReference() { this->_support++; }
 
 		node_ptr find(const Key& key)
 		{
@@ -33,6 +34,7 @@ namespace RSY_TOOL::FPT
 
 		node_ptr addKey(const Key& key, node_ptr new_node)
 		{
+			new_node->_parent = this;
 			return next.insert(std::make_pair(key, new_node)).first->second;
 		}
 

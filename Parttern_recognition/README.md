@@ -11,7 +11,7 @@
     - [2.5.1 K-means](#k_means)
     - [2.5.2 ISODATA](#ISODATA)
   - [2.6 聚类结果的评价](#cluster_result_evaluation)
-- [第三-四讲 判别函数分类法](#discrimination_function)
+- [第三讲 判别函数分类法](#discrimination_function)
 - [第五讲 ](#)
 - [第六讲 ](#)
 - [第七讲 ](#)
@@ -292,7 +292,7 @@ def k_means(cluster_num: int, dist, *data_set):
 
 <a id="discrimination_function"></a>
 
-# 第三-四讲 判别函数分类法
+# 第三讲 判别函数分类法
 
 几何分类法：使用代数方程进行分类。
 
@@ -302,6 +302,8 @@ def k_means(cluster_num: int, dist, *data_set):
 $$
 d(\pmb X)=0
 $$
+
+
 
 ## 3.2 线性判别函数
 
@@ -315,11 +317,37 @@ $$
 
 其中 $\pmb W,\pmb X \in R^{n+1},\ \pmb W = (w_0,w_1,...,w_n)^T,\ \pmb X = (1,x_1,...,x_n)^T$
 
+![](assets/3.2.2.png)
+
+### 是非两分法
+
+![](assets/3.2.2.1.png)
+
+![](assets/3.2.2.1_.png)
+
+### 成对两分法
+
+![](assets/3.2.2.2.png)
+
+![](assets/3.2.2.2_.png)
+
+### 成对两分法特例（无不确定区）
+
+![](assets/3.2.2.3.png)
+
+![](assets/3.2.2.3_.png)
+
+![](assets/3.2.2.3__.png)
+
+
+
 ## 3.3 广义线性判别函数
 
 $$
 d(\pmb X) = w_0 + \sum_{i=1}^n w_if(\pmb X)
 $$
+
+
 
 ## 3.4 线性判别函数的几何性质
 
@@ -337,7 +365,195 @@ $$
 
 $\pmb X$ 到平面 $d(\pmb X)=0$ 的代数距离为：$r=\frac{d(\pmb X)}{||\pmb W^T||}$
 
+
+
 ## 3.5 Fisher线性判别
+
+
+
+
+
+
+
+
+
+
+
+## 3.6 感知器算法
+
+$$
+d(\pmb X)=\pmb W^T\pmb X
+$$
+
+本节开始介绍如何通过各种算法，利用已知类别的模式样本训练权向量 $\pmb W$。
+
+### 概念
+
+$$
+d(\pmb X)= \pmb W^T\pmb X
+\begin{equation}
+\left\{
+        \begin{array}{lr}
+            \gt 0, & \pmb X\in w_1  \\
+            \lt 0, & \pmb X\in w_2  \\
+        \end{array}
+\right.
+\end{equation}
+$$
+
+对样本进行规范化处理，，即 $ω_2$ 类样本全部乘以 $-1$，于是：
+
+$$
+d(\pmb X)=\pmb W^T\pmb X \gt 0
+$$
+
+### 感知器算法
+
+**感知器算法的基本思想**：用训练模式验证当前权向量的合理性，如果不合理，就根据误差进行反向纠正，直到全部训练样本都被合理分类。本质上是梯度下降方法类。
+
+1. 选择 $N$ 个样本集 $\{\pmb X_1,...,\pmb X_N\}\in \{w_1,w_2\}$，对于 $w_2$ 中样本做规范化，即乘 $-1$。任意取权向量 $\pmb W_1$，开始迭代。
+2. 计算 $\pmb W^T_k\pmb X_i$，并修正：
+
+- 若 $\pmb W^T_k\pmb X_i \le 0$，分类错误，校正为 $\pmb W_{k+1}=\pmb W_k +c\pmb X_i,\quad c\gt 0$
+- 若 $\pmb W^T_k\pmb X_i\gt 0$，不变 $\pmb W_{k+1}=\pmb W_k$
+
+3. 直到所有样本正确分类
+
+$$
+\pmb W_{k+1}=
+\begin{equation}
+\left\{
+        \begin{array}{lr}
+            \pmb W_k + c\pmb X_i, & \pmb W^T_k\pmb X_i \le 0  \\
+            \pmb W_k,             & \pmb W^T_k\pmb X_i \gt 0  \\
+        \end{array}
+\right.
+\end{equation}
+$$
+
+### 感知器算法的收敛性
+
+收敛条件：模式类线性可分。
+
+### 感知器算法用于多类情况
+
+对于M类模式应存在M个判决函数，不用符号处理。
+
+若 $\pmb X_i\in w_i$，则 $d_i(\pmb X)\gt d_j(\pmb X),\ \forall j\neq i$
+
+若某个样本分类错误，则该权向量补偿，其他权向量抑制。
+
+
+
+## 3.7 梯度算法
+
+**负梯度指出了最陡下降方向**。—— 梯度算法的依据。
+
+### 梯度算法
+
+基本思路：定义一个对错误分类敏感的准则函数 $J(\pmb W,\pmb X)$，在 $J$ 的梯度方向上对权向量进行修改。
+$$
+\begin{aligned}
+\pmb W_{k+1}
+& = \pmb W_k - c\nabla J \\
+& = \pmb W_k - c \left.\frac{\partial J(\pmb W,\pmb X)}{\partial \pmb W}\right|_{\pmb W = \pmb W_k} \\
+\end{aligned}
+$$
+一般 $c$ 动态取值，开始较大，之后变小。
+
+
+
+## 3.8 最小平方误差算法
+
+(Least Mean Square Error, LMS, MSE；亦称 Ho-Kashyap 算法)
+
+上述算法均要求模式类本身可分离，对于
+
+- 模式本身不可分
+- 迭代过程收敛缓慢
+
+LMS 算法特点：
+
+- 对可分模式收敛
+
+- 对于类别不可分的情况也可以指出
+
+### 分类器的不等式方程
+
+感知器算法是解 $\pmb W^T \pmb X_i\gt 0$
+
+### LMS算法
+
+LSM算法是解 $\pmb X\pmb W=\pmb B\gt 0,\quad \pmb X =(\pmb X_1,...,\pmb X_i,-\pmb X_{i+1},...,\pmb -X_N)^T$
+$$
+\pmb W^T\pmb X_i = b_i \gt 0
+$$
+**LMS算法的出发点**：选择一个准则函数，使得当 $J$ 达到最小 值时，$\pmb X\pmb W=\pmb B$ 可得到近似解（最小二乘近似解）。
+
+准则函数：
+$$
+J(\pmb W,\pmb X,\pmb B) = \frac{1}{2}||\pmb X\pmb W -\pmb B||^2
+$$
+
+$$
+\pmb X\pmb W-\pmb B =
+\begin{pmatrix}
+\pmb W^T \pmb X_1 - b_1 \\
+\pmb W^T \pmb X_2 - b_2 \\
+\vdots                  \\
+\pmb W^T \pmb X_N - b_N \\
+\end{pmatrix}
+$$
+
+$$
+\begin{aligned}
+J(\pmb W,\pmb X,\pmb B)
+& = \frac{1}{2}||\pmb X\pmb W -\pmb B||^2 \\
+& = \frac{1}{2} \sum_{i=1}^N (\pmb W^T\pmb X_i - b_i)^2
+\end{aligned}
+$$
+
+使准则函数最小的解称为"最优近似解"。
+
+### LMS算法递推公式
+
+![](assets/3.8.1.png)
+
+### 模式类别可分性判别
+
+![](assets/3.8.3.1.png)
+
+![](assets/3.8.3.2.png)
+
+![](assets/3.8.3.3.png)
+
+### LMS算法描述
+
+![](assets/3.8.4.1.png)
+
+![](assets/3.8.4.2.png)
+
+![](assets/3.8.4.3.png)
+
+### 算法特点
+
+- 算法尽管略为复杂一些，但提供了线性可分的测试特征。
+- 同时利用 $N$ 个训练样本，同时修改 $\pmb W$ 和 $\pmb B$，故收敛速度快。
+- 计算矩阵 $(\pmb X^T\pmb X)^{-1}$ 复杂，但可用迭代算法计算。 
+
+
+
+## 小结
+
+-  感知器法、梯度法、最小均方误差算法讨论的分类算法都是通过模式样本来确定判别函数的系数，所以要使一个分类器设计完善，必须采用有代表性的数据，训练判别函数的权系数。它们能合理反映模式数据的总体。
+- 要获得一个有较好判别性能的线性分类器，所需要的训练样本的数目的确定。
+- 用线性二分法容量 $N_0$ 来确定训练样本的数目：通常训练样本的数目不能低于 $N_0$，选为 $N_0$ 的 5~10 倍左右。
+  - ​二维：不能低于 6 个样本，最好选在 30~60 个样本之间。 
+  - 三维：不能低于 8 个样本，最好选在 40~80 个样本之间。
+
+
+
+## 3.9 非线性判别函数
 
 
 
