@@ -1,6 +1,7 @@
 #pragma once
 #ifndef _APRIORI_H
 #define _APRIORI_H
+#include <vector>
 #include <type_traits>
 #include <iterator>
 #include <tuple>
@@ -13,11 +14,12 @@
 #include <Windows.h>
 #endif // GET_TIME_ON_WINDOWS
 #endif // DEBUG
-#include <vector>
 #ifdef SET_IS_COMPARABLE
 #include <map>
+#include <set>
 #else   
 #include <unordered_map>
+#include <unordered_set>
 #endif // SET_IS_COMPARABLE
 #include <algorithm>
 #include "FPT.hpp"
@@ -94,9 +96,11 @@ namespace BI_Apriori
 #ifdef SET_IS_COMPARABLE
 		std::map<Set, std::size_t> prev_sets;
 		std::map<Set, std::size_t> cur_sets;
+		std::set<Set> extensible_prune;
 #else   
 		std::unordered_map<Set, std::size_t> prev_sets;
 		std::unordered_map<Set, std::size_t> cur_sets;
+		std::unordered_set<Set> extensible_prune;
 #endif // SET_IS_COMPARABLE
 
 		for (auto const&[item, count] : total)
@@ -217,6 +221,7 @@ namespace BI_Apriori
 			// add prev_sets to return_sets
 			for (auto const&[prev_set, prev_set_count] : prev_sets)
 			{
+				if (extensible_prune.find(prev_set) != extensible_prune.end()) continue;
 				bool is_contain = false;
 				for (auto const&[cur_set, cur_set_count] : cur_sets)
 				{
@@ -244,8 +249,10 @@ namespace BI_Apriori
 			if (cur_sets.empty())
 			{
 #ifndef ALL_SETS_GREATER_THAN_SUPPORT
-				return_sets.reserve(return_sets.size() + prev_sets.size());
-				for (auto const&[set, count] : prev_sets) return_sets.push_back(set);
+				return_sets.reserve(return_sets.size() + prev_sets.size() - extensible_prune.size());
+				for (auto const&[set, count] : prev_sets)
+					if (extensible_prune.find(set) != extensible_prune.end())
+						return_sets.push_back(set);
 #endif // !ALL_SETS_GREATER_THAN_SUPPORT
 #ifdef DEBUG
 				AP_output << "round: " << round << "\tcur_sets is empty." << std::endl << std::endl;
@@ -268,11 +275,13 @@ namespace BI_Apriori
 			// In join operation, we have some optimization: prune
 			cur_sets.swap(prev_sets);
 			cur_sets.clear();
+			extensible_prune.clear();
 
 			for (auto const&[set, count] : prev_sets)
 			{
-
 				Set s = set;
+				bool is_extensible = false;
+
 				for (auto const&[item, count] : total)
 				{
 					if (s.count(item) != 0) continue;
@@ -313,8 +322,16 @@ namespace BI_Apriori
 
 					// it's maybe ok, just insert.
 					cur_sets[s] = 0;
+					is_extensible = true;
 					s.erase(item);
 
+				}
+
+				// optimization for ALL_SETS_GREATER_THAN_SUPPORT
+				if (!is_extensible)
+				{
+					extensible_prune.insert(set);
+					return_sets.push_back(std::make_tuple(set, count));
 				}
 
 			}

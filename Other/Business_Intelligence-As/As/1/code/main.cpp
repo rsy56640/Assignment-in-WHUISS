@@ -47,11 +47,11 @@ void test()
 
 void test_Apriori()
 {
-	constexpr std::size_t item_amount = 100;
-	constexpr std::size_t transaction = 5000;
-	constexpr std::size_t item_each_transaction = 45;
+	constexpr std::size_t item_amount = 60;
+	constexpr std::size_t transaction = 2500;
+	constexpr std::size_t item_each_transaction = 22;
 	constexpr double magic_coefficient = 0.20;
-	constexpr double min_support_ratio = 0.3;
+	constexpr double min_support_ratio = 0.20;
 	constexpr std::size_t min_support =
 		false
 		? static_cast<std::size_t>(transaction / item_amount * item_each_transaction * magic_coefficient)
@@ -138,9 +138,10 @@ void test_Apriori()
 
 	AP_output << std::endl << "result size:" << result.size() << std::endl;
 	std::size_t result_line = 0;
+	AP_output << "count\tsupport\t\titem set" << std::endl;
 	for (auto const&[set, count] : result)
 	{
-		AP_output << ++result_line << "\t" << count << "\t:";
+		AP_output << ++result_line << "\t" << count << "\t:\t";
 		for (auto const& item : set)
 			AP_output << item << " ";
 		AP_output << std::endl;
