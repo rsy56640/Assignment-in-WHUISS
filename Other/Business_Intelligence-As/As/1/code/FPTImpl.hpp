@@ -114,7 +114,7 @@ namespace RSY_TOOL::FPT
 		/* recursively mine
 		 *     1. get_cond_FP(): when branch is empty, add (_to_be_added * support).
 		 *     2. after get_cond_FP() has been pruned, if set is empty, immdiately add.
-		 *     3. if sub-FP is non - single, `temp_to_be_added` must be added for `*rit.size()`.
+		 *     3. if sub-FP is non-single, `temp_to_be_added` must be added for `*rit.size()`.
 		 *     4. combine(): when branch is non-empty, add ((2^N sets + _to_be_added) * support).
 		 */
 		void mine()

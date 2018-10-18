@@ -12,6 +12,7 @@
 #include <map>
 #include <set>
 #include <fstream>
+#include <iomanip>
 #ifdef DEBUG
 #include <iostream>
 #ifdef OUTPUT_FILE
@@ -512,17 +513,17 @@ namespace BI_Apriori
 
 	// WTF, alias template declaration cannot be declared in the funciton block.
 	template<class K, class V> using Hash = std::unordered_map<K, V>;
-
 	/*
 	 * Generate Assosiation Rules
 	 * [A] -> [B] [s, c]
 	 *     s = support(A U B)
 	 *     c = s / support(A)
 	 */
-	void generate_assosiation_rule(
-		const std::vector<std::tuple<std::set<std::size_t>, std::size_t>>& frequent_sets,
-		const std::size_t total_transaction,
-		const double confidence)
+	std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>
+		generate_assosiation_rule(
+			const std::vector<std::tuple<std::set<std::size_t>, std::size_t>>& frequent_sets,
+			const std::size_t total_transaction,
+			const double confidence)
 	{
 		using Set = std::set<std::size_t>;
 		using Item = std::size_t;
@@ -614,36 +615,7 @@ namespace BI_Apriori
 		for (auto const&[set, support] : frequent_sets)
 			_hashSet.insert(set, support);
 
-		// output
-		const char* output_path = "./Assosiation_Rules.txt";
-		std::ofstream Assosiation_Rules_out;
-		Assosiation_Rules_out.open(output_path, std::ios::out | std::ios::trunc);
-		if (!Assosiation_Rules_out.is_open())
-		{
-			std::cout << "failed to open Assosiation_Rules.txt" << std::endl;
-			exit(0);
-		}
-		auto print_Set = [&Assosiation_Rules_out](const Set& s)
-		{
-			Assosiation_Rules_out << "[";
-			const std::size_t size = s.size();
-			const auto back_it = --s.end();
-			for (auto it = s.begin(); it != back_it; ++it)
-				Assosiation_Rules_out << *it << ", ";
-			Assosiation_Rules_out << *back_it;
-			Assosiation_Rules_out << "]";
-		};
-		auto print_Assosiation_Rule = [&Assosiation_Rules_out, &print_Set](const Set& A, const Set& B, std::size_t support_AB, std::size_t confidence_AB)
-		{
-			static std::size_t line_num = 0;
-			Assosiation_Rules_out << ++line_num << "\t:\t";
-			print_Set(A);
-			Assosiation_Rules_out << "\t->\t";
-			print_Set(B);
-			Assosiation_Rules_out << "\t";
-			Assosiation_Rules_out << "[" << support_AB << ", " << confidence_AB << "]";
-			Assosiation_Rules_out << std::endl;
-		};
+		std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>> assosiation_rules;
 
 		for (auto const&[A, support_A] : frequent_sets)
 			for (auto const&[B, support_B] : frequent_sets)
@@ -653,10 +625,10 @@ namespace BI_Apriori
 				const std::size_t support_AB = _hashSet.find(AB);
 				const double confidence_AB = 1.0 * support_AB / support_A;
 				if (confidence_AB >= confidence)
-					print_Assosiation_Rule(A, B, support_AB, confidence_AB);
+					assosiation_rules.push_back(std::make_tuple(A, B, 1.0 * support_AB / total_transaction, confidence_AB));
 			}
 
-		Assosiation_Rules_out.close();
+		return assosiation_rules;
 
 	} // end function generate_assosiation_rule();
 

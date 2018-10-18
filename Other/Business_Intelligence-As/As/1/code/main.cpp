@@ -19,19 +19,23 @@
 #include <set>
 #include <unordered_set>
 
-constexpr std::size_t item_amount = 40;
-constexpr std::size_t transaction = 2000;
-constexpr std::size_t item_each_transaction = 16;
-constexpr double magic_coefficient = 0.20;
-constexpr double min_support_ratio = 0.25;
-constexpr double confidence = 0.8;
+constexpr std::size_t item_amount = 100;
+constexpr std::size_t transaction = 12000;
+constexpr std::size_t item_each_transaction = 44;
+constexpr double magic_coefficient = 0.25;
+constexpr double maybe_min_support_ratio = 0.4;
+constexpr double confidence = 0.5;
 constexpr bool difficult = false;
 constexpr std::size_t min_support =
 difficult
 ? static_cast<std::size_t>(transaction * item_each_transaction * magic_coefficient / item_amount)
-	: static_cast<std::size_t>(min_support_ratio * transaction);
+	: static_cast<std::size_t>(maybe_min_support_ratio * transaction);
+
+constexpr double min_support_ratio = 1.0 * min_support / transaction;
+
 constexpr double normal_mean = item_amount / 2.0;
 constexpr double normal_deviation = item_amount / 4.0;
+
 
 std::vector<std::set<std::size_t>> generate()
 {
@@ -62,6 +66,7 @@ std::vector<std::set<std::size_t>> generate()
 	return s;
 }
 
+
 template<
 	typename outputItem,
 	std::enable_if_t<
@@ -79,6 +84,45 @@ template<
 		std::copy(data.begin(), data.end(), _data_out_it);
 		data_output << std::endl;
 	}
+}
+
+
+void output_assosiation_rules(std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>&& assosiation_rules)
+{
+	using Set = std::set<std::size_t>;
+	const char* output_path = "./Assosiation_Rules.txt";
+	std::ofstream Assosiation_Rules_out;
+	Assosiation_Rules_out.open(output_path, std::ios::out | std::ios::trunc);
+	if (!Assosiation_Rules_out.is_open())
+	{
+		std::cout << "failed to open Assosiation_Rules.txt" << std::endl;
+		exit(0);
+	}
+	auto print_Set = [&Assosiation_Rules_out](const Set& s)
+	{
+		Assosiation_Rules_out << "[";
+		const std::size_t size = s.size();
+		const auto back_it = --s.end();
+		for (auto it = s.begin(); it != back_it; ++it)
+			Assosiation_Rules_out << *it << ", ";
+		Assosiation_Rules_out << *back_it;
+		Assosiation_Rules_out << "]";
+	};
+
+	Assosiation_Rules_out << "No\t:\t[A]\t->\t[B]\t[s, c]" << std::endl;
+	Assosiation_Rules_out << "-----------------------------------------------------------------------------" << std::endl;
+	for (auto const&[A, B, support_AB, confidence_AB] : assosiation_rules)
+	{
+		static std::size_t line_num = 0;
+		Assosiation_Rules_out << ++line_num << "\t:\t";
+		print_Set(A);
+		Assosiation_Rules_out << "\t->\t";
+		print_Set(B);
+		Assosiation_Rules_out << "\t";
+		Assosiation_Rules_out << "[" << std::fixed << std::setprecision(4) << support_AB << ", " << std::fixed << std::setprecision(4) << confidence_AB << "]";
+		Assosiation_Rules_out << std::endl;
+	}
+	Assosiation_Rules_out.close();
 }
 
 
@@ -117,8 +161,9 @@ void test_Apriori()
 	std::cout << "item_amount: " << item_amount << std::endl;
 	std::cout << "transaction: " << transaction << std::endl;
 	std::cout << "item_each_transaction: " << item_each_transaction << std::endl;
-	std::cout << "min_support_ratio: " << 1.0 * min_support / transaction << std::endl;
+	std::cout << "min_support_ratio: " << min_support_ratio << std::endl;
 	std::cout << "min_support: " << min_support << std::endl;
+	std::cout << "confidence: " << confidence << std::endl;
 	std::cout << "data generated" << std::endl << std::endl;
 	std::cout << std::endl;
 #endif // OUTPUT_FILE
@@ -127,8 +172,9 @@ void test_Apriori()
 	AP_output << "item_amount: " << item_amount << std::endl;
 	AP_output << "transaction: " << transaction << std::endl;
 	AP_output << "item_each_transaction: " << item_each_transaction << std::endl;
-	AP_output << "min_support_ratio: " << 1.0 * min_support / transaction << std::endl;
+	AP_output << "min_support_ratio: " << min_support_ratio << std::endl;
 	AP_output << "min_support: " << min_support << std::endl;
+	AP_output << "confidence: " << confidence << std::endl;
 	AP_output << "data generated" << std::endl << std::endl;
 	AP_output << std::endl;
 
@@ -173,7 +219,11 @@ void test_Apriori()
 #endif // OUTPUT_FILE
 
 	// Generate Assosiation Rules
-	BI_Apriori::generate_assosiation_rule(result, transaction, confidence);
+	std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>
+		assosiation_rules = BI_Apriori::generate_assosiation_rule(result, transaction, confidence);
+
+	// output Assosiation Rules
+	output_assosiation_rules(std::move(assosiation_rules));
 
 }
 
@@ -289,6 +339,14 @@ void test_Apriori_FPT()
 		FP_output << std::endl;
 	}
 	FP_output.close();
+
+	// Generate Assosiation Rules
+	std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>
+		assosiation_rules = BI_Apriori::generate_assosiation_rule(std::get<0>(result), transaction, confidence);
+
+	// output Assosiation Rules
+	output_assosiation_rules(std::move(assosiation_rules));
+
 }
 
 
@@ -296,8 +354,8 @@ int main()
 {
 	//BI_dissimilarity::test();
 	test_Apriori();
-	//test_Apriori_FPT();
+	test_Apriori_FPT();
 	printf("\n%s\n", "done");
-	getchar();
+	//getchar();
 	return 0;
 }
