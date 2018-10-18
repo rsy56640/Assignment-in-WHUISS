@@ -13,6 +13,81 @@
 namespace RSY_TOOL::FPT
 {
 
+	// bigInt help to count
+	namespace util
+	{
+		class bigInt {
+			/*
+			* 1 2 ... n order
+			* 0 0 ... 0 vector bits
+			* the bit num is bits[bit-1]
+			*/
+		public:
+			bigInt(std::size_t size) :bits(size, 0) {}
+			bigInt(std::size_t bit, std::size_t size) :bits(max(size, bit), 0) { bits[bit - 1] = 1; }
+			bigInt& operator++() { addOne(); return *this; }
+			bool hasBit(std::size_t bit)
+			{
+				if (bits.size() < bit)
+				{
+					bits.resize(bit);
+					return false;
+				}
+				return bits[bit - 1] == 1;
+			}
+			bool operator!=(const bigInt& other) const
+			{
+				if (bits.size() > other.bits.size())
+				{
+					const std::size_t size = other.bits.size();
+					const std::size_t big_size = bits.size();
+					for (std::size_t i = size; i < big_size; i++)
+						if (bits[i] == 1) return true;
+					for (std::size_t i = 0; i < size; i++)
+						if (bits[i] != other.bits[i]) return true;
+					return false;
+				}
+				else
+				{
+					const std::size_t size = bits.size();
+					const std::size_t big_size = other.bits.size();
+					for (std::size_t i = size; i < big_size; i++)
+						if (other.bits[i] == 1) return true;
+					for (std::size_t i = 0; i < size; i++)
+						if (bits[i] != other.bits[i]) return true;
+					return false;
+				}
+			}
+			// return 0 ~ n-1
+			std::vector<std::size_t> combination_nums() const
+			{
+				std::vector<std::size_t> nums;
+				const std::size_t size = bits.size();
+				for (std::size_t i = 0; i < size; i++)
+					if (bits[i] == 1) nums.push_back(i);
+				return nums;
+			}
+		private:
+			std::vector<char> bits;
+			void addOne()
+			{
+				const std::size_t size = bits.size();
+				for (std::size_t i = 0; i < size; i++)
+				{
+					if (bits[i] == 1)
+						bits[i] = 0;
+					else
+					{
+						bits[i] = 1;
+						return;
+					}
+				}
+				bits.resize(size + 1);
+				bits[size] = 1;
+			}
+		};
+	}
+
 	template<typename Key> class FPTImpl :public FPTType<Key>
 	{
 		using node_ptr = typename FPTType<Key>::node_ptr;
@@ -333,85 +408,12 @@ namespace RSY_TOOL::FPT
 		 */
 		void real_combine(const std::vector<Key>& branch, const std::size_t support)
 		{
-
-			// bigInt help to count
-			class bigInt {
-				/*
-				* 1 2 ... n order
-				* 0 0 ... 0 vector bits
-				* the bit num is bits[bit-1]
-				*/
-			public:
-				bigInt(std::size_t size) :bits(size, 0) {}
-				bigInt(std::size_t bit, std::size_t size) :bits(max(size, bit), 0) { bits[bit - 1] = 1; }
-				bigInt& operator++() { addOne(); return *this; }
-				bool hasBit(std::size_t bit)
-				{
-					if (bits.size() < bit)
-					{
-						bits.resize(bit);
-						return false;
-					}
-					return bits[bit - 1] == 1;
-				}
-				bool operator!=(const bigInt& other) const
-				{
-					if (bits.size() > other.bits.size())
-					{
-						const std::size_t size = other.bits.size();
-						const std::size_t big_size = bits.size();
-						for (std::size_t i = size; i < big_size; i++)
-							if (bits[i] == 1) return true;
-						for (std::size_t i = 0; i < size; i++)
-							if (bits[i] != other.bits[i]) return true;
-						return false;
-					}
-					else
-					{
-						const std::size_t size = bits.size();
-						const std::size_t big_size = other.bits.size();
-						for (std::size_t i = size; i < big_size; i++)
-							if (other.bits[i] == 1) return true;
-						for (std::size_t i = 0; i < size; i++)
-							if (bits[i] != other.bits[i]) return true;
-						return false;
-					}
-				}
-				// return 0 ~ n-1
-				std::vector<std::size_t> combination_nums() const
-				{
-					std::vector<std::size_t> nums;
-					const std::size_t size = bits.size();
-					for (std::size_t i = 0; i < size; i++)
-						if (bits[i] == 1) nums.push_back(i);
-					return nums;
-				}
-			private:
-				std::vector<char> bits;
-				void addOne()
-				{
-					const std::size_t size = bits.size();
-					for (std::size_t i = 0; i < size; i++)
-					{
-						if (bits[i] == 1)
-							bits[i] = 0;
-						else
-						{
-							bits[i] = 1;
-							return;
-						}
-					}
-					bits.resize(size + 1);
-					bits[size] = 1;
-				}
-			};
-
 			std::vector<std::set<Key>> sets;
 			const std::size_t _size = branch.size();
 
 			// combine
-			bigInt it{ _size };
-			const bigInt _max{ _size + 1, _size + 1 };
+			util::bigInt it{ _size };
+			const util::bigInt _max{ _size + 1, _size + 1 };
 			for (; it != _max; ++it)
 			{
 				std::vector<std::size_t> combination_nums = it.combination_nums();

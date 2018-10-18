@@ -291,9 +291,11 @@ void test_Apriori_FPT()
 	ss = { "milk", "discard" }; s.push_back(ss);
 	using Item = std::string;
 	constexpr std::size_t FP_min_support = 2;
+	constexpr std::size_t _transaction = 7;
 #else
 	std::vector<std::set<std::size_t>> s = generate();
 	constexpr std::size_t FP_min_support = min_support;
+	constexpr std::size_t _transaction = transaction;
 
 	// output data
 	const char* output_data_path = "./FP_data.txt";
@@ -365,7 +367,7 @@ void test_Apriori_FPT()
 
 	// Generate Assosiation Rules
 	std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>
-		assosiation_rules = BI_Apriori::generate_assosiation_rule(std::get<0>(result), transaction, confidence);
+		assosiation_rules = BI_Apriori::generate_assosiation_rule(std::get<0>(result), _transaction, confidence);
 
 	// output Assosiation Rules
 	output_assosiation_rules<Item>(std::move(assosiation_rules), "./Assosiation_Rules_FP.txt", [&int2item](std::size_t i) { return int2item[i]; });

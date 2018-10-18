@@ -531,10 +531,10 @@ namespace BI_Apriori
 		/* BloomFilter
 		 *     0. size
 		 *     1. and     &
-		 *     2. or      |
-		 *     3. xor     ^
-		 *     4. sum     +
-		 *     5. mul     *
+		 *     1. or      |        =>  and + or + xor
+		 *     1. xor     ^
+		 *     2. sum     +        =>  sum + mul
+		 *     2. mul     *
 		 */
 		struct Filter
 		{
@@ -554,24 +554,21 @@ namespace BI_Apriori
 		};
 		class HashSet
 		{
-			using and_t = std::size_t;
-			using or_t = std::size_t;
-			using xor_t = std::size_t;
-			using sum_t = std::size_t;
-			using mul_t = std::size_t;
+			using and_or_xor_sum_t = std::size_t;
+			using sum_mul_sumt = std::size_t;
 		public:
 			explicit HashSet() = default;
 			void insert(const std::set<std::size_t>& set, const std::size_t support)
 			{
-				Filter f{ set };
-				_hash[set.size()][f._and][f._or][f._xor][f._sum][f._mul].insert(std::make_pair(set, support));
+				const Filter f{ set };
+				_hash[set.size()][f._and + f._or + f._xor][f._sum + f._mul].insert(std::make_pair(set, support));
 			}
 			std::size_t find(const std::set<std::size_t>& set) const
 			{
-				Filter f{ set };
+				const Filter f{ set };
 				try {
 					const std::map<Set, const std::size_t>& sets =
-						_hash.at(set.size()).at(f._and).at(f._or).at(f._xor).at(f._sum).at(f._mul);
+						_hash.at(set.size()).at(f._and + f._or + f._xor).at(f._sum + f._mul);
 					if (auto it = sets.find(set); it != sets.end())
 						return it->second;
 				}
@@ -580,15 +577,13 @@ namespace BI_Apriori
 			}
 		private:
 			Hash<std::size_t,
-				Hash<and_t,
-				Hash<or_t,
-				Hash<xor_t,
-				Hash<sum_t,
-				Hash<mul_t,
-				std::map<Set, const std::size_t>>>>>>>
+				Hash<and_or_xor_sum_t,
+				Hash<sum_mul_sumt,
+				std::map<Set, const std::size_t>>>>
 				_hash;
 		};
 
+		/*                   [[Deprecated]]
 		auto Is_intersect_null = [](const Set& A, const Set& B)->bool
 		{
 			auto ait = A.begin();
@@ -609,6 +604,7 @@ namespace BI_Apriori
 				std::inserter(s, s.begin()));
 			return s;
 		};
+		*/
 
 		HashSet _hashSet;
 
@@ -617,16 +613,51 @@ namespace BI_Apriori
 
 		std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>> assosiation_rules;
 
-		for (auto const&[A, support_A] : frequent_sets)
-			for (auto const&[B, support_B] : frequent_sets)
+		/*
+		 * slice the set into 2 separated small sets.
+		 * total = 2^(N-1) - 1
+		 * compute [A -> B] or [B -> A]
+		 */
+		using RSY_TOOL::FPT::util::bigInt;
+		for (auto const&[AB, support_AB] : frequent_sets)
+		{
+			const std::size_t size = AB.size();
+			if (size == 1) continue;
+
+			std::vector<std::size_t> _AB;
+			_AB.reserve(size);
+			for (std::size_t i : AB) _AB.push_back(i);
+
+			bigInt it(1, size);
+			const bigInt _max(size, size);
+			for (; it != _max; ++it)
 			{
-				if (!Is_intersect_null(A, B)) continue;
-				Set AB = Union(A, B);
-				const std::size_t support_AB = _hashSet.find(AB);
-				const double confidence_AB = 1.0 * support_AB / support_A;
-				if (confidence_AB >= confidence)
-					assosiation_rules.push_back(std::make_tuple(A, B, 1.0 * support_AB / total_transaction, confidence_AB));
+				std::vector<std::size_t> numbers = it.combination_nums();
+				std::set<std::size_t> A, B;
+				std::size_t _cur = 0;
+				auto num_it = numbers.begin();
+				for (; _cur < size && num_it != numbers.end(); _cur++)
+				{
+					if (_cur == *num_it)
+					{
+						A.insert(_AB[_cur]);
+						++num_it;
+					}
+					else B.insert(_AB[_cur]);
+				}
+				for (; _cur < size; _cur++) B.insert(_AB[_cur]);
+
+				// compute confidence
+				const std::size_t support_A = _hashSet.find(A);
+				const std::size_t support_B = _hashSet.find(B);
+				const double confidence_B = 1.0 * support_AB / support_A;
+				const double confidence_A = 1.0 * support_AB / support_B;
+				if (confidence_B >= confidence) // [A => B]
+					assosiation_rules.push_back(std::make_tuple(A, B, 1.0 * support_AB / total_transaction, confidence_B));
+				if (confidence_A >= confidence) // [B => A]
+					assosiation_rules.push_back(std::make_tuple(B, A, 1.0 * support_AB / total_transaction, confidence_A));
 			}
+		}
 
 		return assosiation_rules;
 
