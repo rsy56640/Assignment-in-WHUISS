@@ -4,7 +4,14 @@
 #include <vector>
 #include <type_traits>
 #include <iterator>
+#include <algorithm>
 #include <tuple>
+#include <utility>
+#include <limits>
+#include <unordered_map>
+#include <map>
+#include <set>
+#include <fstream>
 #ifdef DEBUG
 #include <iostream>
 #ifdef OUTPUT_FILE
@@ -21,7 +28,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #endif // SET_IS_COMPARABLE
-#include <algorithm>
+
 #include "FPT.hpp"
 
 
@@ -54,7 +61,7 @@ namespace BI_Apriori
 	 *          - Set::value_type is comparable or hashable.
 	 *
 	 * Macro to be defined:
-	 *     ALL_SETS_GREATER_THAN_SUPPORT
+	 *     ALL_SETS_GREATER_THAN_SUPPORT_AND_NONEXTENSIBLE  or  ALL_SETS_GREATER_THAN_SUPPORT
 	 *     SET_IS_COMPARABLE
 	 *     DEBUG
 	 */
@@ -96,7 +103,7 @@ namespace BI_Apriori
 #ifdef SET_IS_COMPARABLE
 		std::map<Set, std::size_t> prev_sets;
 		std::map<Set, std::size_t> cur_sets;
-		std::set<Set> extensible_prune; // optimization for ALL_SETS_GREATER_THAN_SUPPORT
+		std::set<Set> extensible_prune; // optimization for ALL_SETS_GREATER_THAN_SUPPORT_AND_NONEXTENSIBLE
 #else   
 		std::unordered_map<Set, std::size_t> prev_sets;
 		std::unordered_map<Set, std::size_t> cur_sets;
@@ -159,12 +166,6 @@ namespace BI_Apriori
 #ifdef OUTPUT_FILE
 		const char* search_path = "./AP.txt";
 		std::ofstream AP_output;
-		AP_output.open(search_path, std::ios::out | std::ios::app);
-		if (!AP_output.is_open())
-		{
-			std::cout << "failed to open AP.txt" << std::endl;
-			exit(0);
-		}
 #else
 		auto& AP_output = std::cout;
 #endif // OUTPUT_FILE
@@ -176,11 +177,30 @@ namespace BI_Apriori
 		while (true)
 		{
 #ifdef DEBUG
+
+			// In each round, reopen the file and reclose the file,
+			// so if the process is terminated,
+			// the output has been saved and could be traced.
+#ifdef OUTPUT_FILE
+			AP_output.open(search_path, std::ios::out | std::ios::app);
+			if (!AP_output.is_open())
+			{
+				std::cout << "failed to open AP.txt" << std::endl;
+				exit(0);
+			}
+#endif // OUTPUT_FILE
+
 			round++;
-			AP_output << "round: " << round << "\treturn_sets:" << return_sets.size() << std::endl;
-			AP_output << "round: " << round << "\tprev_sets:" << prev_sets.size() << std::endl;
-			AP_output << "round: " << round << "\tcur_sets:" << cur_sets.size() << std::endl;
+			AP_output << "round: " << round << "\treturn_sets: " << return_sets.size() << std::endl;
+			AP_output << "round: " << round << "\tprev_sets: " << prev_sets.size() << std::endl;
+			AP_output << "round: " << round << "\tcur_sets: " << cur_sets.size() << std::endl;
 			AP_output << std::endl;
+#ifdef OUTPUT_FILE // always output in console
+			std::cout << "round: " << round << "\treturn_sets: " << return_sets.size() << std::endl;
+			std::cout << "round: " << round << "\tprev_sets: " << prev_sets.size() << std::endl;
+			std::cout << "round: " << round << "\tcur_sets: " << cur_sets.size() << std::endl;
+			std::cout << std::endl;
+#endif // OUTPUT_FILE
 #ifdef GET_TIME_ON_WINDOWS
 			start = GetTickCount();
 #endif // GET_TIME_ON_WINDOWS
@@ -193,6 +213,9 @@ namespace BI_Apriori
 
 #ifdef DEBUG
 			AP_output << "round: " << round << "\tscan support" << std::endl;
+#ifdef OUTPUT_FILE // always output in console
+			std::cout << "round: " << round << "\tscan support" << std::endl;
+#endif // OUTPUT_FILE
 #ifdef GET_TIME_ON_WINDOWS
 			end = GetTickCount();
 			print_time(start, end, AP_output, "");
@@ -209,7 +232,11 @@ namespace BI_Apriori
 
 #ifdef DEBUG
 			AP_output << "round: " << round << "\terase item set if support < min_support" << std::endl;
-			AP_output << "round: " << round << "\tcur_sets:" << cur_sets.size() << std::endl;
+			AP_output << "round: " << round << "\tcur_sets: " << cur_sets.size() << std::endl;
+#ifdef OUTPUT_FILE // always output in console
+			std::cout << "round: " << round << "\terase item set if support < min_support" << std::endl;
+			std::cout << "round: " << round << "\tcur_sets: " << cur_sets.size() << std::endl;
+#endif // OUTPUT_FILE
 #ifdef GET_TIME_ON_WINDOWS
 			end = GetTickCount();
 			print_time(start, end, AP_output, "");
@@ -218,6 +245,14 @@ namespace BI_Apriori
 #endif // DEBUG
 
 #ifdef ALL_SETS_GREATER_THAN_SUPPORT
+#undef ALL_SETS_GREATER_THAN_SUPPORT_AND_NONEXTENSIBLE
+			for (auto const&[prev_set, prev_set_count] : prev_sets)
+			{
+				if (extensible_prune.find(prev_set) != extensible_prune.end()) continue;
+				return_sets.push_back(std::make_tuple(prev_set, prev_set_count));
+			}
+#endif // ALL_SETS_GREATER_THAN_SUPPORT
+#ifdef ALL_SETS_GREATER_THAN_SUPPORT_AND_NONEXTENSIBLE
 			// add prev_sets to return_sets
 			for (auto const&[prev_set, prev_set_count] : prev_sets)
 			{
@@ -233,11 +268,15 @@ namespace BI_Apriori
 				}
 				if (!is_contain) return_sets.push_back(std::make_tuple(prev_set, prev_set_count));
 			}
-#endif // ALL_SETS_GREATER_THAN_SUPPORT
+#endif // ALL_SETS_GREATER_THAN_SUPPORT_AND_NONEXTENSIBLE
 
 #ifdef DEBUG
 			AP_output << "round: " << round << "\tadd prev_sets to return_sets" << std::endl;
-			AP_output << "round: " << round << "\treturn_sets:" << return_sets.size() << std::endl;
+			AP_output << "round: " << round << "\treturn_sets: " << return_sets.size() << std::endl;
+#ifdef OUTPUT_FILE // always output in console
+			std::cout << "round: " << round << "\tadd prev_sets to return_sets" << std::endl;
+			std::cout << "round: " << round << "\treturn_sets: " << return_sets.size() << std::endl;
+#endif // OUTPUT_FILE
 #ifdef GET_TIME_ON_WINDOWS
 			end = GetTickCount();
 			print_time(start, end, AP_output, "");
@@ -248,14 +287,19 @@ namespace BI_Apriori
 			// if cur_sets is empty
 			if (cur_sets.empty())
 			{
+#ifndef ALL_SETS_GREATER_THAN_SUPPORT_AND_NONEXTENSIBLE
 #ifndef ALL_SETS_GREATER_THAN_SUPPORT
 				return_sets.reserve(return_sets.size() + prev_sets.size() - extensible_prune.size());
 				for (auto const&[set, count] : prev_sets)
 					if (extensible_prune.find(set) != extensible_prune.end())
 						return_sets.push_back(set);
-#endif // !ALL_SETS_GREATER_THAN_SUPPORT
+#endif //ALL_SETS_GREATER_THAN_SUPPORT
+#endif // !ALL_SETS_GREATER_THAN_SUPPORT_AND_NONEXTENSIBLE
 #ifdef DEBUG
 				AP_output << "round: " << round << "\tcur_sets is empty." << std::endl << std::endl;
+#ifdef OUTPUT_FILE // always output in console
+				std::cout << "round: " << round << "\tcur_sets is empty." << std::endl << std::endl;
+#endif // OUTPUT_FILE
 #endif // DEBUG
 				return return_sets;
 			}
@@ -265,6 +309,9 @@ namespace BI_Apriori
 			{
 #ifdef DEBUG
 				AP_output << "round: " << round << "\tcur_sets has only 1 item set." << std::endl << std::endl;
+#ifdef OUTPUT_FILE // always output in console
+				std::cout << "round: " << round << "\tcur_sets has only 1 item set." << std::endl << std::endl;
+#endif // OUTPUT_FILE
 #endif // DEBUG
 				auto const& it = cur_sets.begin();
 				return_sets.push_back(std::make_tuple(it->first, it->second));
@@ -289,6 +336,7 @@ namespace BI_Apriori
 					if (cur_sets.find(s) != cur_sets.end())
 					{
 						s.erase(item);
+						is_extensible = true;
 						continue;
 					}
 
@@ -327,7 +375,7 @@ namespace BI_Apriori
 
 				}
 
-				// optimization for ALL_SETS_GREATER_THAN_SUPPORT
+				// optimization for ALL_SETS_GREATER_THAN_SUPPORT_AND_NONEXTENSIBLE
 				if (!is_extensible)
 				{
 					extensible_prune.insert(set);
@@ -345,6 +393,15 @@ namespace BI_Apriori
 			AP_output << "round: " << round << "\tfinished" << std::endl;
 			AP_output << std::endl << "---------------------------------------------------------------------"
 				<< std::endl << std::endl;
+#ifdef OUTPUT_FILE // always output in console
+			std::cout << "round: " << round << "\tjoin finished" << std::endl;
+			std::cout << "round: " << round << "\tfinished" << std::endl;
+			std::cout << std::endl << "---------------------------------------------------------------------"
+				<< std::endl << std::endl;
+#endif // OUTPUT_FILE
+#endif // DEBUG
+
+#ifdef DEBUG
 #ifdef OUTPUT_FILE
 			AP_output.close();
 #endif // OUTPUT_FILE
@@ -358,25 +415,250 @@ namespace BI_Apriori
 	/*
 	 * Frequent Pattern Tree
 	 *
-	 *
+	 * Requirements:
+	 *     Set:
+	 *          - `count()`
+	 *          - `insert()`
+	 *          - `erase()`
+	 *          - Set::value_type `==`
+	 *          - `<`    // comparable or hashable  ???  only choose one
+	 *          - Item must be comparable !!!  // or hashble ???
 	 */
+#undef max
 	template<
-		typename Set,
-		std::void_t<typename Set::value_type>* = nullptr,
+		typename Item,
 		std::enable_if_t<
-		std::is_same_v<std::size_t, decltype(std::declval<Set>().count(std::declval<typename Set::value_type>()))>
-		&& std::is_same_v<bool, decltype(std::declval<typename Set::value_type>() == std::declval<typename Set::value_type>())>
-		&& std::is_same_v<bool, decltype(std::declval<Set>() < std::declval<Set>())>
-		&& std::is_same_v<std::pair<typename Set::iterator, bool>, decltype(std::declval<Set>().insert(std::declval<typename Set::value_type>()))>
-		&& std::is_same_v<typename Set::iterator, decltype(std::declval<Set>().erase(std::declval<typename Set::iterator>()))>
+		std::is_same_v<bool, decltype(std::declval<Item>() < std::declval<Item>())>
 		>* = nullptr
-		> std::vector<Set> Apriori_FP(std::vector<Set>& sets, const std::size_t min_support)
+		> std::tuple<std::vector<std::tuple<std::set<Item>, std::size_t>>, std::map<Item, std::size_t>, std::map<std::size_t, Item>>
+		Apriori_FP(std::vector<std::set<Item>>& sets, const std::size_t min_support)
 	{
+		using Set = std::set<Item>;
 
+		// preprocess to accelerate index
+		std::map<Item, std::size_t> item_amount;
+		std::map<Item, std::size_t> item2int;
+		std::map<std::size_t, Item> int2item;
 
-		return std::vector<Set>{};
+		for (Set const& set : sets)
+			for (Item const& item : set)
+				item_amount[item]++;
+
+		// ordered item-list
+		std::vector<std::pair<Item, std::size_t>> item_list; // store as sequence
+		std::set<Item> discard_items; // discard
+		item_list.reserve(item_amount.size());
+		for (auto const&[item, amount] : item_amount)
+		{
+			if (amount >= min_support) item_list.push_back(std::make_pair(item, amount));
+			else discard_items.insert(item);
+		}
+		std::sort(item_list.begin(), item_list.end(),
+			[](const std::pair<Item, std::size_t>&lhs, const std::pair<Item, std::size_t>& rhs) { return lhs.second > rhs.second; });
+
+		std::size_t no_max = std::numeric_limits<std::size_t>::max();
+		for (auto const&[item, amount] : item_list)
+			item2int[item] = no_max--;
+		for (auto const&[item, order] : item2int) int2item[order] = item;
+
+		std::map<std::set<std::size_t>, std::size_t> _return_sets; // _return_sets
+
+		// filter sets and construct FPTree
+		using namespace RSY_TOOL::FPT;
+
+		std::vector<std::size_t> _item_list;
+		_item_list.reserve(item_list.size());
+		for (auto const&[item, amount] : item_list)
+			_item_list.push_back(item2int[item]);
+
+		FPT<std::size_t> fp(
+			std::move(_item_list),
+			min_support,
+			_return_sets
+		);
+
+		for (Set const& set : sets)
+		{
+			// filter
+			Set s = set;
+			for (Item const& discard_item : discard_items)
+				s.erase(discard_item);
+
+			// order
+			std::vector<std::size_t> items;
+			items.reserve(s.size());
+			for (Item i : s) items.push_back(item2int[i]);
+			std::sort(items.begin(), items.end(), std::greater<std::size_t>());
+
+			fp.insert(items);
+		}
+
+		fp.mine();
+
+		std::vector<std::tuple<Set, std::size_t>> return_sets;
+		return_sets.reserve(_return_sets.size());
+		for (auto const&[set, amount] : _return_sets)
+		{
+			std::set<Item> s;
+			for (std::size_t item_no : set)
+				s.insert(int2item[item_no]);
+			return_sets.push_back(std::make_tuple(s, amount));
+		}
+
+		return std::make_tuple(std::move(return_sets), std::move(item2int), std::move(int2item));
 
 	} // end funciton Apriori_FP();
+
+
+	// WTF, alias template declaration cannot be declared in the funciton block.
+	template<class K, class V> using Hash = std::unordered_map<K, V>;
+
+	/*
+	 * Generate Assosiation Rules
+	 * [A] -> [B] [s, c]
+	 *     s = support(A U B)
+	 *     c = s / support(A)
+	 */
+	void generate_assosiation_rule(
+		const std::vector<std::tuple<std::set<std::size_t>, std::size_t>>& frequent_sets,
+		const std::size_t total_transaction,
+		const double confidence)
+	{
+		using Set = std::set<std::size_t>;
+		using Item = std::size_t;
+
+		/* BloomFilter
+		 *     1. and     &
+		 *     2. or      |
+		 *     3. xor     ^
+		 *     4. sum     +
+		 *     5. mul     *
+		 *     6. size
+		 */
+		struct Filter
+		{
+			explicit Filter(const std::set<std::size_t>& s)
+				:
+				_and(std::accumulate(s.begin(), s.end(), 0xffffffff, [](std::size_t val, std::size_t item) { return val & item; })),
+				_or(std::accumulate(s.begin(), s.end(), 0, [](std::size_t val, std::size_t item) { return val | item; })),
+				_xor(std::accumulate(s.begin(), s.end(), 0, [](std::size_t val, std::size_t item) { return val ^ item; })),
+				_sum(std::accumulate(s.begin(), s.end(), 0, [](std::size_t val, std::size_t item) { return val + item; })),
+				_mul(std::accumulate(s.begin(), s.end(), 1, [](std::size_t val, std::size_t item) { return val * item; }))
+			{}
+			const std::size_t _and;
+			const std::size_t _or;
+			const std::size_t _xor;
+			const std::size_t _sum;
+			const std::size_t _mul;
+		};
+		class HashSet
+		{
+			using and_t = std::size_t;
+			using or_t = std::size_t;
+			using xor_t = std::size_t;
+			using sum_t = std::size_t;
+			using mul_t = std::size_t;
+		public:
+			explicit HashSet() = default;
+			void insert(const std::set<std::size_t>& set, const std::size_t support)
+			{
+				Filter f{ set };
+				_hash[f._and][f._or][f._xor][f._sum][f._mul][set.size()].insert(std::make_pair(set, support));
+			}
+			std::size_t find(const std::set<std::size_t>& set) const
+			{
+				Filter f{ set };
+				try {
+					const std::map<Set, const std::size_t>& sets =
+						_hash.at(f._and).at(f._or).at(f._xor).at(f._sum).at(f._mul).at(set.size());
+					if (auto it = sets.find(set); it != sets.end())
+						return it->second;
+				}
+				catch (std::out_of_range& exception) {}
+				return 0;
+			}
+		private:
+			Hash<and_t,
+				Hash<or_t,
+				Hash<xor_t,
+				Hash<sum_t,
+				Hash<mul_t,
+				Hash<std::size_t,
+				std::map<Set, const std::size_t>>>>>>>
+				_hash;
+		};
+
+		auto Is_intersect_null = [](const Set& A, const Set& B)->bool
+		{
+			auto ait = A.begin();
+			auto bit = B.begin();
+			while (ait != A.end() && bit != B.end())
+			{
+				if (*ait == *bit) return false;
+				else if (*ait < *bit) ++ait;
+				else if (*ait > *bit) ++bit;
+			}
+			return true;
+		};
+		auto Union = [](const Set& A, const Set& B) ->Set
+		{
+			Set s{};
+			std::set_union(A.begin(), A.end(),
+				B.begin(), B.end(),
+				std::inserter(s, s.begin()));
+			return s;
+		};
+
+		HashSet _hashSet;
+
+		for (auto const&[set, support] : frequent_sets)
+			_hashSet.insert(set, support);
+
+		// output
+		const char* output_path = "./Assosiation_Rules.txt";
+		std::ofstream Assosiation_Rules_out;
+		Assosiation_Rules_out.open(output_path, std::ios::out | std::ios::trunc);
+		if (!Assosiation_Rules_out.is_open())
+		{
+			std::cout << "failed to open Assosiation_Rules.txt" << std::endl;
+			exit(0);
+		}
+		auto print_Set = [&Assosiation_Rules_out](const Set& s)
+		{
+			Assosiation_Rules_out << "[";
+			const std::size_t size = s.size();
+			const auto back_it = --s.end();
+			for (auto it = s.begin(); it != back_it; ++it)
+				Assosiation_Rules_out << *it << ", ";
+			Assosiation_Rules_out << *back_it;
+			Assosiation_Rules_out << "]";
+		};
+		auto print_Assosiation_Rule = [&Assosiation_Rules_out, &print_Set](const Set& A, const Set& B, std::size_t support_AB, std::size_t confidence_AB)
+		{
+			static std::size_t line_num = 0;
+			Assosiation_Rules_out << ++line_num << "\t:\t";
+			print_Set(A);
+			Assosiation_Rules_out << "\t->\t";
+			print_Set(B);
+			Assosiation_Rules_out << "\t";
+			Assosiation_Rules_out << "[" << support_AB << ", " << confidence_AB << "]";
+			Assosiation_Rules_out << std::endl;
+		};
+
+		for (auto const&[A, support_A] : frequent_sets)
+			for (auto const&[B, support_B] : frequent_sets)
+			{
+				if (!Is_intersect_null(A, B)) continue;
+				Set AB = Union(A, B);
+				const std::size_t support_AB = _hashSet.find(AB);
+				const double confidence_AB = 1.0 * support_AB / support_A;
+				if (confidence_AB >= confidence)
+					print_Assosiation_Rule(A, B, support_AB, confidence_AB);
+			}
+
+		Assosiation_Rules_out.close();
+
+	} // end function generate_assosiation_rule();
 
 
 } // end namespace BI_Apriori

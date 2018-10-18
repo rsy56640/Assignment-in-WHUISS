@@ -7,8 +7,9 @@ namespace RSY_TOOL::FPT
 {
 
 	/*
-	 * TODO: sorted set
-	 *
+	 * The ordered-list should be prepared outside,
+	 * and insert-items should be ordered,
+	 * and discarded items must not occur.
 	 */
 	template<typename Key> class FPT :FPTType<Key>
 	{
@@ -17,26 +18,16 @@ namespace RSY_TOOL::FPT
 
 	public:
 
-		explicit FPT() :_pImpl(std::make_unique<FPTImpl<Key>>()) {}
+		explicit FPT(
+			std::vector<Key>&& list,
+			const std::size_t min_support,
+			std::map<std::set<Key>, std::size_t>& return_sets)
+			:_pImpl(std::make_unique<FPTImpl<Key>>(std::move(list), min_support, std::set<Key>{}, return_sets))
+		{}
 		FPT(const FPT&) = delete;
 		FPT& operator=(const FPT&) = delete;
 		FPT(FPT&&) = default;
 		FPT& operator=(FPT&&) = default;
-
-		/*
-		 * Parameter: [first, last) represents the forwardable stream.
-		 */
-		template<typename _InIt>
-		bool find(_InIt first, _InIt last) const
-		{
-			return _pImpl->find(first, last);
-		}
-
-		template<typename C>
-		bool find(C&& container) const
-		{
-			return find(std::begin(container), std::end(container));
-		}
 
 		/*
 		 * Parameter: [first, last) represents the forwardable stream.
@@ -50,9 +41,13 @@ namespace RSY_TOOL::FPT
 		template<typename C>
 		void insert(C&& container)
 		{
-			return insert(std::begin(container), std::end(container));
+			_pImpl->insert(std::begin(container), std::end(container));
 		}
 
+		void mine()
+		{
+			_pImpl->mine();
+		}
 
 	private:
 
