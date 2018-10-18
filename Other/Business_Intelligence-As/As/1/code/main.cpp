@@ -5,6 +5,7 @@
 #include <ctime>
 #include <numeric>
 #include <vector>
+#include <functional>
 #include "Apriori.h"
 #include "dissimilarity.hpp"
 #ifdef DEBUG
@@ -19,9 +20,9 @@
 #include <set>
 #include <unordered_set>
 
-constexpr std::size_t item_amount = 100;
-constexpr std::size_t transaction = 12000;
-constexpr std::size_t item_each_transaction = 44;
+constexpr std::size_t item_amount = 50;
+constexpr std::size_t transaction = 2000;
+constexpr std::size_t item_each_transaction = 22;
 constexpr double magic_coefficient = 0.25;
 constexpr double maybe_min_support_ratio = 0.4;
 constexpr double confidence = 0.5;
@@ -86,11 +87,13 @@ template<
 	}
 }
 
-
-void output_assosiation_rules(std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>&& assosiation_rules)
+template<typename Item>
+void output_assosiation_rules(
+	std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>&& assosiation_rules,
+	const char* output_path,
+	const std::function<Item(std::size_t)>& int2item)
 {
 	using Set = std::set<std::size_t>;
-	const char* output_path = "./Assosiation_Rules.txt";
 	std::ofstream Assosiation_Rules_out;
 	Assosiation_Rules_out.open(output_path, std::ios::out | std::ios::trunc);
 	if (!Assosiation_Rules_out.is_open())
@@ -98,14 +101,14 @@ void output_assosiation_rules(std::vector<std::tuple<std::set<std::size_t>, std:
 		std::cout << "failed to open Assosiation_Rules.txt" << std::endl;
 		exit(0);
 	}
-	auto print_Set = [&Assosiation_Rules_out](const Set& s)
+	auto print_Set = [&Assosiation_Rules_out, &int2item](const Set& s)
 	{
 		Assosiation_Rules_out << "[";
 		const std::size_t size = s.size();
 		const auto back_it = --s.end();
 		for (auto it = s.begin(); it != back_it; ++it)
-			Assosiation_Rules_out << *it << ", ";
-		Assosiation_Rules_out << *back_it;
+			Assosiation_Rules_out << int2item(*it) << ", ";
+		Assosiation_Rules_out << int2item(*back_it);
 		Assosiation_Rules_out << "]";
 	};
 
@@ -116,9 +119,9 @@ void output_assosiation_rules(std::vector<std::tuple<std::set<std::size_t>, std:
 		static std::size_t line_num = 0;
 		Assosiation_Rules_out << ++line_num << "\t:\t";
 		print_Set(A);
-		Assosiation_Rules_out << "\t->\t";
+		Assosiation_Rules_out << "  ->  ";
 		print_Set(B);
-		Assosiation_Rules_out << "\t";
+		Assosiation_Rules_out << "  ";
 		Assosiation_Rules_out << "[" << std::fixed << std::setprecision(4) << support_AB << ", " << std::fixed << std::setprecision(4) << confidence_AB << "]";
 		Assosiation_Rules_out << std::endl;
 	}
@@ -206,6 +209,7 @@ void test_Apriori()
 	AP_output << std::endl << "result size:" << result.size() << std::endl;
 	std::size_t result_line = 0;
 	AP_output << "count\tsupport\t\titem set" << std::endl;
+	AP_output << "---------------------------------------------------------------------" << std::endl;
 	for (auto const&[set, count] : result)
 	{
 		AP_output << ++result_line << "\t" << count << "\t:\t";
@@ -223,7 +227,7 @@ void test_Apriori()
 		assosiation_rules = BI_Apriori::generate_assosiation_rule(result, transaction, confidence);
 
 	// output Assosiation Rules
-	output_assosiation_rules(std::move(assosiation_rules));
+	output_assosiation_rules<std::size_t>(std::move(assosiation_rules), "./Assosiation_Rules_AP.txt", [](std::size_t i) { return i; });
 
 }
 
@@ -276,23 +280,20 @@ void test_Apriori_FPT()
 
 #define TEST_SIMPLEx //
 #ifdef TEST_SIMPLE
-	std::vector<std::set<std::string>> str_container;
+	std::vector<std::set<std::string>> s;
 	std::set<std::string> ss;
-	ss = { "milk", "bread", "butter", "cheese","jam" }; str_container.push_back(ss);
-	ss = { "milk", "bread", "butter", "jam" }; str_container.push_back(ss);
-	ss = { "milk", "butter" }; str_container.push_back(ss);
-	ss = { "milk", "cheese" }; str_container.push_back(ss);
-	ss = { "bread", "butter", "cheese" }; str_container.push_back(ss);
-	ss = { "bread", "jam" }; str_container.push_back(ss);
-	ss = { "milk", "discard" }; str_container.push_back(ss);
+	ss = { "milk", "bread", "butter", "cheese","jam" }; s.push_back(ss);
+	ss = { "milk", "bread", "butter", "jam" }; s.push_back(ss);
+	ss = { "milk", "butter" }; s.push_back(ss);
+	ss = { "milk", "cheese" }; s.push_back(ss);
+	ss = { "bread", "butter", "cheese" }; s.push_back(ss);
+	ss = { "bread", "jam" }; s.push_back(ss);
+	ss = { "milk", "discard" }; s.push_back(ss);
 	using Item = std::string;
-	std::tuple<
-		std::vector<std::tuple<std::set<Item>, std::size_t>>,
-		std::map<Item, std::size_t>,
-		std::map<std::size_t, Item>
-	> result = BI_Apriori::Apriori_FP<Item>(str_container, 2);
+	constexpr std::size_t FP_min_support = 2;
 #else
 	std::vector<std::set<std::size_t>> s = generate();
+	constexpr std::size_t FP_min_support = min_support;
 
 	// output data
 	const char* output_data_path = "./FP_data.txt";
@@ -307,27 +308,49 @@ void test_Apriori_FPT()
 	output_data<Item>(FP_output_data, s);
 	FP_output_data.close();
 	FP_output << "data generated" << std::endl;
-
+#endif // TEST_SIMPLE
 #ifdef GET_TIME_ON_WINDOWS
 	DWORD start = GetTickCount();
+#endif // GET_TIME_ON_WINDOWS
 
 	std::tuple<
 		std::vector<std::tuple<std::set<Item>, std::size_t>>,
 		std::map<Item, std::size_t>,
 		std::map<std::size_t, Item>
-	> result = BI_Apriori::Apriori_FP<Item>(s, min_support);
+	> _result = BI_Apriori::Apriori_FP<Item>(s, FP_min_support);
 
+	std::map<Item, std::size_t>& item2int = std::get<1>(_result);
+	std::map<std::size_t, Item>& int2item = std::get<2>(_result);
+
+	std::vector<std::tuple<std::set<std::size_t>, std::size_t>> item_sets;
+	item_sets.reserve(std::get<0>(_result).size());
+	for (auto const&[set, amount] : std::get<0>(_result))
+	{
+		std::set<std::size_t> items;
+		for (const Item& i : set)
+			items.insert(item2int[i]);
+		item_sets.push_back(std::make_tuple(std::move(items), amount));
+	}
+
+	std::tuple<
+		std::vector<std::tuple<std::set<std::size_t>, std::size_t>>,
+		std::map<Item, std::size_t>,
+		std::map<std::size_t, Item>
+	> result = std::make_tuple(std::move(item_sets), item2int, int2item);
+
+#ifdef GET_TIME_ON_WINDOWS
 	DWORD end = GetTickCount();
 	BI_Apriori::print_time(start, end, FP_output, "FP completed: ");
 #endif // GET_TIME_ON_WINDOWS
-#endif // TEST_SIMPLE
 
-	std::map<Item, std::size_t> item2int = std::move(std::get<1>(result));
-	std::map<std::size_t, Item> in2item = std::move(std::get<2>(result));
 
-	for (auto const&[set, amount] : std::get<0>(result))
+	// output item-set
+	FP_output << "count\tsupport\t\titem set" << std::endl;
+	FP_output << "---------------------------------------------------------------------" << std::endl;
+	std::size_t count = 0;
+	for (auto const&[set, amount] : std::get<0>(_result))
 	{
-		FP_output << amount << "\t:\t";
+		FP_output << ++count << "\t" << amount << "\t:\t";
 		std::vector<Item> temp_set_for_output;
 		temp_set_for_output.reserve(set.size());
 		for (Item const& s : set)
@@ -345,7 +368,7 @@ void test_Apriori_FPT()
 		assosiation_rules = BI_Apriori::generate_assosiation_rule(std::get<0>(result), transaction, confidence);
 
 	// output Assosiation Rules
-	output_assosiation_rules(std::move(assosiation_rules));
+	output_assosiation_rules<Item>(std::move(assosiation_rules), "./Assosiation_Rules_FP.txt", [&int2item](std::size_t i) { return int2item[i]; });
 
 }
 

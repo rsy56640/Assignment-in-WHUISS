@@ -529,12 +529,12 @@ namespace BI_Apriori
 		using Item = std::size_t;
 
 		/* BloomFilter
+		 *     0. size
 		 *     1. and     &
 		 *     2. or      |
 		 *     3. xor     ^
 		 *     4. sum     +
 		 *     5. mul     *
-		 *     6. size
 		 */
 		struct Filter
 		{
@@ -564,14 +564,14 @@ namespace BI_Apriori
 			void insert(const std::set<std::size_t>& set, const std::size_t support)
 			{
 				Filter f{ set };
-				_hash[f._and][f._or][f._xor][f._sum][f._mul][set.size()].insert(std::make_pair(set, support));
+				_hash[set.size()][f._and][f._or][f._xor][f._sum][f._mul].insert(std::make_pair(set, support));
 			}
 			std::size_t find(const std::set<std::size_t>& set) const
 			{
 				Filter f{ set };
 				try {
 					const std::map<Set, const std::size_t>& sets =
-						_hash.at(f._and).at(f._or).at(f._xor).at(f._sum).at(f._mul).at(set.size());
+						_hash.at(set.size()).at(f._and).at(f._or).at(f._xor).at(f._sum).at(f._mul);
 					if (auto it = sets.find(set); it != sets.end())
 						return it->second;
 				}
@@ -579,12 +579,12 @@ namespace BI_Apriori
 				return 0;
 			}
 		private:
-			Hash<and_t,
+			Hash<std::size_t,
+				Hash<and_t,
 				Hash<or_t,
 				Hash<xor_t,
 				Hash<sum_t,
 				Hash<mul_t,
-				Hash<std::size_t,
 				std::map<Set, const std::size_t>>>>>>>
 				_hash;
 		};
