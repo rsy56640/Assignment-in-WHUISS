@@ -220,6 +220,7 @@ namespace BI_Apriori
 #ifdef GET_TIME_ON_WINDOWS
 			end = GetTickCount();
 			print_time(start, end, AP_output, "");
+			print_time(start, end, std::cout, "");
 			start = GetTickCount();
 #endif // GET_TIME_ON_WINDOWS
 #endif // DEBUG
@@ -241,6 +242,7 @@ namespace BI_Apriori
 #ifdef GET_TIME_ON_WINDOWS
 			end = GetTickCount();
 			print_time(start, end, AP_output, "");
+			print_time(start, end, std::cout, "");
 			start = GetTickCount();
 #endif // GET_TIME_ON_WINDOWS
 #endif // DEBUG
@@ -281,6 +283,7 @@ namespace BI_Apriori
 #ifdef GET_TIME_ON_WINDOWS
 			end = GetTickCount();
 			print_time(start, end, AP_output, "");
+			print_time(start, end, std::cout, "");
 			start = GetTickCount();
 #endif // GET_TIME_ON_WINDOWS
 #endif // DEBUG
@@ -390,6 +393,7 @@ namespace BI_Apriori
 #ifdef GET_TIME_ON_WINDOWS
 			end = GetTickCount();
 			print_time(start, end, AP_output, "");
+			print_time(start, end, std::cout, "");
 #endif // GET_TIME_ON_WINDOWS
 			AP_output << "round: " << round << "\tfinished" << std::endl;
 			AP_output << std::endl << "---------------------------------------------------------------------"

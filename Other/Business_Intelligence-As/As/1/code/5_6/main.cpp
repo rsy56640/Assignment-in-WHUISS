@@ -20,23 +20,19 @@
 #include <set>
 #include <unordered_set>
 
-constexpr std::size_t item_amount = 50;
-constexpr std::size_t transaction = 2000;
-constexpr std::size_t item_each_transaction = 22;
-constexpr double magic_coefficient = 0.25;
-constexpr double maybe_min_support_ratio = 0.4;
-constexpr double confidence = 0.5;
-constexpr bool difficult = false;
-constexpr std::size_t min_support =
-difficult
-? static_cast<std::size_t>(transaction * item_each_transaction * magic_coefficient / item_amount)
-	: static_cast<std::size_t>(maybe_min_support_ratio * transaction);
+constexpr std::size_t item_amount = 100;
+constexpr std::size_t transaction = 10000;
+constexpr std::size_t item_each_transaction = 42; // less than half of `item_amount`
+constexpr double min_support_ratio = 0.300;
+constexpr std::size_t min_support = static_cast<std::size_t>(min_support_ratio * transaction);
+constexpr double confidence = 0.80;
 
-constexpr double min_support_ratio = 1.0 * min_support / transaction;
 
 constexpr double normal_mean = item_amount / 2.0;
 constexpr double normal_deviation = item_amount / 4.0;
 
+constexpr double support_increment = 0.025;
+constexpr double confidence_increment = 0;
 
 std::vector<std::set<std::size_t>> generate()
 {
@@ -67,6 +63,14 @@ std::vector<std::set<std::size_t>> generate()
 	return s;
 }
 
+static std::size_t test_round = -1;
+std::vector<std::set<std::size_t>> get_data()
+{
+	static std::vector<std::set<std::size_t>> s = generate();
+	test_round++;
+	return s;
+}
+
 
 template<
 	typename outputItem,
@@ -90,7 +94,7 @@ template<
 template<typename Item>
 void output_assosiation_rules(
 	std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>&& assosiation_rules,
-	const char* output_path,
+	const std::string& output_path,
 	const std::function<Item(std::size_t)>& int2item)
 {
 	using Set = std::set<std::size_t>;
@@ -129,26 +133,29 @@ void output_assosiation_rules(
 }
 
 
+
 void test_Apriori()
 {
 
-	std::vector<std::set<std::size_t>> s = generate();
+	std::vector<std::set<std::size_t>> s = get_data();
 
 	// output data
-	const char* data_path = "./AP_data.txt";
-	std::ofstream AP_data_output;
-	AP_data_output.open(data_path, std::ios::out | std::ios::trunc);
-	if (!AP_data_output.is_open())
+	if (test_round == 0)
 	{
-		std::cout << "failed to open AP_data.txt" << std::endl;
-		exit(0);
+		const char* data_path = "./AP_data.txt";
+		std::ofstream AP_data_output;
+		AP_data_output.open(data_path, std::ios::out | std::ios::trunc);
+		if (!AP_data_output.is_open())
+		{
+			std::cout << "failed to open AP_data.txt" << std::endl;
+			exit(0);
+		}
+		output_data<std::size_t>(AP_data_output, s);
+		AP_data_output.close();
 	}
-	output_data<std::size_t>(AP_data_output, s);
-	AP_data_output.close();
-
 
 #ifdef OUTPUT_FILE
-	const char* output_path = "./AP.txt";
+	const std::string output_path = "./AP_" + std::to_string(test_round) + ".txt";
 	std::ofstream AP_output;
 	AP_output.open(output_path, std::ios::out | std::ios::trunc);
 	if (!AP_output.is_open())
@@ -160,14 +167,20 @@ void test_Apriori()
 	auto& AP_output = std::cout;
 #endif // OUTPUT_FILE
 
+	const double _min_support_ratio = (min_support_ratio + test_round * support_increment);
+	const double _min_support = _min_support_ratio * transaction;
+	const double _confidence = confidence + test_round * confidence_increment;
+
 #ifdef OUTPUT_FILE // always output in console
 	std::cout << "item_amount: " << item_amount << std::endl;
 	std::cout << "transaction: " << transaction << std::endl;
 	std::cout << "item_each_transaction: " << item_each_transaction << std::endl;
-	std::cout << "min_support_ratio: " << min_support_ratio << std::endl;
-	std::cout << "min_support: " << min_support << std::endl;
-	std::cout << "confidence: " << confidence << std::endl;
-	std::cout << "data generated" << std::endl << std::endl;
+	std::cout << "min_support_ratio: " << _min_support_ratio << std::endl;
+	std::cout << "min_support: " << _min_support << std::endl;
+	std::cout << "confidence: " << _confidence << std::endl;
+	std::cout << "data generated: normal distribution N("
+		<< normal_mean << ", " << normal_deviation << ")"
+		<< std::endl << std::endl;
 	std::cout << std::endl;
 #endif // OUTPUT_FILE
 
@@ -175,10 +188,12 @@ void test_Apriori()
 	AP_output << "item_amount: " << item_amount << std::endl;
 	AP_output << "transaction: " << transaction << std::endl;
 	AP_output << "item_each_transaction: " << item_each_transaction << std::endl;
-	AP_output << "min_support_ratio: " << min_support_ratio << std::endl;
-	AP_output << "min_support: " << min_support << std::endl;
-	AP_output << "confidence: " << confidence << std::endl;
-	AP_output << "data generated" << std::endl << std::endl;
+	AP_output << "min_support_ratio: " << _min_support_ratio << std::endl;
+	AP_output << "min_support: " << _min_support << std::endl;
+	AP_output << "confidence: " << _confidence << std::endl;
+	AP_output << "data generated: normal distribution N("
+		<< normal_mean << ", " << normal_deviation << ")"
+		<< std::endl << std::endl;
 	AP_output << std::endl;
 
 #ifdef OUTPUT_FILE
@@ -189,7 +204,7 @@ void test_Apriori()
 	DWORD  start = GetTickCount();
 #endif // GET_TIME_ON_WINDOWS
 
-	auto result = BI_Apriori::Apriori<std::set<std::size_t>>(s, min_support);
+	auto result = BI_Apriori::Apriori<std::set<std::size_t>>(s, _min_support);
 
 #ifdef OUTPUT_FILE
 	AP_output.open(output_path, std::ios::out | std::ios::app);
@@ -204,6 +219,7 @@ void test_Apriori()
 #ifdef GET_TIME_ON_WINDOWS
 	DWORD  end = GetTickCount();
 	BI_Apriori::print_time(start, end, AP_output, "Apriori time used: ");
+	BI_Apriori::print_time(start, end, std::cout, "Apriori time used: ");
 #endif // GET_TIME_ON_WINDOWS
 
 	AP_output << std::endl << "result size:" << result.size() << std::endl;
@@ -227,7 +243,8 @@ void test_Apriori()
 		assosiation_rules = BI_Apriori::generate_assosiation_rule(result, transaction, confidence);
 
 	// output Assosiation Rules
-	output_assosiation_rules<std::size_t>(std::move(assosiation_rules), "./Assosiation_Rules_AP.txt", [](std::size_t i) { return i; });
+	std::string assosiation_rules_output_path = std::string("./Assosiation_Rules_AP_") + std::to_string(test_round) + ".txt";
+	output_assosiation_rules<std::size_t>(std::move(assosiation_rules), assosiation_rules_output_path, [](std::size_t i) { return i; });
 
 }
 
@@ -309,7 +326,9 @@ void test_Apriori_FPT()
 	using Item = std::size_t;
 	output_data<Item>(FP_output_data, s);
 	FP_output_data.close();
-	FP_output << "data generated" << std::endl;
+	FP_output << "data generated: normal distribution N("
+		<< normal_mean << ", " << normal_deviation << ")"
+		<< std::endl << std::endl;
 #endif // TEST_SIMPLE
 #ifdef GET_TIME_ON_WINDOWS
 	DWORD start = GetTickCount();
@@ -378,9 +397,10 @@ void test_Apriori_FPT()
 int main()
 {
 	//BI_dissimilarity::test();
-	test_Apriori();
-	test_Apriori_FPT();
-	printf("\n%s\n", "done");
+	for (std::size_t i = 0; i < 8; i++)
+		test_Apriori();
+	//test_Apriori_FPT();
+	//printf("\n%s\n", "done");
 	//getchar();
 	return 0;
 }
