@@ -82,7 +82,7 @@ namespace BI_Apriori
 		&& std::is_same_v<std::size_t, decltype(std::declval<std::hash<typename Set::value_type>::operator()>())>
 #endif // SET_IS_COMPARABLE
 		>* = nullptr
-	> std::vector<std::tuple<Set, std::size_t>> Apriori(const std::vector<Set>& sets, const std::size_t min_support)
+	> std::vector<std::tuple<Set, std::size_t>> Apriori(const std::vector<Set>& sets, const std::size_t min_support, const std::string& output_path)
 	{
 		using Item = typename Set::value_type;
 #ifdef SET_IS_COMPARABLE
@@ -165,7 +165,7 @@ namespace BI_Apriori
 #ifdef DEBUG
 		std::size_t round = 0;
 #ifdef OUTPUT_FILE
-		const char* search_path = "./AP.txt";
+		const std::string search_path = output_path;
 		std::ofstream AP_output;
 #else
 		auto& AP_output = std::cout;

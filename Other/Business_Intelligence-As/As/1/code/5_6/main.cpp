@@ -20,19 +20,22 @@
 #include <set>
 #include <unordered_set>
 
-constexpr std::size_t item_amount = 100;
+constexpr std::size_t item_amount = 200;
 constexpr std::size_t transaction = 10000;
-constexpr std::size_t item_each_transaction = 42; // less than half of `item_amount`
+constexpr std::size_t item_each_transaction = 72; // less than half of `item_amount`
 constexpr double min_support_ratio = 0.300;
 constexpr std::size_t min_support = static_cast<std::size_t>(min_support_ratio * transaction);
 constexpr double confidence = 0.80;
 
 
 constexpr double normal_mean = item_amount / 2.0;
-constexpr double normal_deviation = item_amount / 4.0;
+constexpr double normal_deviation = item_amount / 4.5;
 
 constexpr double support_increment = 0.025;
 constexpr double confidence_increment = 0;
+
+constexpr std::size_t qinding_amount = 4 + item_amount / 4 - item_each_transaction / 2;;
+
 
 std::vector<std::set<std::size_t>> generate()
 {
@@ -49,14 +52,41 @@ std::vector<std::set<std::size_t>> generate()
 	std::mt19937 g(rd2());
 	std::shuffle(std::begin(shuffle_map), std::end(shuffle_map), g);
 
+
+	std::multimap<std::size_t, std::size_t> QinDing;
+	for (std::size_t i = 0; i < item_amount * qinding_amount; i++)
+	{
+		const std::size_t num1 = 1 + std::rand() % item_amount;
+		const std::size_t num2 = 1 + std::rand() % item_amount;
+		QinDing.insert(std::make_pair(num1, num2));
+		QinDing.insert(std::make_pair(num2, num1));
+	}
+
+
 	std::vector<std::set<std::size_t>> s; s.reserve(transaction);
 	std::set<std::size_t> set;
 	for (std::size_t i = 0; i < transaction; i++)
 	{
 		const std::size_t transaction_item = ((std::rand() % item_each_transaction) << 1) + 1;
 		while (set.size() < transaction_item)
-			//set.insert(shuffle_map[std::rand() % item_amount]);
-			set.insert(shuffle_map[(static_cast<std::size_t>(d(gen))) % item_amount]);
+		{
+			const std::size_t insert_num = shuffle_map[static_cast<std::size_t>(std::rand() % item_amount)];
+			//const std::size_t insert_num = shuffle_map[(static_cast<std::size_t>(d(gen))) % item_amount];
+			set.insert(insert_num);
+			if (QinDing.find(insert_num) != QinDing.end())
+			{
+				const std::size_t proportion = std::rand() % 1000;
+				if (proportion % 1 != 0) continue;
+				if (proportion < confidence * 1000 * 1.2 // filter
+					|| transaction_item < item_each_transaction / 2.5
+					|| true)
+				{
+					auto const&[first, end] = QinDing.equal_range(insert_num);
+					for (auto it = first; it != end; ++it)
+						set.insert(it->second);
+				}
+			}
+		}
 		s.push_back(set);
 		set.clear();
 	}
@@ -118,9 +148,9 @@ void output_assosiation_rules(
 
 	Assosiation_Rules_out << "No\t:\t[A]\t->\t[B]\t[s, c]" << std::endl;
 	Assosiation_Rules_out << "-----------------------------------------------------------------------------" << std::endl;
+	std::size_t line_num = 0;
 	for (auto const&[A, B, support_AB, confidence_AB] : assosiation_rules)
 	{
-		static std::size_t line_num = 0;
 		Assosiation_Rules_out << ++line_num << "\t:\t";
 		print_Set(A);
 		Assosiation_Rules_out << "  ->  ";
@@ -131,7 +161,6 @@ void output_assosiation_rules(
 	}
 	Assosiation_Rules_out.close();
 }
-
 
 
 void test_Apriori()
@@ -168,7 +197,7 @@ void test_Apriori()
 #endif // OUTPUT_FILE
 
 	const double _min_support_ratio = (min_support_ratio + test_round * support_increment);
-	const double _min_support = _min_support_ratio * transaction;
+	const std::size_t _min_support = _min_support_ratio * transaction;
 	const double _confidence = confidence + test_round * confidence_increment;
 
 #ifdef OUTPUT_FILE // always output in console
@@ -204,7 +233,7 @@ void test_Apriori()
 	DWORD  start = GetTickCount();
 #endif // GET_TIME_ON_WINDOWS
 
-	auto result = BI_Apriori::Apriori<std::set<std::size_t>>(s, _min_support);
+	auto result = BI_Apriori::Apriori<std::set<std::size_t>>(s, _min_support, output_path);
 
 #ifdef OUTPUT_FILE
 	AP_output.open(output_path, std::ios::out | std::ios::app);
@@ -284,16 +313,6 @@ void test_Apriori_FPT()
 	}
 	*/
 
-	// test FPT
-
-	const char* output_path = "./FP.txt";
-	std::ofstream FP_output;
-	FP_output.open(output_path, std::ios::out | std::ios::trunc);
-	if (!FP_output.is_open())
-	{
-		std::cout << "failed to open FP.txt" << std::endl;
-		exit(0);
-	}
 
 #define TEST_SIMPLEx //
 #ifdef TEST_SIMPLE
@@ -310,12 +329,12 @@ void test_Apriori_FPT()
 	constexpr std::size_t FP_min_support = 2;
 	constexpr std::size_t _transaction = 7;
 #else
-	std::vector<std::set<std::size_t>> s = generate();
+	std::vector<std::set<std::size_t>> s = get_data();
 	constexpr std::size_t FP_min_support = min_support;
 	constexpr std::size_t _transaction = transaction;
 
 	// output data
-	const char* output_data_path = "./FP_data.txt";
+	const std::string output_data_path = "./FP_data.txt";
 	std::ofstream FP_output_data;
 	FP_output_data.open(output_data_path, std::ios::out | std::ios::trunc);
 	if (!FP_output_data.is_open())
@@ -326,9 +345,44 @@ void test_Apriori_FPT()
 	using Item = std::size_t;
 	output_data<Item>(FP_output_data, s);
 	FP_output_data.close();
+
+
+	const std::string output_path = std::string("./FP_") + std::to_string(test_round) + ".txt";
+	std::ofstream FP_output;
+	FP_output.open(output_path, std::ios::out | std::ios::trunc);
+	if (!FP_output.is_open())
+	{
+		std::cout << "failed to open FP.txt" << std::endl;
+		exit(0);
+	}
+
+	const double _min_support_ratio = (min_support_ratio + test_round * support_increment);
+	const std::size_t _min_support = _min_support_ratio * transaction;
+	const double _confidence = confidence + test_round * confidence_increment;
+
+	FP_output << "item_amount: " << item_amount << std::endl;
+	FP_output << "transaction: " << transaction << std::endl;
+	FP_output << "item_each_transaction: " << item_each_transaction << std::endl;
+	FP_output << "min_support_ratio: " << _min_support_ratio << std::endl;
+	FP_output << "min_support: " << _min_support << std::endl;
+	FP_output << "confidence: " << _confidence << std::endl;
 	FP_output << "data generated: normal distribution N("
 		<< normal_mean << ", " << normal_deviation << ")"
 		<< std::endl << std::endl;
+	FP_output << std::endl;
+
+	std::cout << "item_amount: " << item_amount << std::endl;
+	std::cout << "transaction: " << transaction << std::endl;
+	std::cout << "item_each_transaction: " << item_each_transaction << std::endl;
+	std::cout << "min_support_ratio: " << _min_support_ratio << std::endl;
+	std::cout << "min_support: " << _min_support << std::endl;
+	std::cout << "confidence: " << _confidence << std::endl;
+	std::cout << "data generated: normal distribution N("
+		<< normal_mean << ", " << normal_deviation << ")"
+		<< std::endl << std::endl;
+	std::cout << std::endl;
+
+
 #endif // TEST_SIMPLE
 #ifdef GET_TIME_ON_WINDOWS
 	DWORD start = GetTickCount();
@@ -389,7 +443,8 @@ void test_Apriori_FPT()
 		assosiation_rules = BI_Apriori::generate_assosiation_rule(std::get<0>(result), _transaction, confidence);
 
 	// output Assosiation Rules
-	output_assosiation_rules<Item>(std::move(assosiation_rules), "./Assosiation_Rules_FP.txt", [&int2item](std::size_t i) { return int2item[i]; });
+	const std::string assosiation_rules_output_path = std::string("./Assosiation_Rules_FP") + std::to_string(test_round) + ".txt";
+	output_assosiation_rules<Item>(std::move(assosiation_rules), assosiation_rules_output_path, [&int2item](std::size_t i) { return int2item[i]; });
 
 }
 
@@ -398,8 +453,8 @@ int main()
 {
 	//BI_dissimilarity::test();
 	for (std::size_t i = 0; i < 8; i++)
-		test_Apriori();
-	//test_Apriori_FPT();
+		//test_Apriori();
+		test_Apriori_FPT();
 	//printf("\n%s\n", "done");
 	//getchar();
 	return 0;

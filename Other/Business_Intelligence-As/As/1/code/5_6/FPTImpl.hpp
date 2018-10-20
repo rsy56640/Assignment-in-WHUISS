@@ -205,6 +205,7 @@ namespace RSY_TOOL::FPT
 				//     1. list
 				//     2. item2int
 				//     3. to_be_added
+				//     4. order sub_FP
 				std::set<Key> to_be_added = _to_be_added;
 				to_be_added.insert(*rit);
 				std::set<Key> temp_to_be_added = to_be_added;
@@ -237,9 +238,18 @@ namespace RSY_TOOL::FPT
 							it = set.erase(it);
 						else ++it;
 					}
-				// order list
+				// order list (big -> small)
 				std::sort(list.begin(), list.end(),
-					[](Key const& lhs, Key const& rhs)->bool { return lhs > rhs; });
+					[&item_occur_set](Key const& lhs, Key const& rhs)->bool
+				{ return item_occur_set[lhs] > item_occur_set[rhs]; });
+				// order sub_FP
+				std::map<Key, std::size_t> order;
+				std::size_t _max = 0xffffffff;
+				for (Key& const key : list)
+					order[key] = _max--;
+				for (auto &set : sub_FP)
+					std::sort(set.begin(), set.end(), [&order](Key const& lhs, Key const& rhs)->bool
+				{ return order[lhs] > order[rhs]; });
 
 				// construct FP
 				FPTImpl<Key> fp(
@@ -315,7 +325,6 @@ namespace RSY_TOOL::FPT
 					_return_sets[temp_to_be_added]++;
 					continue;
 				}
-				std::reverse(branch.begin(), branch.end());
 				cond_fp.push_back(std::move(branch));
 			}
 			return cond_fp;
@@ -342,6 +351,8 @@ namespace RSY_TOOL::FPT
 
 			const std::size_t size = _size;
 
+			if (_branch.empty()) return;
+
 			auto const& branches = slice_branch(_branch);
 			for (auto const&[branch, support] : branches)
 				real_combine(branch, support);
@@ -360,25 +371,20 @@ namespace RSY_TOOL::FPT
 		 */
 		std::vector<std::pair<std::vector<Key>, std::size_t>> slice_branch(const std::vector<std::pair<Key, std::size_t>>& _branch)
 		{
-			// WTF ????
-			if (_branch.empty())
-			{
-				std::cout << "\n-------- in `slice_branch()`, the _branch is empty --------\n" << std::endl;
-				return std::vector<std::pair<std::vector<Key>, std::size_t>>{};
-			}
-
 			const std::size_t major_support = _branch.back().second; // major_support is minimum.
 
 			// slice the branches
 			std::vector<std::size_t> slices;
 			std::size_t cur_support = _branch[0].second; // promise (size!=0) in `combine()`
+			std::size_t cur_location = 0;
 			for (auto const&[key, support] : _branch)
 			{
 				if (support < cur_support)
 				{
 					cur_support = support;
-					slices.push_back(cur_support);
+					slices.push_back(cur_location);
 				}
+				cur_location++;
 			}
 
 			std::vector<std::pair<std::vector<Key>, std::size_t>> _branches;
