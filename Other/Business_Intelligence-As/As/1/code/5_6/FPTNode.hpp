@@ -10,7 +10,7 @@ namespace RSY_TOOL::FPT
 	template<typename Key> struct FPTNode
 	{
 		using node_ptr = FPTNode<Key>*;
-		using key_type = std::optional<const Key>;
+		using key_type = Key; // std::optional<const Key>; Since Key in FP must be std::size_t
 		key_type _key;
 		std::size_t _support = 0;
 		node_ptr _parent = nullptr;
@@ -19,7 +19,7 @@ namespace RSY_TOOL::FPT
 			typename Key_t,
 			std::enable_if_t<std::is_convertible_v<std::decay_t<Key_t>, Key>>* = nullptr
 		> explicit FPTNode(Key_t&& key) : _key(std::forward<Key_t>(key)) {}
-		explicit FPTNode() :_key(std::nullopt) {}
+		explicit FPTNode() :_key(0) {}
 		FPTNode(const FPTNode&) = delete;
 		FPTNode& operator=(const FPTNode&) = delete;
 

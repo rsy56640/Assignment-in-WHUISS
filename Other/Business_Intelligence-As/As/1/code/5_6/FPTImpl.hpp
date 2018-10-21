@@ -245,7 +245,7 @@ namespace RSY_TOOL::FPT
 				// order sub_FP
 				std::map<Key, std::size_t> order;
 				std::size_t _max = 0xffffffff;
-				for (Key& const key : list)
+				for (Key const& key : list)
 					order[key] = _max--;
 				for (auto &set : sub_FP)
 					std::sort(set.begin(), set.end(), [&order](Key const& lhs, Key const& rhs)->bool
@@ -317,7 +317,7 @@ namespace RSY_TOOL::FPT
 				node_ptr last = node->_parent;
 				while (last != _root)
 				{
-					branch.push_back(last->_key.value());
+					branch.push_back(last->_key);
 					last = last->_parent;
 				}
 				if (branch.empty()) // add (_to_be_added * support)
@@ -346,7 +346,7 @@ namespace RSY_TOOL::FPT
 			{
 				_size++;
 				node = node->next.begin()->second;
-				_branch.push_back(std::make_pair(node->_key.value(), node->_support));
+				_branch.push_back(std::make_pair(node->_key, node->_support));
 			}
 
 			const std::size_t size = _size;

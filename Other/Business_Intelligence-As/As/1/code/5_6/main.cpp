@@ -20,21 +20,21 @@
 #include <set>
 #include <unordered_set>
 
-constexpr std::size_t item_amount = 200;
+constexpr std::size_t item_amount = 100;
 constexpr std::size_t transaction = 10000;
-constexpr std::size_t item_each_transaction = 72; // less than half of `item_amount`
-constexpr double min_support_ratio = 0.300;
+constexpr std::size_t item_each_transaction = 40; // less than half of `item_amount`
+constexpr double min_support_ratio = 0.350;
 constexpr std::size_t min_support = static_cast<std::size_t>(min_support_ratio * transaction);
-constexpr double confidence = 0.80;
+constexpr double confidence = 0.8;
 
 
 constexpr double normal_mean = item_amount / 2.0;
 constexpr double normal_deviation = item_amount / 4.5;
 
-constexpr double support_increment = 0.025;
-constexpr double confidence_increment = 0;
+constexpr double support_increment = 0;
+constexpr double confidence_increment = 0.0;
 
-constexpr std::size_t qinding_amount = 4 + item_amount / 4 - item_each_transaction / 2;;
+constexpr std::size_t qinding_amount = 4 + item_amount / 4 - item_each_transaction / 2;
 
 
 std::vector<std::set<std::size_t>> generate()
@@ -67,7 +67,7 @@ std::vector<std::set<std::size_t>> generate()
 	std::set<std::size_t> set;
 	for (std::size_t i = 0; i < transaction; i++)
 	{
-		const std::size_t transaction_item = ((std::rand() % item_each_transaction) << 1) + 1;
+		const std::size_t transaction_item = (((std::rand() % item_each_transaction) << 1) + 1) % item_amount;
 		while (set.size() < transaction_item)
 		{
 			const std::size_t insert_num = shuffle_map[static_cast<std::size_t>(std::rand() % item_amount)];
@@ -197,7 +197,7 @@ void test_Apriori()
 #endif // OUTPUT_FILE
 
 	const double _min_support_ratio = (min_support_ratio + test_round * support_increment);
-	const std::size_t _min_support = _min_support_ratio * transaction;
+	const std::size_t _min_support = static_cast<std::size_t>(_min_support_ratio * transaction);
 	const double _confidence = confidence + test_round * confidence_increment;
 
 #ifdef OUTPUT_FILE // always output in console
@@ -326,8 +326,9 @@ void test_Apriori_FPT()
 	ss = { "bread", "jam" }; s.push_back(ss);
 	ss = { "milk", "discard" }; s.push_back(ss);
 	using Item = std::string;
-	constexpr std::size_t FP_min_support = 2;
+	constexpr std::size_t _min_support = 2;
 	constexpr std::size_t _transaction = 7;
+	constexpr std::size_t _confidence = 0.2;
 #else
 	std::vector<std::set<std::size_t>> s = get_data();
 	constexpr std::size_t FP_min_support = min_support;
@@ -357,7 +358,7 @@ void test_Apriori_FPT()
 	}
 
 	const double _min_support_ratio = (min_support_ratio + test_round * support_increment);
-	const std::size_t _min_support = _min_support_ratio * transaction;
+	const std::size_t _min_support = static_cast<std::size_t>(_min_support_ratio * transaction);
 	const double _confidence = confidence + test_round * confidence_increment;
 
 	FP_output << "item_amount: " << item_amount << std::endl;
@@ -392,7 +393,7 @@ void test_Apriori_FPT()
 		std::vector<std::tuple<std::set<Item>, std::size_t>>,
 		std::map<Item, std::size_t>,
 		std::map<std::size_t, Item>
-	> _result = BI_Apriori::Apriori_FP<Item>(s, FP_min_support);
+	> _result = BI_Apriori::Apriori_FP<Item>(s, _min_support);
 
 	std::map<Item, std::size_t>& item2int = std::get<1>(_result);
 	std::map<std::size_t, Item>& int2item = std::get<2>(_result);
@@ -440,7 +441,7 @@ void test_Apriori_FPT()
 
 	// Generate Assosiation Rules
 	std::vector<std::tuple<std::set<std::size_t>, std::set<std::size_t>, double, double>>
-		assosiation_rules = BI_Apriori::generate_assosiation_rule(std::get<0>(result), _transaction, confidence);
+		assosiation_rules = BI_Apriori::generate_assosiation_rule(std::get<0>(result), _transaction, _confidence);
 
 	// output Assosiation Rules
 	const std::string assosiation_rules_output_path = std::string("./Assosiation_Rules_FP") + std::to_string(test_round) + ".txt";
@@ -452,9 +453,9 @@ void test_Apriori_FPT()
 int main()
 {
 	//BI_dissimilarity::test();
-	for (std::size_t i = 0; i < 8; i++)
-		//test_Apriori();
-		test_Apriori_FPT();
+	//for (std::size_t i = 0; i < 9; i++)
+	test_Apriori();
+	test_Apriori_FPT();
 	//printf("\n%s\n", "done");
 	//getchar();
 	return 0;
