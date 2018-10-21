@@ -1,0 +1,95 @@
+item_amount: 100
+transaction: 2500
+item_each_transaction: 40
+min_support_ratio: 0.475
+min_support: 1187.5
+confidence: 0.8
+data generated: normal distribution N(50, 22.2222)
+
+
+round: 1	return_sets: 0
+round: 1	prev_sets: 0
+round: 1	cur_sets: 40
+
+round: 1	scan support
+0h 0min 1s
+
+round: 1	erase item set if support < min_support
+round: 1	cur_sets: 40
+0h 0min 0s
+
+round: 1	add prev_sets to return_sets
+round: 1	return_sets: 0
+0h 0min 0s
+
+round: 1	join finished
+0h 0min 0s
+
+round: 1	finished
+
+---------------------------------------------------------------------
+
+round: 2	return_sets: 0
+round: 2	prev_sets: 40
+round: 2	cur_sets: 780
+
+round: 2	scan support
+0h 0min 30s
+
+round: 2	erase item set if support < min_support
+round: 2	cur_sets: 0
+0h 0min 0s
+
+round: 2	add prev_sets to return_sets
+round: 2	return_sets: 40
+0h 0min 0s
+
+round: 2	cur_sets is empty.
+
+Apriori time used: 0h 0min 32s
+
+
+result size:40
+count	support		item set
+---------------------------------------------------------------------
+1	1259	:	1 
+2	1400	:	2 
+3	1250	:	4 
+4	1296	:	6 
+5	1255	:	11 
+6	1271	:	12 
+7	1385	:	13 
+8	1311	:	16 
+9	1282	:	17 
+10	1275	:	19 
+11	1405	:	24 
+12	1418	:	29 
+13	1287	:	30 
+14	1313	:	31 
+15	1456	:	37 
+16	1454	:	39 
+17	1498	:	40 
+18	1205	:	42 
+19	1241	:	43 
+20	1292	:	48 
+21	1320	:	49 
+22	1320	:	50 
+23	1398	:	53 
+24	1309	:	60 
+25	1590	:	61 
+26	1197	:	63 
+27	1510	:	65 
+28	1414	:	66 
+29	1374	:	67 
+30	1372	:	68 
+31	1229	:	76 
+32	1453	:	82 
+33	1393	:	84 
+34	1526	:	85 
+35	1332	:	87 
+36	1412	:	88 
+37	1204	:	91 
+38	1305	:	95 
+39	1306	:	96 
+40	1460	:	100 
+Apriori Completed

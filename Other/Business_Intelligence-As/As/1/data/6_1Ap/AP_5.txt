@@ -1,0 +1,156 @@
+item_amount: 100
+transaction: 2500
+item_each_transaction: 40
+min_support_ratio: 0.425
+min_support: 1062.5
+confidence: 0.8
+data generated: normal distribution N(50, 22.2222)
+
+
+round: 1	return_sets: 0
+round: 1	prev_sets: 0
+round: 1	cur_sets: 61
+
+round: 1	scan support
+0h 0min 1s
+
+round: 1	erase item set if support < min_support
+round: 1	cur_sets: 61
+0h 0min 0s
+
+round: 1	add prev_sets to return_sets
+round: 1	return_sets: 0
+0h 0min 0s
+
+round: 1	join finished
+0h 0min 1s
+
+round: 1	finished
+
+---------------------------------------------------------------------
+
+round: 2	return_sets: 0
+round: 2	prev_sets: 61
+round: 2	cur_sets: 1830
+
+round: 2	scan support
+0h 1min 12s
+
+round: 2	erase item set if support < min_support
+round: 2	cur_sets: 18
+0h 0min 0s
+
+round: 2	add prev_sets to return_sets
+round: 2	return_sets: 61
+0h 0min 0s
+
+round: 2	join finished
+0h 0min 0s
+
+round: 2	finished
+
+---------------------------------------------------------------------
+
+round: 3	return_sets: 68
+round: 3	prev_sets: 18
+round: 3	cur_sets: 5
+
+round: 3	scan support
+0h 0min 0s
+
+round: 3	erase item set if support < min_support
+round: 3	cur_sets: 0
+0h 0min 0s
+
+round: 3	add prev_sets to return_sets
+round: 3	return_sets: 79
+0h 0min 0s
+
+round: 3	cur_sets is empty.
+
+Apriori time used: 0h 1min 17s
+
+
+result size:79
+count	support		item set
+---------------------------------------------------------------------
+1	1259	:	1 
+2	1400	:	2 
+3	1250	:	4 
+4	1296	:	6 
+5	1168	:	9 
+6	1255	:	11 
+7	1271	:	12 
+8	1385	:	13 
+9	1105	:	14 
+10	1311	:	16 
+11	1282	:	17 
+12	1275	:	19 
+13	1129	:	21 
+14	1405	:	24 
+15	1063	:	26 
+16	1099	:	27 
+17	1140	:	28 
+18	1418	:	29 
+19	1287	:	30 
+20	1313	:	31 
+21	1181	:	32 
+22	1456	:	37 
+23	1161	:	38 
+24	1454	:	39 
+25	1498	:	40 
+26	1205	:	42 
+27	1241	:	43 
+28	1100	:	44 
+29	1120	:	45 
+30	1095	:	46 
+31	1292	:	48 
+32	1320	:	49 
+33	1320	:	50 
+34	1098	:	52 
+35	1398	:	53 
+36	1165	:	58 
+37	1309	:	60 
+38	1590	:	61 
+39	1197	:	63 
+40	1510	:	65 
+41	1414	:	66 
+42	1374	:	67 
+43	1372	:	68 
+44	1176	:	69 
+45	1175	:	72 
+46	1076	:	75 
+47	1229	:	76 
+48	1104	:	78 
+49	1126	:	80 
+50	1453	:	82 
+51	1132	:	83 
+52	1393	:	84 
+53	1526	:	85 
+54	1332	:	87 
+55	1412	:	88 
+56	1119	:	89 
+57	1204	:	91 
+58	1305	:	95 
+59	1306	:	96 
+60	1110	:	98 
+61	1460	:	100 
+62	1080	:	31 85 
+63	1075	:	39 84 
+64	1078	:	40 61 
+65	1138	:	40 65 
+66	1079	:	65 88 
+67	1084	:	65 100 
+68	1145	:	66 85 
+69	1154	:	24 61 
+70	1083	:	24 85 
+71	1086	:	37 61 
+72	1086	:	37 85 
+73	1094	:	39 61 
+74	1072	:	39 85 
+75	1074	:	61 82 
+76	1125	:	61 85 
+77	1086	:	61 100 
+78	1072	:	82 85 
+79	1063	:	85 100 
+Apriori Completed
