@@ -3,8 +3,7 @@
 **课件pdf在Google云盘中**
 
 - [介绍](#intro)
-
-- [第二讲 聚类分析](#cluster_analysis)
+- [第二章 聚类分析](#cluster_analysis)
   - [2.2 距离测度](#distance_measure)
   - [2.3 基于距离阈值的分类算法](#threshold_classification)
   - [2.4 层次聚类法](#level_cluster)
@@ -12,26 +11,28 @@
     - [2.5.1 K-means](#k_means)
     - [2.5.2 ISODATA](#ISODATA)
   - [2.6 聚类结果的评价](#cluster_result_evaluation)
-
-- [第三讲 判别函数分类法](#discrimination_function)
+- [第三章 判别函数分类法](#discrimination_function)
 
   - [3.2 线性判别函数](#linear)
   - [3.6 感知器算法](#perceptron)
   - [3.8 最小平方误差](#LMS)
   - [3.9 非线性判别函数](#non_linear)
-
-- [第四讲 统计决策分类法](#statistics_decision)
+- [第四章 统计决策分类法](#statistics_decision)
 
   - [4.1 贝叶斯估计](#Beyesian)
   - [4.2 贝叶斯决策](#Beyesian_decision)
   - [4.3 贝叶斯分类器的错误率](#error_estimation)
   - [4.4 耐曼-皮尔逊决策](#Neyman_Pearson)
+  - [4.5 概率密度函数的参数估计方法](#prob_dense_est)
+  - [4.6 概率密度函数的非参数估计方法](#prob_dense_non_param_est)
+  - [4.7 后验概率密度函数的势函数估计法](#posterior_probability_potential_function_est)
+- [第五章 特征提取与选择](#feature_detection)
+  - [5.1 基本概念](#feature_detection_basic_concept)
+  - [5.2 类别可分性测度](#)
   - [](#)
-
-- [第六讲 ](#)
-- [第七讲 ](#)
-
-
+- [第六章 ](#)
+  - [](#)
+  - [](#)
 
 
 
@@ -47,7 +48,7 @@
 
 <a id="cluster_analysis"></a>
 
-# 第二讲 聚类分析
+# 第二章 聚类分析
 
 聚类分析：基于样本的相似性分类。
 
@@ -123,6 +124,8 @@ $$
 ![](assets/juleizhunze.png)
 
 **适用范围**：适用于各类样本密集且数目相差不多，而不同类间的样本又明显分开的情况。
+
+
 
 <a id="threshold_classification"></a>
 
@@ -307,7 +310,7 @@ def k_means(cluster_num: int, dist, *data_set):
 
 <a id="discrimination_function"></a>
 
-# 第三讲 判别函数分类法
+# 第三章 判别函数分类法
 
 几何分类法：使用代数方程进行分类。
 
@@ -601,7 +604,7 @@ $$
 
 <a id="statistics_decision"></a>
 
-# 统计决策分类法
+# 第四章 统计决策分类法
 
 <a id="Beyesian"></a>
 
@@ -824,6 +827,194 @@ $\theta_2$：用于检验分类器性能的样本的分布参数
 ## 4.4 耐曼-皮尔逊决策
 
 基本思想：限制某一类错误率为一个确定值，求取使得另一类错误率最小的判决规则与判决阈值（二类问题）。
+
+通常，
+
+- 不知道各类的先验概率 $P(w_i)$：采用 最小最大风险准则 或 令各类先验概率相等
+- 难于确定误判损失 $L_{ij}(\pmb X)$：采用最小误判概率准则
+- 某一类错误较另一种错误更为重要：Neyman-Pearson 准则
+
+Neyman-Pearson 基本思想：限制某一类错误率为一个确定值，求取使得另一类错误率最小的判决规则与判决阈值（二类问题）。
+
+[Neyman-Pearson 证明](https://en.wikipedia.org/wiki/Neyman%E2%80%93Pearson_lemma#Proof)
+
+![](assets/4.4.1.png)
+
+
+
+<a id="prob_dense_est"></a>
+
+## 4.5 概率密度函数的参数估计方法
+
+概率密度的两类估计方法：
+
+- **参数估计**：已知概率密度函数的形式而函数的有关参数未知，通过估计参数来估计概率密度函数的方法。
+- **非参数估计**：概率密度函数的形式未知，直接估计概率密度函数的方法
+
+
+
+参数估计：
+
+- 最大似然估计
+- 贝叶斯估计
+
+
+
+### 4.5.1 最大似然估计
+
+设：$w_i$ 类的类模式的概率密度函数具有某种确定的函数形式，$\theta$ 是该函数的一个未知参数或参数集。**最大似然估计把 $\theta$ 当作确定的未知量进行估计。**
+
+![](assets/4.5.1_1.jpg)
+
+![](assets/4.5.1_2.jpg)
+
+![](assets/4.5.1_3.jpg)
+
+
+
+最大似然估计结果：
+
+- **均值向量的最大似然估计是样本的均值**
+> 上图说明 **均值是自然合理的**，可以假设成公理（？？理解不深刻）
+- **协方差矩阵的最大似然估计是$N$个矩阵的算术平均**
+
+
+
+### 4.5.2 贝叶斯估计和贝叶斯学习
+
+**贝叶斯估计和学习都是将未知参数看作随机参数进行考虑**。
+
+#### 贝叶斯估计
+
+一组样本通过似然函数 $L(\pmb X,\theta)$ 并利用贝叶斯公式将随机变量 $\theta$ 的先验概率密度 $p(\theta)$ 转变为后验概率密度 $p(\theta|\pmb X)$，然后根据 $\theta$ 的后验概率密度求出估计量 $\hat \theta$。 
+
+步骤：
+
+- 确定 $\theta$ 的先验概率密度 $p(\theta)$
+- 由样本集 $X^N = \{\pmb X_1,...,\pmb X_N\}$ 求出 $p(X^N,\theta)$
+- 利用贝叶斯公式求出 $\theta$ 的后验概率密度
+
+$$
+p(\theta | X^N) = \frac{p(X^N|\theta) \cdot p(\theta)}{\int p(X^N|\theta) \cdot p(\theta) d\theta}
+$$
+
+- 求贝叶斯估计量：$\hat\theta = \int \theta \cdot p(\theta|X^N)d\theta$
+
+#### 贝叶斯学习
+
+利用 $\theta$ 的先验概率密度及样本提供的信息求出 $\theta$ 的后验概率密度，根据后验概率密度直接求出类概率密度函数 $p(\pmb X|w_i)$。
+
+$$
+\begin{align}
+p(\theta|X^N)
+& = \frac{p(X^N|\theta) \cdot p(\theta)}{\int p(X^N|\theta) \cdot p(\theta)d\theta} \\
+& = \frac{p(\pmb X_N|\theta) \cdot p(X^{N-1}|\theta) \cdot p(\theta)}{\int p(\pmb X_N|\theta) \cdot p(X^{N-1}|\theta) \cdot p(\theta) d\theta} \\
+& = \frac{p(\pmb X_N|\theta) \cdot p(\theta|X^{N-1})}{\int p(\pmb X_N|\theta) \cdot p(\theta|X^{N-1}) d\theta}
+\end{align}
+$$
+
+于是迭代地计算 $p(\theta|X^k)\quad k = 1,2,...,N$
+
+
+
+<a id="prob_dense_non_param_est"></a>
+
+## 4.6 概率密度函数的非参数估计方法
+
+**根据样本直接估计类概率密度函数的方法。**
+
+![](assets/4.6.1_1.png)
+
+### 4.6.2 Parzen 窗法
+
+![](assets/4.6.2_1.png)
+
+![](assets/4.6.2_2.png)
+
+![](assets/4.6.2_3.png)
+
+![](assets/4.6.2_4.png)
+
+![](assets/4.6.2_5.png)
+
+
+
+### 4.6.3 $k_N$ 近邻估计法
+
+基本思想：**使体积为样本密度的函数，而不是样本数$N$的函数。**
+
+
+
+<a id="posterior_probability_potential_function_est"></a>
+
+## 4.7 后验概率密度函数的势函数估计法
+
+![](assets/4.7_1.png)
+
+
+
+
+
+<a id="feature_detection"></a>
+
+# 第五章 特征提取与选择
+
+<a id="feature_detection_basic_concept">
+
+## 5.1 基本概念
+
+- 用于分类的模式特征的特点
+  - 特征是可获取的
+  - 类内稳定
+  - 类间差异（特征的类间差异应该大于类内差异）
+- 特征的类别
+  - 物理特征
+  - 结构特征
+  - 数字特征
+- 特征的形成（手工找**原始特征**）
+- 特征提取和选择的作用
+  - **特征选择**：从一组特征中挑选出对分类最有利的特征，同时达到降低特征空间维数的目的。
+  - **特征提取**：通过映射(或变换)的方法获取最有效的特征，实现特征空间的维数从高维到低维的变换。经过映射后的特征称为二次特征，它们是原始特征的某种组合，最常用的是线性组合。
+  - 主要目的都是：在不降低或很少降低分类结果性能的情况下，**降低特征空间的维数**。
+- 类别可分离性判据
+
+![](assets/5.1_1.png)
+
+- 对分类特征的要求
+
+![](assets/5.1_2.png)
+
+
+
+<a id=""></a>
+
+## 5.2 类别可分性测度
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
