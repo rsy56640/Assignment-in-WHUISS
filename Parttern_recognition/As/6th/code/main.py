@@ -4,11 +4,10 @@ from scipy.stats import norm
 
 xi = [3.2, 3.6, 3, 6, 2.5, 1.1]
 h = np.arange(1, 4, 0.5)
-VN = 6.4
 
 
 def p6(x: float, hN: float) -> float:
-    return sum(map(norm.pdf, map(lambda _xi: (x - _xi) / hN, xi))) / len(xi) / VN
+    return sum(map(norm.pdf, map(lambda _xi: (x - _xi) / hN, xi))) / len(xi) / hN ** 1
 
 
 x = np.arange(0, 6, 0.1)
