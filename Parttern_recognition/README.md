@@ -40,9 +40,10 @@
   - [5.3 基于类内散布矩阵的单类模式特征提取](#single_trait_extract)
   - [5.4 基于K-L变换的多类模式特征提取](#k_l_transforamtion_for_multi_trait_extract)
   - [5.5 特征选择](#feature_selection)
-- [第六章 ](#)
-  - [](#)
-  - [](#)
+- [第六章 模糊模式识别](#vague_p_r)
+  - [6.2 模糊集合](#vague_set)
+  - [6.3 模糊关系与模糊矩阵](#vague_relation_matrix)
+  - [6.4 模糊模式分类的直接和间接方法](#vague_classification)
 
 
 
@@ -1142,6 +1143,35 @@ $X^*$ 的第$k$个分量的方差等于未变换时 $C$ 的特征值 $\lambda_k$
 <a id="feature_selection"></a>
 
 ## 5.5 特征选择
+
+
+
+
+
+<a id="vague_p_r"></a>
+
+# 第六章 模糊模式识别
+
+
+
+<a id="vague_set"></a>
+
+## 6.2 模糊集合
+
+模糊子集：对于一模糊子集 $\underset{\sim}{A}$，对于任意 $x\in X$，都确定了一个数 $\mu_{\underset{\sim}{A}}(x)$，称为 $x$ 对 $\underset{\sim}{A}$ 的隶属度，且 $\mu_{\underset{\sim}{A}}(x) \in [0,1]$
+
+
+
+<a id="vague_relation_matrix"></a>
+
+## 6.3 模糊关系与模糊矩阵
+
+
+
+<a id="vague_classification"></a>
+
+## 6.4 模糊模式分类的直接和间接方法
+
 
 
 
