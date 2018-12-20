@@ -70,8 +70,7 @@ no_carry:
 	mov		WORD PTR [esp+6],	dx
 	inc		cx						; next turn
 	cmp		cx,		31
-	je		fib_quit
-	jmp		fib_iter
+	jne		fib_iter
 fib_quit:
 	mov		esp,	ebp
 	pop		ebp
@@ -336,5 +335,6 @@ update_carry PROC
 	mov		ax,		cx
 	ret
 update_carry ENDP
+
 
 END start

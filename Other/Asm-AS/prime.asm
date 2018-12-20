@@ -42,6 +42,7 @@ detect_and_print_prime_iter:
 	push	DWORD PTR [ebp-8]	; prime_counter
     push    OFFSET format		; format string
     call    printf
+	add		esp,	12
 not_prime:
 	mov		ecx,	DWORD PTR [ebp-4]
 	cmp		ecx,	2		; stop until 2 not 1.
