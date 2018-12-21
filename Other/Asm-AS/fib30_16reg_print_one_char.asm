@@ -95,14 +95,14 @@ fib ENDP
 print_fib PROC
 	push	ebp
 	mov		ebp,	esp
-	sub		esp,	46
+	sub		esp,	48
 	; [esp+0]  - [esp+8]  denote y0 - y4
 	; [esp+10] - [esp+18] denote x0 - x4
-	; [esp+20] - [esp+36] denote t0 - t8
-	; [esp+38] temp0
-	; [esp+40] temp1
-	; [esp+42] temp2
-	; [esp+44] temp3
+	; [esp+20] - [esp+38] denote t0 - t9
+	; [esp+40] temp0
+	; [esp+42] temp1
+	; [esp+44] temp2
+	; [esp+46] temp3
 
 	; (dx, ax) / xx = ax ... dx
 	mov		bx,		10
@@ -150,17 +150,17 @@ print_fib PROC
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; can use %ax, %bx, %dx, %di, %si
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; [esp+0]  - [esp+8]  denote y0 - y4
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;; [esp+10] - [esp+18] denote x0 - x4
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; [esp+20] - [esp+36] denote t0 - t8
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; [esp+38] temp0 = 3*x0, 5*x0, 3*x4, 5*x4
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; [esp+40] temp1 = 3*x1, 5*x1
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; [esp+42] temp2 = 3*x2, 5*x2
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;; [esp+44] temp3 = 3*x3, 5*x3
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;; [esp+20] - [esp+38] denote t0 - t9
+$tmp0 = 40 ;;;;;;;;;;;;;;;;;; [esp+40] temp0 = 3*x0, 5*x0, 3*x4, 5*x4
+$tmp1 = 42 ;;;;;;;;;;;;;;;;;; [esp+42] temp1 = 3*x1, 5*x1
+$tmp2 = 44 ;;;;;;;;;;;;;;;;;; [esp+44] temp2 = 3*x2, 5*x2
+$tmp3 = 46 ;;;;;;;;;;;;;;;;;; [esp+46] temp3 = 3*x3, 5*x3
 
 	mov		ax,		WORD PTR [esp+10]	; x0
 	mov		bx,		ax
 	sal		ax,		1					; 2*x0
 	add		ax,		bx					; 3*x0
-	mov		WORD PTR [esp+38],	ax		; temp0 = 3*x0
+	mov		WORD PTR [esp+$tmp0],	ax	; temp0 = 3*x0
 	sal		ax,		1					; 6*x0
 	add		ax,		WORD PTR [esp+0]	; 6*x0 + y0
 	mov		si,		0					; init
@@ -173,9 +173,9 @@ print_fib PROC
 	mov		bx,		ax
 	sal		ax,		1					; 2*x1
 	add		ax,		bx					; 3*x1
-	mov		WORD PTR [esp+40],	ax		; temp1 = 3*x1
+	mov		WORD PTR [esp+$tmp1],	ax	; temp1 = 3*x1
 	sal		ax,		1					; 6*x1
-	add		ax,		WORD PTR [esp+38]	; 6*x1 + 3*x0
+	add		ax,		WORD PTR [esp+$tmp0]; 6*x1 + 3*x0
 	add		ax,		WORD PTR [esp+2]	; 6*x1 + 3*x0 + y1
 	call	update_carry
 	mov		WORD PTR [esp+22],	ax		; store t1
@@ -185,13 +185,13 @@ print_fib PROC
 	mov		bx,		ax
 	sal		ax,		1					; 2*x2
 	add		ax,		bx					; 3*x2
-	mov		WORD PTR [esp+42],	ax		; temp2 = 3*x2
+	mov		WORD PTR [esp+44],	ax		; temp2 = 3*x2
 	sal		ax,		1					; 6*x2
-	add		ax,		WORD PTR [esp+40]	; 6*x2 + 3*x1
+	add		ax,		WORD PTR [esp+$tmp1]; 6*x2 + 3*x1
 	mov		bx,		WORD PTR [esp+10]	; x0
 	sal		bx,		1					; 2*x0
-	add		bx,		WORD PTR [esp+38]	; 5*x0
-	mov		WORD PTR [esp+38],	bx		; temp0 = 5*x0
+	add		bx,		WORD PTR [esp+$tmp0]; 5*x0
+	mov		WORD PTR [esp+$tmp0],	bx	; temp0 = 5*x0
 	add		ax,		bx					; 6*x2 + 3*x1 + 5*x0
 	add		ax,		WORD PTR [esp+4]	; 6*x2 + 3*x1 + 5*x0 + y2	
 	call	update_carry
@@ -202,14 +202,14 @@ print_fib PROC
 	mov		bx,		ax
 	sal		ax,		1					; 2*x3
 	add		ax,		bx					; 3*x3
-	mov		WORD PTR [esp+44],	ax		; temp3 = 3*x3
+	mov		WORD PTR [esp+$tmp3],	ax	; temp3 = 3*x3
 	sal		ax,		1					; 6*x3
-	add		ax,		WORD PTR [esp+42]	; 6*x3 + 3*x2
-	add		ax,		WORD PTR [esp+38]	; 6*x3 + 3*x2 + 5*x0
+	add		ax,		WORD PTR [esp+$tmp2]; 6*x3 + 3*x2
+	add		ax,		WORD PTR [esp+$tmp0]; 6*x3 + 3*x2 + 5*x0
 	mov		bx,		WORD PTR [esp+12]	; x1
 	sal		bx,		1					; 2*x1
-	add		bx,		WORD PTR [esp+40]	; 5*x1
-	mov		WORD PTR [esp+40],	bx		; temp1 = 5*x1
+	add		bx,		WORD PTR [esp+$tmp1]; 5*x1
+	mov		WORD PTR [esp+$tmp1],	bx	; temp1 = 5*x1
 	add		ax,		bx					; 6*x3 + 3*x2 + 5*x1 + 5*x0
 	add		ax,		WORD PTR [esp+6]	; 6*x3 + 3*x2 + 5*x1 + 5*x0 + y3
 	call	update_carry
@@ -222,69 +222,72 @@ print_fib PROC
 	add		ax,		bx					; 3*x4
 	mov		bx,		ax					; bx = 3*x4
 	sal		ax,		1					; 6*x4
-	add		ax,		WORD PTR [esp+44]	; 6*x4 + 3*x3
-	add		ax,		WORD PTR [esp+38]	; 6*x4 + 3*x3 + 5*x0
+	add		ax,		WORD PTR [esp+$tmp3]; 6*x4 + 3*x3
+	add		ax,		WORD PTR [esp+$tmp0]; 6*x4 + 3*x3 + 5*x0
 	add		ax,		WORD PTR [esp+10]	; 6*x4 + 3*x3 + 6*x0
-	mov		WORD PTR [esp+38],	bx		; temp0 = 3*x4
+	mov		WORD PTR [esp+$tmp0],	bx	; temp0 = 3*x4
 	mov		bx,		WORD PTR [esp+14]	; x2
 	sal		bx,		1					; 2*x2
-	add		bx,		WORD PTR [esp+42]	; 5*x2
-	mov		WORD PTR [esp+42],	bx		; temp2 = 5*x2
+	add		bx,		WORD PTR [esp+$tmp2]; 5*x2
+	mov		WORD PTR [esp+$tmp2],	bx	; temp2 = 5*x2
 	add		ax,		bx					; 6*x4 + 3*x3 + 5*x2 + 6*x0
-	add		ax,		WORD PTR [esp+40]	; 6*x4 + 3*x3 + 5*x2 + 5*x1 + 6*x0
+	add		ax,		WORD PTR [esp+$tmp1]; 6*x4 + 3*x3 + 5*x2 + 5*x1 + 6*x0
 	add		ax,		WORD PTR [esp+8]	; 6*x4 + 3*x3 + 5*x2 + 5*x1 + 6*x0 + y4
 	call	update_carry
 	mov		WORD PTR [esp+28],	ax		; store t4
 
 
-	mov		ax,		WORD PTR [esp+38]	; 3*x4
+	mov		ax,		WORD PTR [esp+$tmp0]; 3*x4
 	mov		bx,		WORD PTR [esp+16]	; x3
 	sal		bx,		1					; 2*x3
-	add		bx,		WORD PTR [esp+44]	; 5*x3
-	mov		WORD PTR [esp+44],	bx		; temp3 = 5*x3
+	add		bx,		WORD PTR [esp+$tmp3]; 5*x3
+	mov		WORD PTR [esp+$tmp3],	bx	; temp3 = 5*x3
 	add		ax,		bx					; 3*x4 + 5*x3
-	add		ax,		WORD PTR [esp+42]	; 3*x4 + 5*x3 + 5*x2
-	add		ax,		WORD PTR [esp+40]	; 3*x4 + 5*x3 + 5*x2 + 5*x1
+	add		ax,		WORD PTR [esp+$tmp2]; 3*x4 + 5*x3 + 5*x2
+	add		ax,		WORD PTR [esp+$tmp1]; 3*x4 + 5*x3 + 5*x2 + 5*x1
 	add		ax,		WORD PTR [esp+12]	; 3*x4 + 5*x3 + 5*x2 + 6*x1
 	call	update_carry
 	mov		WORD PTR [esp+30],	ax		; store t5
 
 
-	mov		ax,		WORD PTR [esp+38]	; 3*x4
+	mov		ax,		WORD PTR [esp+$tmp0]; 3*x4
 	mov		bx,		WORD PTR [esp+18]	; x4
 	sal		bx,		1					; 2*x4
 	add		ax,		bx					; 5*x4
-	mov		WORD PTR [esp+38],	ax		; temp0 = 5*x4
-	add		ax,		WORD PTR [esp+44]	; 5*x4 + 5*x3
-	add		ax,		WORD PTR [esp+42]	; 5*x4 + 5*x3 + 5*x2
+	mov		WORD PTR [esp+$tmp0],	ax	; temp0 = 5*x4
+	add		ax,		WORD PTR [esp+$tmp3]; 5*x4 + 5*x3
+	add		ax,		WORD PTR [esp+$tmp2]; 5*x4 + 5*x3 + 5*x2
 	add		ax,		WORD PTR [esp+14]	; 5*x4 + 5*x3 + 6*x2
 	call	update_carry
 	mov		WORD PTR [esp+32],	ax		; store t6
 
 
-	mov		ax,		WORD PTR [esp+38]	; 5*x4
+	mov		ax,		WORD PTR [esp+$tmp0]; 5*x4
 	mov		bx,		ax
-	add		ax,		WORD PTR [esp+44]	; 5*x4 + 5*x3
+	add		ax,		WORD PTR [esp+$tmp3]; 5*x4 + 5*x3
 	add		ax,		WORD PTR [esp+16]	; 5*x4 + 6*x3
 	call	update_carry
 	mov		WORD PTR [esp+34],	ax		; store t7
 
-	add		bx,		WORD PTR [esp+18]
-	mov		ax,		bx
+
+	mov		ax,		WORD PTR [esp+$tmp0]; 5*x4
+	add		ax,		WORD PTR [esp+18]	; 6*x4
 	call	update_carry
 	mov		WORD PTR [esp+36],	ax		; store t8
 
 
-;;;;;;;;;;;;;;;;;; di, si has no use from here
+	mov		WORD PTR [esp+38],	si		; store t9
+
+
+;;;;;;;;;;;;;;;;;; %di has no use from here (in fact, %di must be 0, 2^32 has no t10)
 	mov		eax,	0				; must use %eax to calculate esp
-	mov		di,		9
+	mov		di,		10
 find_not_zero:
 	dec		di
 	mov		ax,		di
 	sal		ax,		1					; %ax = 2*%di
 	add		ax,		14H					; %ax = 20 + 2*%di, 20 is base address of t0
-	mov		bx,		WORD PTR [esp+eax]	; must use %eax instead of %ax with %esp
-	cmp		bx,		0
+	cmp		WORD PTR [esp+eax],	0		; must use %eax instead of %ax with %esp
 	je		find_not_zero
 
 ;;;;;;;;;;;;;;;;;; %di denotes the first number not zero
