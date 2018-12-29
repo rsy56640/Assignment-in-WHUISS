@@ -65,7 +65,7 @@ namespace lexical
 	//@ char* c: one sentence that is seperated by semicolon.
 	//@ const _STD size_t size: sentence size that does not include semicolon.
 	//@ return value: token_list.
-	extern _STD vector<Token> seperate_one_sentence(char* c, const _STD size_t size);
+	extern _STD vector<Token> seperate_one_sentence(const char* c, const _STD size_t size);
 
 
 	//Base class for Exception
@@ -126,7 +126,7 @@ namespace lexical
 
 	//record the sentence num according to the semicolon.
 	static _STD size_t sentence_num = 0;
-
+	void addLine();
 
 
 	//class Id_Exception
@@ -166,7 +166,7 @@ namespace lexical
 
 
 	//symbol table
-	static _STD unordered_map<_STD string, _STD pair<double, bool> > symbol_table;
+	extern _STD unordered_map<_STD string, _STD pair<double, bool> > symbol_table;
 
 
 

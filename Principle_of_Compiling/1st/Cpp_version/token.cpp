@@ -2,11 +2,11 @@
 
 namespace lexical
 {
-
+	_STD unordered_map<_STD string, _STD pair<double, bool> > symbol_table = {};
 
 	//id:0		const:1		op:2	print:3		equal:4		lp:5	rp:6
 	//*c points to one sentence including the last semicolon
-	_STD vector<Token> seperate_one_sentence(char* c, const _STD size_t size)
+	_STD vector<Token> seperate_one_sentence(const char* c, const _STD size_t size)
 	{
 		sentence_num++;
 		const static _STD vector<double> digit_after_dot =
@@ -339,9 +339,10 @@ namespace lexical
 			for (int i = 2, j = 0; i < size - 1; ++i, ++j)
 				expr[j] = token_list[i];
 			auto number = calculate(expr, 3);
-			if (!number.second)
-				std::cout << static_cast<int>(number.first) << std::endl;
-			else std::cout << static_cast<double>(number.first) << std::endl;
+			//if (!number.second)
+			std::cout << static_cast<double>(number.first) << std::endl;
+			// always treat as double
+			//else std::cout << static_cast<double>(number.first) << std::endl;
 
 			return;
 		}
@@ -552,7 +553,7 @@ namespace lexical
 						result = num1._num / num2._num;
 						is_double = num1._is_double || num2._is_double;
 						if (!is_double)
-							result = static_cast<int>(result);
+							result = static_cast<double>(result); // always treat as double
 						break;
 					}
 
@@ -610,7 +611,7 @@ namespace lexical
 						result = num1._num / num2._num;
 						is_double = num1._is_double || num2._is_double;
 						if (!is_double)
-							result = static_cast<int>(result);
+							result = static_cast<double>(result); // always treat as double
 						break;
 					}
 					number_stack.emplace(result, is_double);
@@ -663,7 +664,7 @@ namespace lexical
 				result = num1._num / num2._num;
 				is_double = num1._is_double || num2._is_double;
 				if (!is_double)
-					result = static_cast<int>(result);
+					result = static_cast<double>(result); // always treat as double
 				break;
 			}
 			number_stack.emplace(result, is_double);
@@ -674,5 +675,6 @@ namespace lexical
 
 	}//end function calculate(_STD vector<Token>, const _STD size_t)
 
+	void addLine() { sentence_num++ ; }
 
 }//end namespace
