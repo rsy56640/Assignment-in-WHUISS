@@ -1,3 +1,6 @@
+
+[2018版毛概思考题答案](https://wenku.baidu.com/view/a9788793fbb069dc5022aaea998fcc22bcd1432e.html)
+
 # 重点
 
 - [第一节 中国特色社会主义进入新时代](#zhongguoteseshehuizhuyijinruxinshidai)
@@ -103,7 +106,6 @@
 
 - [思想内涵](#2sixiangneihan)
 - [坚持和发展中国特色社会主义的基本方略](#2jianchihefazhanzhongguoteseshehuizhuyidejibenfanglve)
-- [习近平新时代中国特色社会主义思想的历史地位](#2xinshidaizhongguoteseshehuizhuyisixiangdelishidiwei)
 
 &nbsp;   
 <a id="2sixiangneihan"></a>
@@ -154,8 +156,8 @@
 
 
 &nbsp;   
-<a id="2xinshidaizhongguoteseshehuizhuyisixiangdelishidiwei"></a>
-### 习近平新时代中国特色社会主义思想的历史地位
+<a id="xinjinpingxinshidaizhongguoteseshehuizhuyisixiangdelishidiwei"></a>
+## 第三节 习近平新时代中国特色社会主义思想的历史地位
 
 - **马克思主义中国化最新成果**
   - 开辟新型现代化之路
@@ -173,16 +175,11 @@
   - 为新时代治国理政提供了基本遵循
   - 为全面从严治党、把党建设成为中国特色社会主义事业的坚强领导核心提供了强大思想武器
 
-
-&nbsp;   
-<a id="xinjinpingxinshidaizhongguoteseshehuizhuyisixiangdelishidiwei"></a>
-## 第三节 习近平新时代中国特色社会主义思想的历史地位
-
-
-### [习近平庆祝改革开放40周年大会讲话（全文批注版）](https://mp.weixin.qq.com/s/E36vuccScUV0rWo4Idh0cQ)
+## [习近平庆祝改革开放40周年大会讲话（全文批注版）](https://mp.weixin.qq.com/s/E36vuccScUV0rWo4Idh0cQ)
 
 
 # 第九章 中国梦 习近平的三句话
+
 重点：中国梦 两个阶段
 
 -----
@@ -260,16 +257,16 @@
 - 加快生态文明体制改革
 
 
+### 党十九大
+
+- 第一步：从2020年到2035年，基本实现社会主义现代化
+- 第二步：从2035年到2050年，把我国建成富强、民主、文明、和谐、美丽的社会主义现代化强国
+
+从现在到2020年，是全面建成小康社会决胜期。要按照十六大、十七大、十八大提出的全面建成小康社会各项要求，紧扣我国社会主要矛盾变化，统筹推进经济建设、政治建设、文化建设、社会建设、生态文明建设，坚定实施科教兴国战略、人才强国战略、创新驱动发展战略、乡村振兴战略、区域协调发展战略、可持续发展战略、军民融合发展战略，突出抓重点、补短板、强弱项，特别是要坚决打好防范化解重大风险、精准脱贫、污染防治的攻坚战，使全面建成小康社会得到人民认可、经得起历史检验。
 
 
 
-
-
-
-
-
-
-
+&nbsp;   
 ![](assets/1.png)
 
 ![](assets/2.png)
