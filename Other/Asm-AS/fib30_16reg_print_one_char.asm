@@ -185,7 +185,7 @@ $tmp3 = 46 ;;;;;;;;;;;;;;;;;; [esp+46] temp3 = 3*x3, 5*x3
 	mov		bx,		ax
 	sal		ax,		1					; 2*x2
 	add		ax,		bx					; 3*x2
-	mov		WORD PTR [esp+44],	ax		; temp2 = 3*x2
+	mov		WORD PTR [esp+$tmp2],	ax	; temp2 = 3*x2
 	sal		ax,		1					; 6*x2
 	add		ax,		WORD PTR [esp+$tmp1]; 6*x2 + 3*x1
 	mov		bx,		WORD PTR [esp+10]	; x0
