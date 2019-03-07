@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE info SYSTEM "SpyBase2.dtd">
+<info>
+	<spyTable>
+		<item spyID="A001">
+			<firstName>Nikki</firstName>
+			<lastName>Devgood</lastName>
+			<aliasTable>
+				<aitem aID="1">
+					<alias>Spy Grrrl</alias>
+				</aitem>
+				<aitem aID="2">
+					<alias>La Femme Nikki</alias>
+				</aitem>
+			</aliasTable>
+			<missionTable>
+				<mitem mID="M101">
+					<data>2005/4/15</data>
+					<description>Crack the code</description>
+					<status>Mission Accomplished</status>
+				</mitem>
+				<mitem mID="M102">
+					<data>2006/2/15</data>
+					<description>Get the source</description>
+					<status>Mission Accomplished</status>
+				</mitem>
+				<mitem mID="M103">
+					<data>2006/5/4</data>
+					<description>Hit the target</description>
+					<status>In Progress</status>
+				</mitem>
+			</missionTable>
+		</item>
+		<item spyID="A006">
+			<firstName>Link</firstName>
+			<lastName>Lister</lastName>
+			<aliasTable>
+				<aitem aID="3">
+					<alias>LL</alias>
+				</aitem>
+				<aitem aID="4">
+					<alias>Fred</alias>
+				</aitem>
+			</aliasTable>
+			<missionTable>
+				<mitem mID="M104">
+					<data>2006/6/15</data>
+					<description>Shoot the rapid</description>
+					<status>In Progress</status>
+				</mitem>
+			</missionTable>
+		</item>
+		<item spyID="A003">
+			<firstName>Danger</firstName>
+			<lastName>Mause</lastName>
+			<aliasTable>
+				<aitem aID="5">
+					<alias>Big Ears</alias>
+				</aitem>
+			</aliasTable>
+			<missionTable>
+				<mitem mID="M105">
+					<data>2005/11/4</data>
+					<description>Get the &lt;big cheese&gt;</description>
+					<status>In Progress</status>
+				</mitem>
+				<mitem mID="M106">
+					<data>2006/4/4</data>
+					<description>Map the area</description>
+					<status>In Progress</status>
+				</mitem>
+			</missionTable>
+		</item>
+		<item spyID="A099">
+			<firstName>Barbara</firstName>
+			<lastName>Feldon</lastName>
+			<missionTable>
+				<mitem mID="M107">
+					<data>2006/5/2</data>
+					<description>Get Smart</description>
+					<status>In Progress</status>
+				</mitem>
+			</missionTable>
+		</item>
+		<item spyID="A004">
+			<firstName>Maxwell</firstName>
+			<lastName>Smart</lastName>
+			<aliasTable>
+				<aitem aID="6">
+					<alias>Inspector Gadget</alias>
+				</aitem>
+				<aitem aID="7">
+					<alias>Don Adams</alias>
+				</aitem>
+			</aliasTable>
+			<missionTable>
+				<mitem mID="M108">
+					<data>1967/2/15</data>
+					<description>Protect Chief</description>
+					<status>In Progress</status>
+				</mitem>
+				<mitem mID="M109">
+					<data>2006/6/15</data>
+					<description>Get some style</description>
+					<status>Mission Accomplished</status>
+				</mitem>
+			</missionTable>
+		</item>
+	</spyTable>
+</info>

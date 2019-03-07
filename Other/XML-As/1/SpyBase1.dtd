@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ENTITY % p "(#PCDATA)">
+<!ENTITY % c "CDATA">
+
+<!ELEMENT info (aliasTable, missionTable, spyTable)>
+<!ELEMENT aliasTable (aitem*)>
+<!ELEMENT missionTable (mitem*)>
+<!ELEMENT spyTable (sitem*)>
+
+<!ELEMENT aitem (spyREF, alias)>
+<!ELEMENT mitem (spyREF, data, description, status)>
+<!ELEMENT sitem (firstName, lastName)>
+
+<!ATTLIST aitem aID %c; #IMPLIED>
+<!ATTLIST mitem mID %c; #REQUIRED>
+<!ATTLIST sitem spyID %c; #IMPLIED>
+
+<!ELEMENT spyREF %p;>
+<!ELEMENT alias %p;>
+<!ELEMENT data %p;>
+<!ELEMENT description %p;>
+<!ELEMENT status %p;>
+<!ELEMENT firstName %p;>
+<!ELEMENT lastName %p;>

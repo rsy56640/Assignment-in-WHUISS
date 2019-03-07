@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE info SYSTEM "SpyBase1.dtd">
+<info>
+	<aliasTable>
+		<aitem aID="1">
+			<spyREF>A001</spyREF>
+			<alias>Spy Grrrl</alias>
+		</aitem>
+		<aitem aID="2">
+			<spyREF>A001</spyREF>
+			<alias>La Femme Nikki</alias>
+		</aitem>
+		<aitem aID="3">
+			<spyREF>A006</spyREF>
+			<alias>LL</alias>
+		</aitem>
+		<aitem aID="4">
+			<spyREF>A006</spyREF>
+			<alias>Fred</alias>
+		</aitem>
+		<aitem aID="5">
+			<spyREF>A003</spyREF>
+			<alias>Big Ears</alias>
+		</aitem>
+		<aitem aID="6">
+			<spyREF>A004</spyREF>
+			<alias>Inspector Gadget</alias>
+		</aitem>
+		<aitem aID="7">
+			<spyREF>A004</spyREF>
+			<alias>Don Adams</alias>
+		</aitem>
+	</aliasTable>
+	<missionTable>
+		<mitem mID="M101">
+			<spyREF>A001</spyREF>
+			<data>2005/4/15</data>
+			<description>Crack the code</description>
+			<status>Mission Accomplished</status>
+		</mitem>
+		<mitem mID="M102">
+			<spyREF>A001</spyREF>
+			<data>2006/2/15</data>
+			<description>Get the source</description>
+			<status>Mission Accomplished</status>
+		</mitem>
+		<mitem mID="M103">
+			<spyREF>A001</spyREF>
+			<data>2006/5/4</data>
+			<description>Hit the target</description>
+			<status>In Progress</status>
+		</mitem>
+		<mitem mID="M104">
+			<spyREF>A006</spyREF>
+			<data>2006/6/15</data>
+			<description>Shoot the rapid</description>
+			<status>In Progress</status>
+		</mitem>
+		<mitem mID="M105">
+			<spyREF>A003</spyREF>
+			<data>2005/11/4</data>
+			<description>Get the &lt;big cheese&gt;</description>
+			<status>In Progress</status>
+		</mitem>
+		<mitem mID="M106">
+			<spyREF>A003</spyREF>
+			<data>2006/4/4</data>
+			<description>Map the area</description>
+			<status>In Progress</status>
+		</mitem>
+		<mitem mID="M107">
+			<spyREF>A099</spyREF>
+			<data>2006/5/2</data>
+			<description>Get Smart</description>
+			<status>In Progress</status>
+		</mitem>
+		<mitem mID="M108">
+			<spyREF>A004</spyREF>
+			<data>1967/2/15</data>
+			<description>Protect Chief</description>
+			<status>In Progress</status>
+		</mitem>
+		<mitem mID="M109">
+			<spyREF>A004</spyREF>
+			<data>2006/6/15</data>
+			<description>Get some style</description>
+			<status>Mission Accomplished</status>
+		</mitem>
+	</missionTable>
+	<spyTable>
+		<sitem spyID="A001">
+			<firstName>Nikki</firstName>
+			<lastName>Devgood</lastName>
+		</sitem>
+		<sitem spyID="A006">
+			<firstName>Link</firstName>
+			<lastName>Lister</lastName>
+		</sitem>
+		<sitem spyID="A003">
+			<firstName>Danger</firstName>
+			<lastName>Mause</lastName>
+		</sitem>
+		<sitem spyID="A099">
+			<firstName>Barbara</firstName>
+			<lastName>Feldon</lastName>
+		</sitem>
+		<sitem spyID="A004">
+			<firstName>Maxwell</firstName>
+			<lastName>Smart</lastName>
+		</sitem>
+	</spyTable>
+</info>
