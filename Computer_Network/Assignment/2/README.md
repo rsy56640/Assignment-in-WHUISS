@@ -36,6 +36,6 @@ $N$ nodes and $\binom{N}{2}$ edges.
 
 a) the client cannot setup a TCP connection.
 
-b) it works fie.
+b) it works fine.
 
 c) the client will send a connection request to the inappropriate port that the server does not listen on, thus no TCP connection will be set up.
