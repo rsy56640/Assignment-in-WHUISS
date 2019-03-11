@@ -32,7 +32,7 @@ $N$ nodes and $\binom{N}{2}$ edges.
 
 
 
-### 29.
+### 31.
 
 a) the client cannot setup a TCP connection.
 
